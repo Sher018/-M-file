@@ -1,0 +1,25 @@
+# Результаты расчёта (генерируются при запуске)
+results/
+
+# MATLAB / Octave
+*.asv
+*.m~
+*.autosave
+*.slxc
+*.mlappinstall
+slprj/
+codegen/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+*.code-workspace
+
+# Временные и локальные файлы
+*.log
+*.tmp
+~$*.xlsx
