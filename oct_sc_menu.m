@@ -33,8 +33,8 @@ function oct_sc_menu()
 
     disp('--- Расчёт ---');
     [Z1, Z2, Z0, E, U_nom, scInfo] = func_import_data(xPath);
-    [I1, I2, I0] = func_sym_components(E, Z1, Z2, Z0);
-    [Ik3, Ik2, Ik1] = func_sc_currents(I1, I2, I0, U_nom);
+    F = func_fault_currents(Z1, Z2, Z0, E, U_nom, scInfo.Rf_pu);
+    Ik3 = F.Ik3; Ik2 = F.Ik2; Ik1 = F.Ik1;
 
     Z1_ohm = Z1 * scInfo.Z_base;
     R_tot = real(Z1_ohm);
@@ -43,7 +43,11 @@ function oct_sc_menu()
 
     omega = 2 * pi * f_hz;
     [tau_s, ~, ~] = func_network_tau(Z1, scInfo.Z_base, omega);
-    meta = func_pack_results_meta(scInfo, Z1, Z2, Z0, k_ud, tau_s, f_hz);
+    BT = func_breaking_thermal(Ik3, tau_s, T_sim);
+    extra = struct('Ik11', F.Ik11, 'Ig', F.Ig, 'i_ud', i_ud, ...
+        'Ib', BT.Ib, 'Ib_asym', BT.Ib_asym, 'I_th', BT.I_th, ...
+        't_break', BT.t_break, 'i_dc', BT.i_dc);
+    meta = func_pack_results_meta(scInfo, Z1, Z2, Z0, k_ud, tau_s, f_hz, extra);
     func_oscillogram(Ik3, f_hz, T_sim, tau_s, alpha_deg, three_phase);
 
     xlsxOut = fullfile(rootDir, 'results', 'results_sc.xlsx');
@@ -57,7 +61,9 @@ function oct_sc_menu()
     func_report_word(single, docOut);
 
     fprintf('\nГотово. Версия %s\n', sc_version());
-    fprintf('Iк3 = %.4f кА, iуд = %.4f кА, k_уд = %.4f, tau = %.6f с\n', Ik3, i_ud, k_ud, tau_s);
+    fprintf('Iк3 = %.4f кА, Iк2 = %.4f кА, Iк1 = %.4f кА\n', Ik3, Ik2, Ik1);
+    fprintf('Iк1.1 = %.4f кА (земля %.4f кА), iуд = %.4f кА, k_уд = %.4f\n', F.Ik11, F.Ig, i_ud, k_ud);
+    fprintf('Iоткл = %.4f кА (асимм. %.4f), Iтер = %.4f кА, tau = %.6f с\n', BT.Ib, BT.Ib_asym, BT.I_th, tau_s);
     fprintf('График: %s\n', fullfile(rootDir, 'results', 'figures', 'oscillogram.png'));
     fprintf('Таблица: %s\n', outTab);
     fprintf('Отчёт (txt): %s\n', txtOut);

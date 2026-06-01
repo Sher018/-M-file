@@ -38,8 +38,13 @@ function [nPass, nFail, nSkip] = verify_sc_suite(verbose, stopOnError, writeRepo
         'Постоянная tau: согласование с Z_ом и omega'
         'Постоянная tau: ограничение сверху (2 с)'
         'Постоянная tau: ограничение снизу (5e-5 с)'
-        'Симметричные составляющие: сравнение с формулами'
+        'Симметричные составляющие: сравнение с формулами (√3 в Iк2)'
         'Токи КЗ: Ik3, Ik2, Ik1 при Uном=10 кВ'
+        'func_fault_currents: формулы и соотношение Iк2≈0.866·Iк3'
+        'func_fault_currents: учёт Rf снижает токи'
+        'Двухфазное КЗ на землю: положительные конечные токи'
+        'Ток отключения и термический ток: формулы'
+        'Последовательно-параллельное объединение ветвей'
         'func_pack_results_meta: обязательные поля'
         'Экспорт: запись TSV/таблицы во временный каталог'
         'Интеграция: network_parameters.xlsx (при наличии)'
@@ -57,6 +62,11 @@ function [nPass, nFail, nSkip] = verify_sc_suite(verbose, stopOnError, writeRepo
         @test_tau_cap_min
         @test_sym_components_formulas
         @test_sc_currents_three_types
+        @test_fault_currents_formulas
+        @test_fault_currents_rf
+        @test_llg_currents
+        @test_breaking_thermal
+        @test_series_parallel
         @test_pack_meta
         @test_export_temp
         @test_integration_xlsx
@@ -232,8 +242,65 @@ function test_sym_components_formulas
     Z0 = 0.08 + 0.40j;
     [I1, I2, I0] = func_sym_components(E, Z1, Z2, Z0);
     sc_assert_close_c(I1, E / Z1, 1e-12, 'I1');
-    sc_assert_close_c(I2, E / (Z1 + Z2), 1e-12, 'I2');
+    sc_assert_close_c(I2, sqrt(3) * E / (Z1 + Z2), 1e-12, 'I2 (с √3)');
     sc_assert_close_c(I0, E / (Z1 + Z2 + Z0), 1e-12, 'I0');
+end
+
+function test_fault_currents_formulas
+    E = 1.1;
+    Z1 = 0.08 + 0.42j;
+    Z2 = Z1;
+    Z0 = 0.15 + 0.55j;
+    U = 10;
+    F = func_fault_currents(Z1, Z2, Z0, E, U, 0);
+    kA = (U * 1000 / sqrt(3)) / 100;
+    sc_assert_close(F.Ik3, abs(E / Z1) * kA, 1e-9, 'Ik3');
+    sc_assert_close(F.Ik2, abs(sqrt(3) * E / (Z1 + Z2)) * kA, 1e-9, 'Ik2');
+    sc_assert_close(F.Ik1, abs(3 * E / (Z1 + Z2 + Z0)) * kA, 1e-9, 'Ik1');
+    % При Z2=Z1: Ik2 = (√3/2)·Ik3 ≈ 0.866·Ik3
+    sc_assert_close(F.Ik2 / F.Ik3, sqrt(3) / 2, 1e-9, 'Ik2/Ik3');
+end
+
+function test_fault_currents_rf
+    E = 1.1; Z1 = 0.08 + 0.42j; Z2 = Z1; Z0 = 0.15 + 0.55j; U = 10;
+    F0 = func_fault_currents(Z1, Z2, Z0, E, U, 0);
+    F1 = func_fault_currents(Z1, Z2, Z0, E, U, 0.2);
+    if ~(F1.Ik3 < F0.Ik3)
+        error('VERIFY_FAIL: Rf должно снижать ток трёхфазного КЗ');
+    end
+end
+
+function test_llg_currents
+    E = 1.1; Z1 = 0.08 + 0.42j; Z2 = Z1; Z0 = 0.15 + 0.55j; U = 10;
+    F = func_fault_currents(Z1, Z2, Z0, E, U, 0);
+    if ~(isfinite(F.Ik11) && F.Ik11 > 0 && isfinite(F.Ig) && F.Ig > 0)
+        error('VERIFY_FAIL: ожидались положительные конечные токи двухфазного КЗ на землю');
+    end
+end
+
+function test_breaking_thermal
+    Ik = 5.0; tau = 0.05; t = 0.2;
+    B = func_breaking_thermal(Ik, tau, t);
+    sc_assert_close(B.Ib, Ik, 1e-12, 'Ib');
+    i_dc = sqrt(2) * Ik * exp(-t / tau);
+    sc_assert_close(B.i_dc, i_dc, 1e-9, 'i_dc');
+    sc_assert_close(B.Ib_asym, sqrt(Ik^2 + i_dc^2), 1e-9, 'Ib_asym');
+    m = (tau / t) * (1 - exp(-2 * t / tau));
+    sc_assert_close(B.I_th, Ik * sqrt(m + 1), 1e-9, 'I_th');
+    if ~(B.I_th >= Ik && B.Ib_asym >= Ik)
+        error('VERIFY_FAIL: Iтер и Iоткл.асимм должны быть не меньше I"k');
+    end
+end
+
+function test_series_parallel
+    % Две одинаковые параллельные ветви по 0+10j → 0+5j; плюс последовательная 1+0j
+    Z = [10j; 10j; 1];
+    lab = {'A'; 'A'; ''};
+    Zt = sc_series_parallel(Z, lab);
+    sc_assert_close_c(Zt, 1 + 5j, 1e-9, 'series-parallel');
+    % Без меток — чистая сумма
+    Zs = sc_series_parallel(Z, {});
+    sc_assert_close_c(Zs, 1 + 20j, 1e-9, 'series sum');
 end
 
 function test_sc_currents_three_types
@@ -296,7 +363,14 @@ function test_integration_xlsx
             error('VERIFY_SKIP: пакет io не загружен — интеграционный тест Excel пропущен');
         end
     end
-    [Z1, Z2, Z0, E, U_nom, scInfo] = func_import_data(xlsx);
+    try
+        [Z1, Z2, Z0, E, U_nom, scInfo] = func_import_data(xlsx);
+    catch readErr
+        if exist('OCTAVE_VERSION', 'builtin') ~= 0
+            error('VERIFY_SKIP: чтение xlsx недоступно в среде Octave (нет распаковщика) — тест пропущен');
+        end
+        rethrow(readErr);
+    end
     if ~(isfinite(real(Z1)) && isfinite(imag(Z1)) && U_nom > 0)
         error('VERIFY_FAIL: импорт дал некорректные данные');
     end

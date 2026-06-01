@@ -49,26 +49,31 @@ function main_calc_sc(excelFile)
     fprintf('\n[1/7] Импорт параметров сети из файла «%s»...\n', excelFile);
     [Z1, Z2, Z0, E, U_nom, scInfo] = func_import_data(excelFile);
 
-    fprintf('[2/7] Расчёт симметричных составляющих токов (метод Фортескью)...\n');
-    [I1, I2, I0] = func_sym_components(E, Z1, Z2, Z0);
+    fprintf('[2/7] Расчёт токов КЗ всех видов (симметричные составляющие)...\n');
+    F = func_fault_currents(Z1, Z2, Z0, E, U_nom, scInfo.Rf_pu);
+    Ik3 = F.Ik3; Ik2 = F.Ik2; Ik1 = F.Ik1;
 
-    fprintf('[3/7] Определение действующих значений токов КЗ...\n');
-    [Ik3, Ik2, Ik1] = func_sc_currents(I1, I2, I0, U_nom);
-
-    fprintf('[4/7] Расчёт ударного тока (k_уд по суммарному R/X цепи Z1)...\n');
+    fprintf('[3/7] Ударный ток (k_уд по суммарному R/X цепи Z1)...\n');
     Z1_ohm = Z1 * scInfo.Z_base;
     R_tot = real(Z1_ohm);
     X_tot = imag(Z1_ohm);
     [i_ud, k_ud] = func_impact_current(Ik3, R_tot, X_tot);
 
-    fprintf('[5/7] Постоянная времени апериодической составляющей и осциллограмма...\n');
+    fprintf('[4/7] Постоянная времени, ток отключения и термический ток...\n');
     omega = 2 * pi * f_hz;
     [tau_s, ~, ~] = func_network_tau(Z1, scInfo.Z_base, omega);
-    meta = func_pack_results_meta(scInfo, Z1, Z2, Z0, k_ud, tau_s, f_hz);
+    BT = func_breaking_thermal(Ik3, tau_s, T_sim);
+
+    extra = struct('Ik11', F.Ik11, 'Ig', F.Ig, 'i_ud', i_ud, ...
+        'Ib', BT.Ib, 'Ib_asym', BT.Ib_asym, 'I_th', BT.I_th, ...
+        't_break', BT.t_break, 'i_dc', BT.i_dc);
+    meta = func_pack_results_meta(scInfo, Z1, Z2, Z0, k_ud, tau_s, f_hz, extra);
+
+    fprintf('[5/7] Построение осциллограммы...\n');
     func_oscillogram(Ik3, f_hz, T_sim, tau_s, alpha_deg, three_phase);
 
     fprintf('[6/7] Формирование сводки результатов...\n');
-    print_results_table(U_nom, Ik3, Ik2, Ik1, i_ud, k_ud, tau_s, Z1, R_tot, X_tot);
+    print_results_table(U_nom, F, i_ud, k_ud, tau_s, Z1, R_tot, X_tot, scInfo, BT);
 
     fprintf('[7/7] Экспорт таблицы, текстового и Word-отчёта...\n');
     func_export_results(U_nom, Ik3, Ik2, Ik1, i_ud, 'results/results_sc.xlsx', meta);
@@ -95,13 +100,20 @@ function print_banner()
     disp('=====================================================');
 end
 
-function print_results_table(U_nom, Ik3, Ik2, Ik1, i_ud, k_ud, tau_s, Z1, R_tot, X_tot)
-    fprintf('\n--- РЕЗУЛЬТАТЫ РАСЧЁТА (Uном = %.1f кВ) ---\n', U_nom);
-    fprintf('  Трёхфазное КЗ (Ik3) : %8.2f кА\n', Ik3);
-    fprintf('  Двухфазное КЗ (Ik2) : %8.2f кА\n', Ik2);
-    fprintf('  Однофазное КЗ (Ik1) : %8.2f кА\n', Ik1);
-    fprintf('  Ударный ток iуд     : %8.2f кА  (k_уд = %.4f)\n', i_ud, k_ud);
-    fprintf('  Постоянная τ        : %8.6f с\n', tau_s);
-    fprintf('  |Z1|                : %8.4f о.е.  (R_Σ = %.4f Ом, X_Σ = %.4f Ом)\n', abs(Z1), R_tot, X_tot);
+function print_results_table(U_nom, F, i_ud, k_ud, tau_s, Z1, R_tot, X_tot, scInfo, BT)
+    fprintf('\n--- РЕЗУЛЬТАТЫ РАСЧЁТА (Uном = %.1f кВ, c = %.2f', U_nom, scInfo.c);
+    if scInfo.Rf_ohm ~= 0
+        fprintf(', Rf = %.3f Ом', scInfo.Rf_ohm);
+    end
+    fprintf(') ---\n');
+    fprintf('  Трёхфазное КЗ (Iк3)        : %8.2f кА\n', F.Ik3);
+    fprintf('  Двухфазное КЗ (Iк2)        : %8.2f кА\n', F.Ik2);
+    fprintf('  Однофазное КЗ (Iк1)        : %8.2f кА\n', F.Ik1);
+    fprintf('  Двухфазное КЗ на землю     : %8.2f кА  (ток в земле %.2f кА)\n', F.Ik11, F.Ig);
+    fprintf('  Ударный ток iуд            : %8.2f кА  (k_уд = %.4f)\n', i_ud, k_ud);
+    fprintf('  Ток отключения Iоткл       : %8.2f кА  (асимметр. %.2f кА)\n', BT.Ib, BT.Ib_asym);
+    fprintf('  Термический ток Iтер (%.2fс): %8.2f кА\n', BT.t_break, BT.I_th);
+    fprintf('  Постоянная τ               : %8.6f с\n', tau_s);
+    fprintf('  |Z1|                       : %8.4f о.е.  (R_Σ = %.4f Ом, X_Σ = %.4f Ом)\n', abs(Z1), R_tot, X_tot);
     fprintf('-----------------------------------------------------\n');
 end

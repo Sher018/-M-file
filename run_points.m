@@ -37,29 +37,29 @@ function results = run_points(excelFile, f_hz)
     omega = 2 * pi * f_hz;
 
     results = struct('name', {}, 'U_nom', {}, 'Ik3', {}, 'Ik2', {}, 'Ik1', {}, ...
-        'i_ud', {}, 'k_ud', {}, 'tau_s', {}, 'Z1_abs', {});
+        'Ik11', {}, 'i_ud', {}, 'k_ud', {}, 'I_th', {}, 'tau_s', {}, 'Z1_abs', {});
 
-    fprintf('\n%-14s %8s %8s %8s %8s %8s %8s %10s\n', ...
-        'Точка', 'Uном,кВ', 'Ik3,кА', 'Ik2,кА', 'Ik1,кА', 'iуд,кА', 'k_уд', 'tau,с');
+    fprintf('\n%-12s %7s %7s %7s %7s %8s %7s %7s %9s\n', ...
+        'Точка', 'Uн,кВ', 'Ik3', 'Ik2', 'Ik1', 'Ik1.1', 'iуд', 'Iтер', 'tau,с');
     fprintf('%s\n', repmat('-', 1, 82));
 
     for k = 1:numel(points)
         p = points(k);
-        [I1, I2, I0] = func_sym_components(p.E, p.Z1, p.Z2, p.Z0);
-        [Ik3, Ik2, Ik1] = func_sc_currents(I1, I2, I0, p.U_nom);
+        F = func_fault_currents(p.Z1, p.Z2, p.Z0, p.E, p.U_nom, p.scInfo.Rf_pu);
         Z1_ohm = p.Z1 * p.scInfo.Z_base;
-        [i_ud, k_ud] = func_impact_current(Ik3, real(Z1_ohm), imag(Z1_ohm));
+        [i_ud, k_ud] = func_impact_current(F.Ik3, real(Z1_ohm), imag(Z1_ohm));
         [tau_s, ~, ~] = func_network_tau(p.Z1, p.scInfo.Z_base, omega);
+        BT = func_breaking_thermal(F.Ik3, tau_s, 0.2);
 
         r.name = p.name;
         r.U_nom = p.U_nom;
-        r.Ik3 = Ik3; r.Ik2 = Ik2; r.Ik1 = Ik1;
-        r.i_ud = i_ud; r.k_ud = k_ud; r.tau_s = tau_s;
-        r.Z1_abs = abs(p.Z1);
+        r.Ik3 = F.Ik3; r.Ik2 = F.Ik2; r.Ik1 = F.Ik1; r.Ik11 = F.Ik11;
+        r.i_ud = i_ud; r.k_ud = k_ud; r.I_th = BT.I_th;
+        r.tau_s = tau_s; r.Z1_abs = abs(p.Z1);
         results(k) = r; %#ok<AGROW>
 
-        fprintf('%-14s %8.1f %8.2f %8.2f %8.2f %8.2f %8.4f %10.6f\n', ...
-            p.name, p.U_nom, Ik3, Ik2, Ik1, i_ud, k_ud, tau_s);
+        fprintf('%-12s %7.1f %7.2f %7.2f %7.2f %8.2f %7.2f %7.2f %9.6f\n', ...
+            p.name, p.U_nom, F.Ik3, F.Ik2, F.Ik1, F.Ik11, i_ud, BT.I_th, tau_s);
     end
     fprintf('%s\n', repmat('-', 1, 82));
 

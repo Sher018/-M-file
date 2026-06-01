@@ -1,8 +1,11 @@
-function meta = func_pack_results_meta(scInfo, Z1, Z2, Z0, k_ud, tau_s, f_hz)
+function meta = func_pack_results_meta(scInfo, Z1, Z2, Z0, k_ud, tau_s, f_hz, extra)
     % FUNC_PACK_RESULTS_META Сборка структуры метаданных для отчёта и экспорта.
     % Автор: Юнусов Шероз, ИРНИТУ, магистерская диссертация, 2026 г.
-    % Версия: 1.2.2
+    % Версия: 1.4.0
     % Подраздел диплома: 3.6 «Главный сценарий main_calc_sc.m и интеграция модулей»
+    %
+    % extra (необязательно) — структура с дополнительными полями (Ik11, Ig,
+    % Ib, Ib_asym, I_th, c, Rf_ohm и т.п.), которые добавляются в meta.
 
     meta = struct();
     meta.version = sc_version();
@@ -18,4 +21,17 @@ function meta = func_pack_results_meta(scInfo, Z1, Z2, Z0, k_ud, tau_s, f_hz)
     meta.R_sum_ohm = real(Zohm);
     meta.X_sum_ohm = imag(Zohm);
     meta.z2_from_excel = scInfo.z2_from_excel;
+    if isfield(scInfo, 'c')
+        meta.c = scInfo.c;
+    end
+    if isfield(scInfo, 'Rf_ohm')
+        meta.Rf_ohm = scInfo.Rf_ohm;
+    end
+
+    if nargin >= 8 && isstruct(extra)
+        fn = fieldnames(extra);
+        for k = 1:numel(fn)
+            meta.(fn{k}) = extra.(fn{k});
+        end
+    end
 end

@@ -85,9 +85,24 @@ function write_single(fid, s)
     row_kv(fid, 'Ток трёхфазного КЗ Iк3, кА', s.Ik3, '%.4f');
     row_kv(fid, 'Ток двухфазного КЗ Iк2, кА', s.Ik2, '%.4f');
     row_kv(fid, 'Ток однофазного КЗ Iк1, кА', s.Ik1, '%.4f');
+    if isfield(meta, 'Ik11')
+        row_kv(fid, 'Двухфазное КЗ на землю Iк1.1, кА', meta.Ik11, '%.4f');
+        row_kv(fid, 'Ток в земле Iз, кА', meta.Ig, '%.4f');
+    end
     row_kv(fid, 'Ударный ток iуд, кА', s.i_ud, '%.4f');
     row_kv(fid, 'Ударный коэффициент k_уд', meta.k_ud, '%.4f');
+    if isfield(meta, 'Ib')
+        row_kv(fid, 'Ток отключения Iоткл, кА', meta.Ib, '%.4f');
+        row_kv(fid, 'Асимметричный ток отключения, кА', meta.Ib_asym, '%.4f');
+        row_kv(fid, 'Термически эквивалентный ток Iтер, кА', meta.I_th, '%.4f');
+    end
     row_kv(fid, 'Постоянная времени τ, с', meta.tau_s, '%.6f');
+    if isfield(meta, 'c')
+        row_kv(fid, 'Коэффициент напряжения c', meta.c, '%.2f');
+    end
+    if isfield(meta, 'Rf_ohm') && meta.Rf_ohm ~= 0
+        row_kv(fid, 'Переходное сопротивление Rf, Ом', meta.Rf_ohm, '%.3f');
+    end
     fprintf(fid, '</table>\n');
 
     fprintf(fid, '<h2>Параметры схемы</h2>\n');
@@ -111,12 +126,13 @@ function write_points(fid, results, inputFile, f_hz)
 
     fprintf(fid, '<table>\n');
     fprintf(fid, ['<tr><th>Точка</th><th>Uном, кВ</th><th>Iк3, кА</th>' ...
-        '<th>Iк2, кА</th><th>Iк1, кА</th><th>iуд, кА</th><th>k_уд</th><th>τ, с</th></tr>\n']);
+        '<th>Iк2, кА</th><th>Iк1, кА</th><th>Iк1.1, кА</th><th>iуд, кА</th>' ...
+        '<th>Iтер, кА</th><th>τ, с</th></tr>\n']);
     for k = 1:numel(results)
         r = results(k);
         fprintf(fid, ['<tr><td>%s</td><td>%.1f</td><td>%.2f</td><td>%.2f</td>' ...
-            '<td>%.2f</td><td>%.2f</td><td>%.4f</td><td>%.6f</td></tr>\n'], ...
-            r.name, r.U_nom, r.Ik3, r.Ik2, r.Ik1, r.i_ud, r.k_ud, r.tau_s);
+            '<td>%.2f</td><td>%.2f</td><td>%.2f</td><td>%.2f</td><td>%.6f</td></tr>\n'], ...
+            r.name, r.U_nom, r.Ik3, r.Ik2, r.Ik1, r.Ik11, r.i_ud, r.I_th, r.tau_s);
     end
     fprintf(fid, '</table>\n');
     fprintf(fid, '<p><i>Примечание: упрощённая модель, точки заданы столбцом Point.</i></p>\n');

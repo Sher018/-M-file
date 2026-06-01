@@ -27,13 +27,15 @@ function outPath = func_export_points(results, filename)
     if fid < 0
         error('func_export_points: не удалось открыть файл %s.', filename);
     end
-    cols = {'Point', 'U_nom_kV', 'Ik3_kA', 'Ik2_kA', 'Ik1_kA', 'i_ud_kA', 'k_ud', 'tau_s', 'Z1_abs_pu'};
+    cols = {'Point', 'U_nom_kV', 'Ik3_kA', 'Ik2_kA', 'Ik1_kA', 'Ik11_kA', ...
+        'i_ud_kA', 'k_ud', 'I_th_kA', 'tau_s', 'Z1_abs_pu'};
     fprintf(fid, '%s\n', strjoin(cols, sep));
     for k = 1:numel(results)
         r = results(k);
         fields = {r.name, num2str(r.U_nom, '%.4f'), num2str(r.Ik3, '%.6f'), ...
-            num2str(r.Ik2, '%.6f'), num2str(r.Ik1, '%.6f'), num2str(r.i_ud, '%.6f'), ...
-            num2str(r.k_ud, '%.6f'), num2str(r.tau_s, '%.6f'), num2str(r.Z1_abs, '%.6f')};
+            num2str(r.Ik2, '%.6f'), num2str(r.Ik1, '%.6f'), num2str(r.Ik11, '%.6f'), ...
+            num2str(r.i_ud, '%.6f'), num2str(r.k_ud, '%.6f'), num2str(r.I_th, '%.6f'), ...
+            num2str(r.tau_s, '%.6f'), num2str(r.Z1_abs, '%.6f')};
         fprintf(fid, '%s\n', strjoin(fields, sep));
     end
     fclose(fid);

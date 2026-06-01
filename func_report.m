@@ -43,10 +43,23 @@ function outPath = func_report(U_nom, Ik3, Ik2, Ik1, i_ud, filename, meta)
         fprintf(fid, 'Ток трёхфазного КЗ Iк3:       %.4f кА\n', Ik3);
         fprintf(fid, 'Ток двухфазного КЗ Iк2:       %.4f кА\n', Ik2);
         fprintf(fid, 'Ток однофазного КЗ Iк1:       %.4f кА\n', Ik1);
+        if isfield(meta, 'Ik11')
+            fprintf(fid, 'Двухфазное КЗ на землю Iк1.1: %.4f кА (ток в земле %.4f кА)\n', meta.Ik11, meta.Ig);
+        end
         fprintf(fid, 'Ударный ток iуд:              %.4f кА\n', i_ud);
+        if isfield(meta, 'Ib')
+            fprintf(fid, 'Ток отключения Iоткл:         %.4f кА (асимметр. %.4f кА)\n', meta.Ib, meta.Ib_asym);
+            fprintf(fid, 'Термически эквивалентный Iтер: %.4f кА (t = %.2f с)\n', meta.I_th, meta.t_break);
+        end
 
         if ~isempty(fieldnames(meta))
             fprintf(fid, '\n--- Параметры схемы и модели ---\n');
+            if isfield(meta, 'c')
+                fprintf(fid, 'Коэффициент напряжения c: %.2f\n', meta.c);
+            end
+            if isfield(meta, 'Rf_ohm') && meta.Rf_ohm ~= 0
+                fprintf(fid, 'Переходное сопротивление Rf: %.3f Ом\n', meta.Rf_ohm);
+            end
             fprintf(fid, 'Ударный коэффициент k_уд (по R/X): %.4f\n', meta.k_ud);
             fprintf(fid, 'Постоянная времени апериод. составляющей tau: %.6f с\n', meta.tau_s);
             fprintf(fid, 'Частота (осциллограмма): %.2f Гц\n', meta.f_hz);
