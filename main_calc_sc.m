@@ -70,15 +70,20 @@ function main_calc_sc(excelFile)
     fprintf('[6/7] Формирование сводки результатов...\n');
     print_results_table(U_nom, Ik3, Ik2, Ik1, i_ud, k_ud, tau_s, Z1, R_tot, X_tot);
 
-    fprintf('[7/7] Экспорт таблицы и текстового отчёта...\n');
+    fprintf('[7/7] Экспорт таблицы, текстового и Word-отчёта...\n');
     func_export_results(U_nom, Ik3, Ik2, Ik1, i_ud, 'results/results_sc.xlsx', meta);
     func_report(U_nom, Ik3, Ik2, Ik1, i_ud, 'results/docs/report_sc.txt', meta);
+
+    single = struct('U_nom', U_nom, 'Ik3', Ik3, 'Ik2', Ik2, 'Ik1', Ik1, ...
+        'i_ud', i_ud, 'meta', meta);
+    func_report_word(single, 'results/docs/report_sc.doc');
 
     elapsed = toc(tStart);
     fprintf('\nРасчёт завершён за %.2f с.\n', elapsed);
     disp('  Осциллограмма : results/figures/');
     disp('  Таблица       : results/results_sc.xlsx (или .tsv в Octave)');
-    disp('  Отчёт         : results/docs/report_sc.txt');
+    disp('  Отчёт (txt)   : results/docs/report_sc.txt');
+    disp('  Отчёт (Word)  : results/docs/report_sc.doc');
     disp('=====================================================');
 end
 

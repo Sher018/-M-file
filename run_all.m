@@ -8,6 +8,8 @@ function run_all(mode)
     % run_all('calc')   — то же
     % run_all('test')   — верификация (verify_sc_suite)
     % run_all('both')   — расчёт, затем тесты
+    % run_all('menu')   — единое меню запуска (sc_menu)
+    % run_all('points') — расчёт нескольких точек КЗ (run_points)
 
     if nargin < 1 || isempty(mode)
         mode = 'calc';
@@ -32,7 +34,11 @@ function run_all(mode)
         case 'both'
             main_calc_sc;
             run_sc_tests;
+        case 'menu'
+            sc_menu;
+        case 'points'
+            run_points;
         otherwise
-            error('run_all: неизвестный режим "%s". Используйте calc, test или both.', mode);
+            error('run_all: неизвестный режим "%s". Используйте calc, test, both, menu или points.', mode);
     end
 end

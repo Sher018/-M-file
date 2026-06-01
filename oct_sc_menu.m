@@ -48,14 +48,20 @@ function oct_sc_menu()
 
     xlsxOut = fullfile(rootDir, 'results', 'results_sc.xlsx');
     txtOut = fullfile(rootDir, 'results', 'docs', 'report_sc.txt');
+    docOut = fullfile(rootDir, 'results', 'docs', 'report_sc.doc');
     outTab = func_export_results(U_nom, Ik3, Ik2, Ik1, i_ud, xlsxOut, meta);
     func_report(U_nom, Ik3, Ik2, Ik1, i_ud, txtOut, meta);
+
+    single = struct('U_nom', U_nom, 'Ik3', Ik3, 'Ik2', Ik2, 'Ik1', Ik1, ...
+        'i_ud', i_ud, 'meta', meta);
+    func_report_word(single, docOut);
 
     fprintf('\nГотово. Версия %s\n', sc_version());
     fprintf('Iк3 = %.4f кА, iуд = %.4f кА, k_уд = %.4f, tau = %.6f с\n', Ik3, i_ud, k_ud, tau_s);
     fprintf('График: %s\n', fullfile(rootDir, 'results', 'figures', 'oscillogram.png'));
     fprintf('Таблица: %s\n', outTab);
-    fprintf('Отчёт: %s\n', txtOut);
+    fprintf('Отчёт (txt): %s\n', txtOut);
+    fprintf('Отчёт (Word): %s\n', docOut);
 end
 
 function v = input_num_oct(prompt, default_val, lo, hi)
