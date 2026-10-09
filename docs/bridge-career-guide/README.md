@@ -9,19 +9,54 @@
 - живой чек-лист с прогрессом
 - план на 12 месяцев
 
-## Как открыть
+## Онлайн (бесплатный хост)
 
-1. Открой файл `index.html` в браузере (Chrome / Safari / Edge).
-2. Можно просто дважды кликнуть по файлу.
-3. Чек-лист сохраняет отметки в этом браузере автоматически.
+### 1) Cloudflare Workers (рекомендуется закрепить)
 
-## Для телефона
+Живая ссылка:
 
-Залей папку `bridge-career-guide` на Google Drive / Telegram «Избранное» и открой `index.html`, либо подними локальный сервер:
+https://bridge-career-guide.legendary-tarp.workers.dev
+
+Чтобы сайт остался навсегда на бесплатном Cloudflare:
+
+1. Открой claim-ссылку (действует ~60 минут после деплоя)
+2. Войди / создай бесплатный аккаунт Cloudflare
+3. Подтверди claim
+
+После claim сайт останется на `*.workers.dev` бесплатно.
+
+Деплой из этой папки:
+
+```bash
+cd docs/bridge-career-guide
+npx wrangler@4.102.0 deploy --temporary
+```
+
+### 2) GitHub Pages (постоянно, бесплатно)
+
+Ветка `gh-pages` уже опубликована с сайтом в корне.
+
+Включи Pages в настройках репозитория:
+
+1. GitHub → Settings → Pages
+2. Source: **Deploy from a branch**
+3. Branch: **gh-pages** / **/** (root)
+4. Save
+
+Сайт будет примерно:
+
+`https://sher018.github.io/-M-file/`
+
+(точный URL покажет GitHub после включения)
+
+## Локально
+
+1. Открой `index.html` в браузере  
+   или:
 
 ```bash
 cd docs/bridge-career-guide
 python3 -m http.server 8080
 ```
 
-Затем открой `http://localhost:8080`.
+Чек-лист сохраняет отметки в браузере автоматически.
