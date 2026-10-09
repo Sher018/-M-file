@@ -1,7 +1,343 @@
 {
-  "updated": "2026-10-09T00:00:00.000Z",
-  "note": "Run `node scripts/parse-tuition.mjs` to refresh. Only amounts near tuition keywords and within 0.45×–2.2× of catalog are accepted. Many official pages are JS-rendered or return 404 to bots — unresolved IDs keep catalog tuition.",
+  "updated": "2026-10-09T16:23:08.599Z",
+  "note": "Auto-parsed hints from public pages, validated vs catalog band. Always verify before payment.",
   "ratesNote": "SPA converts CNY→USD/TJS via fx.js",
   "fees": {},
-  "unresolved": []
+  "unresolved": [
+    {
+      "id": "zju-gcm",
+      "status": "unresolved",
+      "catalogTuition": 65000,
+      "tried": [
+        {
+          "url": "https://zibs.zju.edu.cn/zibsenglish/admissions/undergraduate.htm",
+          "ok": false,
+          "error": "HTTP 404"
+        },
+        {
+          "url": "https://zibs.zju.edu.cn",
+          "ok": true,
+          "raw": null,
+          "accepted": null
+        }
+      ],
+      "fetchedAt": "2026-10-09T16:22:09.008Z"
+    },
+    {
+      "id": "uibe",
+      "status": "unresolved",
+      "catalogTuition": 49750,
+      "tried": [
+        {
+          "url": "https://sie.uibe.edu.cn/en/Admission/Tuition_and_Fees.htm",
+          "ok": true,
+          "raw": null,
+          "accepted": null
+        },
+        {
+          "url": "https://sie.uibe.edu.cn",
+          "ok": true,
+          "raw": null,
+          "accepted": null
+        }
+      ],
+      "fetchedAt": "2026-10-09T16:22:13.324Z"
+    },
+    {
+      "id": "bfsu",
+      "status": "unresolved",
+      "catalogTuition": 39900,
+      "tried": [
+        {
+          "url": "http://study.bfsu.edu.cn/info/1107/1284.htm",
+          "ok": false,
+          "error": "HTTP 404"
+        },
+        {
+          "url": "http://study.bfsu.edu.cn",
+          "ok": true,
+          "raw": null,
+          "accepted": null
+        }
+      ],
+      "fetchedAt": "2026-10-09T16:22:16.350Z"
+    },
+    {
+      "id": "sjtu",
+      "status": "unresolved",
+      "catalogTuition": 80000,
+      "tried": [
+        {
+          "url": "https://isc.sjtu.edu.cn/EN/content.aspx?info_lb=280&flag=2",
+          "ok": false,
+          "error": "HTTP 404"
+        },
+        {
+          "url": "https://isc.sjtu.edu.cn",
+          "ok": true,
+          "raw": null,
+          "accepted": null
+        }
+      ],
+      "fetchedAt": "2026-10-09T16:22:18.828Z"
+    },
+    {
+      "id": "fudan",
+      "status": "unresolved",
+      "catalogTuition": 80000,
+      "tried": [
+        {
+          "url": "https://iso.fudan.edu.cn/isoenglish/wnglijkx/",
+          "ok": true,
+          "raw": null,
+          "accepted": null
+        },
+        {
+          "url": "https://iso.fudan.edu.cn",
+          "ok": true,
+          "raw": null,
+          "accepted": null
+        }
+      ],
+      "fetchedAt": "2026-10-09T16:22:21.980Z"
+    },
+    {
+      "id": "xjtu",
+      "status": "unresolved",
+      "catalogTuition": 30000,
+      "tried": [
+        {
+          "url": "http://sie.xjtu.edu.cn/en/Admissions1/Tuition_and_Fees.htm",
+          "ok": false,
+          "error": "HTTP 404"
+        },
+        {
+          "url": "http://sie.xjtu.edu.cn",
+          "ok": true,
+          "raw": null,
+          "accepted": null
+        }
+      ],
+      "fetchedAt": "2026-10-09T16:22:22.939Z"
+    },
+    {
+      "id": "tju",
+      "status": "unresolved",
+      "catalogTuition": 22000,
+      "tried": [
+        {
+          "url": "https://sie.tju.edu.cn/en/jxj/Tuition_Fees.htm",
+          "ok": false,
+          "error": "HTTP 404"
+        },
+        {
+          "url": "https://sie.tju.edu.cn",
+          "ok": true,
+          "raw": null,
+          "accepted": null
+        }
+      ],
+      "fetchedAt": "2026-10-09T16:22:25.781Z"
+    },
+    {
+      "id": "bjtu",
+      "status": "unresolved",
+      "catalogTuition": 24800,
+      "tried": [
+        {
+          "url": "https://is.bjtu.edu.cn",
+          "ok": false,
+          "error": "fetch failed"
+        }
+      ],
+      "fetchedAt": "2026-10-09T16:22:26.620Z"
+    },
+    {
+      "id": "hit",
+      "status": "unresolved",
+      "catalogTuition": 26000,
+      "tried": [
+        {
+          "url": "http://studyathit.hit.edu.cn/18266/list.htm",
+          "ok": true,
+          "raw": null,
+          "accepted": null
+        },
+        {
+          "url": "http://studyathit.hit.edu.cn",
+          "ok": true,
+          "raw": null,
+          "accepted": null
+        }
+      ],
+      "fetchedAt": "2026-10-09T16:22:28.174Z"
+    },
+    {
+      "id": "nuaa",
+      "status": "unresolved",
+      "tried": [
+        {
+          "url": "https://ciee.nuaa.edu.cn",
+          "ok": true,
+          "raw": null,
+          "accepted": null
+        }
+      ],
+      "fetchedAt": "2026-10-09T16:22:30.485Z"
+    },
+    {
+      "id": "scut",
+      "status": "unresolved",
+      "catalogTuition": 26000,
+      "tried": [
+        {
+          "url": "http://www2.scut.edu.cn/sse/1176/list.htm",
+          "ok": true,
+          "raw": null,
+          "accepted": null
+        },
+        {
+          "url": "http://www2.scut.edu.cn/sse",
+          "ok": true,
+          "raw": null,
+          "accepted": null
+        }
+      ],
+      "fetchedAt": "2026-10-09T16:22:37.322Z"
+    },
+    {
+      "id": "hust",
+      "status": "unresolved",
+      "catalogTuition": 30000,
+      "tried": [
+        {
+          "url": "http://iso.hust.edu.cn",
+          "ok": true,
+          "raw": null,
+          "accepted": null
+        }
+      ],
+      "fetchedAt": "2026-10-09T16:22:39.134Z"
+    },
+    {
+      "id": "whu",
+      "status": "unresolved",
+      "catalogTuition": 23000,
+      "tried": [
+        {
+          "url": "https://admission.whu.edu.cn",
+          "ok": false,
+          "error": "HTTP 403"
+        }
+      ],
+      "fetchedAt": "2026-10-09T16:22:40.236Z"
+    },
+    {
+      "id": "tongji",
+      "status": "unresolved",
+      "catalogTuition": 30000,
+      "tried": [
+        {
+          "url": "https://study.tongji.edu.cn",
+          "ok": true,
+          "raw": null,
+          "accepted": null
+        }
+      ],
+      "fetchedAt": "2026-10-09T16:22:41.655Z"
+    },
+    {
+      "id": "blcu",
+      "status": "unresolved",
+      "catalogTuition": 23200,
+      "tried": [
+        {
+          "url": "https://admission.blcu.edu.cn",
+          "ok": true,
+          "raw": null,
+          "accepted": null
+        }
+      ],
+      "fetchedAt": "2026-10-09T16:22:43.180Z"
+    },
+    {
+      "id": "nbut",
+      "status": "unresolved",
+      "catalogTuition": 18000,
+      "tried": [
+        {
+          "url": "https://gjxy.nbut.edu.cn",
+          "ok": false,
+          "error": "fetch failed"
+        }
+      ],
+      "fetchedAt": "2026-10-09T16:22:53.669Z"
+    },
+    {
+      "id": "zust",
+      "status": "unresolved",
+      "catalogTuition": 20000,
+      "tried": [
+        {
+          "url": "https://ies.zust.edu.cn",
+          "ok": true,
+          "raw": null,
+          "accepted": null
+        }
+      ],
+      "fetchedAt": "2026-10-09T16:22:55.657Z"
+    },
+    {
+      "id": "xjtlu",
+      "status": "unresolved",
+      "catalogTuition": 93000,
+      "tried": [
+        {
+          "url": "https://www.xjtlu.edu.cn/en/admissions/undergraduate/fees",
+          "ok": false,
+          "error": "HTTP 404"
+        },
+        {
+          "url": "https://www.xjtlu.edu.cn/en/admissions",
+          "ok": true,
+          "raw": null,
+          "accepted": null
+        }
+      ],
+      "fetchedAt": "2026-10-09T16:23:03.209Z"
+    },
+    {
+      "id": "unnc",
+      "status": "unresolved",
+      "catalogTuition": 120000,
+      "tried": [
+        {
+          "url": "https://www.nottingham.edu.cn/en/study-with-us/undergraduate/fees.aspx",
+          "ok": false,
+          "error": "HTTP 404"
+        },
+        {
+          "url": "https://www.nottingham.edu.cn/en/study-with-us",
+          "ok": true,
+          "raw": null,
+          "accepted": null
+        }
+      ],
+      "fetchedAt": "2026-10-09T16:23:07.408Z"
+    },
+    {
+      "id": "sdu",
+      "status": "unresolved",
+      "catalogTuition": 20000,
+      "tried": [
+        {
+          "url": "https://www.istudy.sdu.edu.cn",
+          "ok": true,
+          "raw": null,
+          "accepted": null
+        }
+      ],
+      "fetchedAt": "2026-10-09T16:23:08.599Z"
+    }
+  ]
 }
