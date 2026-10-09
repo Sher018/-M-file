@@ -1,6 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "bridge-career-guide",
+  "account_id": "3080857feaf6a89da8d851b96ecac94c",
   "main": "worker.js",
   "compatibility_date": "2026-10-09",
   "assets": {
