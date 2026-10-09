@@ -2,6 +2,7 @@ window.BRIDGE_UNIS = [
   {
     id: "zju-gcm",
     tier: "dream",
+    clusters: ["business", "finance", "media", "international_relations"],
     rankCN: 3,
     rankWorld: "~50–60 QS",
     name: { ru: "Чжэцзянский университет (ZJU / ZIBS)", en: "Zhejiang University (ZIBS)", tg: "Донишгоҳи Чжэцзян (ZIBS)" },
@@ -30,6 +31,7 @@ window.BRIDGE_UNIS = [
   {
     id: "uibe",
     tier: "dream",
+    clusters: ["business", "finance"],
     rankCN: "Top finance/trade",
     rankWorld: "Specialized",
     name: { ru: "UIBE — Университет международного бизнеса и экономики", en: "UIBE Beijing", tg: "UIBE — Донишгоҳи тиҷорати байналмилалӣ" },
@@ -58,6 +60,7 @@ window.BRIDGE_UNIS = [
   {
     id: "bfsu",
     tier: "dream",
+    clusters: ["business", "finance", "media", "international_relations"],
     rankCN: "Top languages / IBS",
     rankWorld: "Specialized",
     name: { ru: "BFSU — Пекинский университет иностранных языков", en: "BFSU Beijing", tg: "BFSU — Донишгоҳи забонҳои хориҷии Пекин" },
@@ -85,6 +88,7 @@ window.BRIDGE_UNIS = [
   {
     id: "sjtu",
     tier: "dream",
+    clusters: ["it", "engineering"],
     rankCN: 4,
     rankWorld: "~45–60 QS",
     name: { ru: "Шанхайский университет Цзяотун (SJTU)", en: "Shanghai Jiao Tong University", tg: "Донишгоҳи Шанхай Цзяотун (SJTU)" },
@@ -113,6 +117,7 @@ window.BRIDGE_UNIS = [
   {
     id: "fudan",
     tier: "dream",
+    clusters: ["business", "finance", "it", "medicine"],
     rankCN: 7,
     rankWorld: "~50–60 QS",
     name: { ru: "Фуданьский университет", en: "Fudan University", tg: "Донишгоҳи Фудан" },
@@ -141,6 +146,7 @@ window.BRIDGE_UNIS = [
   {
     id: "xjtu",
     tier: "dream",
+    clusters: ["business", "finance", "engineering"],
     rankCN: 15,
     rankWorld: "~290 QS",
     name: { ru: "Сианьский университет Цзяотун (XJTU)", en: "Xi’an Jiaotong University", tg: "Донишгоҳи Сиан Цзяотун" },
@@ -169,6 +175,7 @@ window.BRIDGE_UNIS = [
   {
     id: "tju",
     tier: "real",
+    clusters: ["business", "finance", "it", "engineering"],
     rankCN: "Top 20 CN",
     rankWorld: "~150–250",
     name: { ru: "Тяньцзиньский университет", en: "Tianjin University", tg: "Донишгоҳи Тянсзин" },
@@ -197,6 +204,7 @@ window.BRIDGE_UNIS = [
   {
     id: "bjtu",
     tier: "real",
+    clusters: ["business", "finance", "it", "engineering"],
     rankCN: "Project 211",
     rankWorld: "Specialized transport",
     name: { ru: "Пекинский транспортный университет (BJTU)", en: "Beijing Jiaotong University", tg: "Донишгоҳи нақлиёти Пекин" },
@@ -225,6 +233,7 @@ window.BRIDGE_UNIS = [
   {
     id: "hit",
     tier: "real",
+    clusters: ["business", "finance", "it", "engineering"],
     rankCN: "C9 / Project 985",
     rankWorld: "~150–250",
     name: { ru: "Харбинский политехнический университет (HIT)", en: "Harbin Institute of Technology", tg: "Донишгоҳи политехникии Харбин" },
@@ -253,6 +262,7 @@ window.BRIDGE_UNIS = [
   {
     id: "npu",
     tier: "real",
+    clusters: ["business", "finance", "it", "engineering"],
     rankCN: "Project 985",
     rankWorld: "~250–350",
     name: { ru: "Северо-западный политехнический (NPU)", en: "Northwestern Polytechnical University", tg: "Донишгоҳи политехникии Шимолу Ғарб" },
@@ -281,6 +291,7 @@ window.BRIDGE_UNIS = [
   {
     id: "whut",
     tier: "real",
+    clusters: ["business", "finance", "it", "engineering"],
     rankCN: "Project 211",
     rankWorld: "Engineering strength",
     name: { ru: "Уханьский технологический университет (WUT)", en: "Wuhan University of Technology", tg: "Донишгоҳи технологиии Уҳан" },
@@ -308,6 +319,7 @@ window.BRIDGE_UNIS = [
   {
     id: "silc",
     tier: "real",
+    clusters: ["business", "finance", "it"],
     rankCN: "Shanghai University SILC",
     rankWorld: "Joint brand",
     name: { ru: "SILC — Шанхайский университет (e-commerce)", en: "SILC Shanghai University", tg: "SILC — Донишгоҳи Шанхай" },
@@ -335,6 +347,7 @@ window.BRIDGE_UNIS = [
   {
     id: "bit",
     tier: "real",
+    clusters: ["business", "finance", "it", "engineering"],
     rankCN: "Project 985",
     rankWorld: "~300–400",
     name: { ru: "Пекинский технологический институт (BIT)", en: "Beijing Institute of Technology", tg: "Донишгоҳи технологиии Пекин" },
@@ -362,6 +375,7 @@ window.BRIDGE_UNIS = [
   {
     id: "jsu",
     tier: "budget",
+    clusters: ["business", "finance", "engineering"],
     rankCN: "Provincial",
     rankWorld: "Accessible",
     name: { ru: "Университет Цзянсу (JSU)", en: "Jiangsu University", tg: "Донишгоҳи Сзянсу" },
@@ -389,6 +403,7 @@ window.BRIDGE_UNIS = [
   {
     id: "zust",
     tier: "budget",
+    clusters: ["business", "finance", "it", "engineering"],
     rankCN: "Zhejiang provincial",
     rankWorld: "Applied",
     name: { ru: "Чжэцзянский университет науки и технологий (ZUST)", en: "ZUST", tg: "ZUST — Донишгоҳи илм ва технологияи Чжэцзян" },
@@ -416,6 +431,7 @@ window.BRIDGE_UNIS = [
   {
     id: "nbut",
     tier: "budget",
+    clusters: ["business", "finance", "it", "engineering"],
     rankCN: "Municipal / provincial",
     rankWorld: "Applied",
     name: { ru: "Нинбоский технологический университет (NBUT)", en: "Ningbo University of Technology", tg: "Донишгоҳи технологиии Нинбо" },
@@ -443,6 +459,7 @@ window.BRIDGE_UNIS = [
   {
     id: "xjtlu",
     tier: "real",
+    clusters: ["business", "finance", "media", "international_relations"],
     rankCN: "Sino-UK joint",
     rankWorld: "UK degree pathway",
     name: { ru: "Сиань Цзяотун-Ливерпуль (XJTLU)", en: "XJTLU", tg: "XJTLU — Сиан-Ливерпул" },
@@ -470,6 +487,7 @@ window.BRIDGE_UNIS = [
   {
     id: "unnc",
     tier: "real",
+    clusters: ["business", "finance", "it", "engineering"],
     rankCN: "Sino-UK joint",
     rankWorld: "UK degree",
     name: { ru: "Ноттингем Нинбо (UNNC)", en: "University of Nottingham Ningbo China", tg: "Донишгоҳи Ноттингем Нинбо" },
@@ -497,6 +515,7 @@ window.BRIDGE_UNIS = [
   {
     id: "sdu",
     tier: "budget",
+    clusters: ["business", "finance", "media", "international_relations"],
     rankCN: 13,
     rankWorld: "~270–300",
     name: { ru: "Шаньдунский университет", en: "Shandong University", tg: "Донишгоҳи Шандун" },
@@ -525,6 +544,7 @@ window.BRIDGE_UNIS = [
   {
     id: "blcu",
     tier: "real",
+    clusters: ["business", "finance", "media", "international_relations"],
     rankCN: "Top languages",
     rankWorld: "Specialized languages",
     name: { ru: "BLCU — Пекинский университет языка и культуры", en: "Beijing Language and Culture University", tg: "BLCU — Донишгоҳи забон ва фарҳанги Пекин" },
@@ -553,6 +573,7 @@ window.BRIDGE_UNIS = [
   {
     id: "tongji",
     tier: "dream",
+    clusters: ["it", "engineering", "design"],
     rankCN: 10,
     rankWorld: "~200–250 QS",
     name: { ru: "Университет Тунцзи", en: "Tongji University", tg: "Донишгоҳи Тунҷзи" },
@@ -581,6 +602,7 @@ window.BRIDGE_UNIS = [
   {
     id: "hust",
     tier: "dream",
+    clusters: ["it", "engineering", "medicine"],
     rankCN: 8,
     rankWorld: "~300 QS",
     name: { ru: "Хуачжунский университет науки и технологий (HUST)", en: "Huazhong University of Science and Technology", tg: "HUST — Донишгоҳи илм ва технологияи Хуаҷжун" },
@@ -609,6 +631,7 @@ window.BRIDGE_UNIS = [
   {
     id: "whu",
     tier: "real",
+    clusters: ["business", "finance", "media", "international_relations"],
     rankCN: 9,
     rankWorld: "~200–250",
     name: { ru: "Уханьский университет", en: "Wuhan University", tg: "Донишгоҳи Уҳан" },
@@ -637,6 +660,7 @@ window.BRIDGE_UNIS = [
   {
     id: "scut",
     tier: "real",
+    clusters: ["business", "finance", "engineering", "design"],
     rankCN: 20,
     rankWorld: "~300–400",
     name: { ru: "Южно-китайский технологический университет (SCUT)", en: "South China University of Technology", tg: "SCUT — Донишгоҳи технологиии Ҷануби Чин" },

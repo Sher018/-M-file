@@ -54,6 +54,55 @@ function yearBudget(u) {
   return (u.tuitionYear || 0) + (u.dormYear || 0) + (u.insuranceYear || 0) + (u.livingMonth || 0) * 10 + (u.applicationFee || 0);
 }
 
+function trPhrase(raw) {
+  return window.BRIDGE_PHRASE_UTILS?.tr(raw) ?? String(raw ?? "");
+}
+
+function tierLabel(tier) {
+  const t = I18N();
+  if (tier === "dream") return t.t("tier_dream");
+  if (tier === "real") return t.t("tier_real");
+  if (tier === "budget") return t.t("tier_budget");
+  return tier;
+}
+
+function formatCover(v) {
+  const t = I18N();
+  if (v === true) return t.t("yes");
+  if (v === false) return t.t("no");
+  if (v == null) return "—";
+  const s = String(v).toLowerCase();
+  if (s.includes("partial")) return t.t("partial");
+  return trPhrase(v) !== String(v) ? trPhrase(v) : String(v);
+}
+
+/** Merge fees-live.json (from parse-tuition.mjs) onto BRIDGE_UNIS */
+async function loadLiveFees() {
+  try {
+    const res = await fetch("fees-live.json", { cache: "no-store" });
+    if (!res.ok) return;
+    const data = await res.json();
+    const fees = data.fees || {};
+    (window.BRIDGE_UNIS || []).forEach((u) => {
+      const hit = fees[u.id];
+      if (!hit || !hit.tuitionYear) return;
+      const catalog = u.tuitionYear;
+      const ratio = hit.tuitionYear / (catalog || hit.tuitionYear);
+      // Safety: ignore parser outliers vs catalog
+      if (ratio < 0.45 || ratio > 2.2) return;
+      u.tuitionYear = hit.tuitionYear;
+      u.feeLive = hit;
+      if (u.quota && typeof u.quota.saveVsPaidYear === "number") {
+        u.quota.saveVsPaidYear =
+          (hit.tuitionYear || 0) + (u.dormYear || 0) + (u.quota.stipendMonth || 0) * 10;
+      }
+    });
+    window.BRIDGE_FEES_META = data;
+  } catch {
+    /* static host / first run without parser output */
+  }
+}
+
 /* ---------- i18n apply ---------- */
 function applyI18n() {
   const t = I18N();
@@ -298,7 +347,7 @@ function renderUniversities(filter = "all") {
     card.innerHTML = `
       <div class="uni-rank">${u.rankCN ?? "—"}</div>
       <h3>${t.loc(u.name)}</h3>
-      <p class="major">${(u.englishPrograms || u.majors || []).slice(0, 2).join(" · ")}</p>
+      <p class="major">${(u.englishPrograms || u.majors || []).slice(0, 2).map(trPhrase).join(" · ")}</p>
       <p>${t.loc(u.blurb)}</p>
       <div class="uni-meta">
         <span>${moneyTriple(u.tuitionYear)}</span>
@@ -324,14 +373,16 @@ function renderUniPage(id) {
   const body = document.getElementById("uniPageBody");
   const t = I18N();
   if (!u) {
-    body.innerHTML = `<p>Not found</p><a href="#/unis">${t.t("uni_back")}</a>`;
+    body.innerHTML = `<p>—</p><a href="#/unis">${t.t("uni_back")}</a>`;
     return;
   }
   const q = u.quota || {};
   const save = q.saveVsPaidYear || 0;
+  const feeNote = u.feeLive ? t.t("uni_fee_live") : t.t("uni_fee_static");
+  const docs = (u.documents || []).map((raw) => window.BRIDGE_DOC_UTILS.resolve(raw));
   body.innerHTML = `
     <a class="btn ghost uni-back" href="#/unis">${t.t("uni_back")}</a>
-    <p class="eyebrow">${t.loc(u.city)} · ${u.tier}</p>
+    <p class="eyebrow">${t.loc(u.city)} · ${tierLabel(u.tier)}</p>
     <h1>${t.loc(u.name)}</h1>
     <p class="modal-blurb">${t.loc(u.blurb)}</p>
     <div class="modal-links">
@@ -345,55 +396,93 @@ function renderUniPage(id) {
         <table class="info-table">
           <tr><td>CN</td><td>${u.rankCN ?? "—"}</td></tr>
           <tr><td>World</td><td>${u.rankWorld ?? "—"}</td></tr>
-          <tr><td>English</td><td>${u.englishReq || "—"}</td></tr>
-          <tr><td>CSCA</td><td>${(u.csca || []).join("; ") || "—"}</td></tr>
+          <tr><td>English</td><td>${trPhrase(u.englishReq) || "—"}</td></tr>
+          <tr><td>CSCA</td><td>${(u.csca || []).map(trPhrase).join("; ") || "—"}</td></tr>
         </table>
       </article>
 
       <article class="glass detail-block">
         <h3>${t.t("uni_majors")}</h3>
         <ul class="chip-list">
-          ${(u.majors || []).map((m) => `<li>${m}</li>`).join("")}
+          ${(u.majors || []).map((m) => `<li>${trPhrase(m)}</li>`).join("")}
         </ul>
-        <p class="muted">EN: ${(u.englishPrograms || []).join(", ") || "—"}</p>
+        <p class="muted">${t.t("uni_en_programs")}: ${(u.englishPrograms || []).map(trPhrase).join(", ") || "—"}</p>
       </article>
 
       <article class="glass detail-block">
         <h3>${t.t("uni_tuition")}</h3>
         <p class="muted">${t.t("uni_fx_note")} · FX ${FX().updated}</p>
+        <p class="muted">${feeNote}${u.feeLive?.sourceUrl ? ` · <a href="${u.feeLive.sourceUrl}" target="_blank" rel="noopener">${t.t("uni_source")}</a>` : ""}</p>
         <table class="info-table cost-table">
           <tr><td>${t.t("uni_tuition")}</td><td>${moneyTriple(u.tuitionYear)}</td></tr>
           <tr><td>${t.t("uni_dorm")}</td><td>${moneyTriple(u.dormYear)}</td></tr>
-          <tr><td>Insurance / year</td><td>${moneyTriple(u.insuranceYear)}</td></tr>
+          <tr><td>${t.t("uni_insurance")}</td><td>${moneyTriple(u.insuranceYear)}</td></tr>
           <tr><td>${t.t("uni_living")}</td><td>${moneyTriple(u.livingMonth)}</td></tr>
-          <tr><td>Application</td><td>${moneyTriple(u.applicationFee || 0)}</td></tr>
+          <tr><td>${t.t("uni_application")}</td><td>${moneyTriple(u.applicationFee || 0)}</td></tr>
           <tr class="total"><td>${t.t("uni_year")}</td><td>${moneyTriple(yearBudget(u))}</td></tr>
         </table>
       </article>
 
       <article class="glass detail-block highlight">
         <h3>${t.t("uni_quota")}</h3>
-        <p><strong>${q.type || "CSC / university"}</strong></p>
+        <p><strong>${q.type || "CSC"}</strong></p>
         <ul>
-          <li>Tuition cover: ${q.coverTuition ?? "—"}</li>
-          <li>Stipend / month: ${q.stipendMonth != null ? moneyTriple(q.stipendMonth) : "—"}</li>
-          <li>Dorm: ${q.dormCovered ?? "—"}</li>
+          <li>${t.t("uni_quota_cover")}: ${formatCover(q.coverTuition)}</li>
+          <li>${t.t("uni_quota_stipend")}: ${q.stipendMonth != null ? moneyTriple(q.stipendMonth) : "—"}</li>
+          <li>${t.t("uni_quota_dorm")}: ${formatCover(q.dormCovered)}</li>
         </ul>
         <p class="save-line"><span>${t.t("uni_save")}</span><strong>${moneyTriple(save)}</strong></p>
-        ${u.sourceNote ? `<p class="muted">Source: ${u.sourceNote}</p>` : ""}
+        ${u.sourceNote ? `<p class="muted">${t.t("uni_source")}: ${u.sourceNote}</p>` : ""}
       </article>
 
       <article class="glass detail-block">
         <h3>${t.t("uni_docs")}</h3>
-        <ol>${(u.documents || []).map((d) => `<li>${d}</li>`).join("")}</ol>
+        <p class="muted">${t.t("doc_click_hint")}</p>
+        <ol class="doc-list">
+          ${docs
+            .map(
+              (d, i) =>
+                `<li><button type="button" class="doc-link" data-doc-idx="${i}">${t.loc(d.title)}</button></li>`
+            )
+            .join("")}
+        </ol>
       </article>
 
       <article class="glass detail-block">
         <h3>${t.t("uni_exams")}</h3>
-        <ul>${(u.exams || []).map((d) => `<li>${d}</li>`).join("")}</ul>
+        <ul>${(u.exams || []).map((d) => `<li>${trPhrase(d)}</li>`).join("")}</ul>
       </article>
     </div>
   `;
+
+  body.querySelectorAll(".doc-link").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const doc = docs[Number(btn.dataset.docIdx)];
+      openDocModal(doc);
+    });
+  });
+}
+
+function openDocModal(doc) {
+  const t = I18N();
+  const modal = document.getElementById("docModal");
+  const body = document.getElementById("docModalBody");
+  body.innerHTML = `
+    <h2>${t.loc(doc.title)}</h2>
+    <h3>${t.t("doc_what")}</h3>
+    <p>${t.loc(doc.what)}</p>
+    <h3>${t.t("doc_how")}</h3>
+    <p>${t.loc(doc.how)}</p>
+  `;
+  modal.hidden = false;
+  document.body.style.overflow = "hidden";
+}
+
+function closeDocModal() {
+  const modal = document.getElementById("docModal");
+  if (!modal) return;
+  modal.hidden = true;
+  document.body.style.overflow = "";
 }
 
 /* ---------- Checklist ---------- */
@@ -510,7 +599,8 @@ async function startTest() {
             })
             .join("")}
         </div>
-        <button type="button" class="btn primary" id="pickNext">OK</button>
+        <p class="form-note" id="pickMsg" hidden></p>
+        <button type="button" class="btn primary" id="pickNext">${t.t("pick_next")}</button>
       `;
     }
 
@@ -522,9 +612,24 @@ async function startTest() {
     `;
 
     if (q.format === "pick2of4") {
+      const boxes = [...wizard.querySelectorAll('input[type="checkbox"]')];
+      boxes.forEach((box) => {
+        box.addEventListener("change", () => {
+          const checked = boxes.filter((b) => b.checked);
+          if (checked.length > 2) {
+            box.checked = false;
+          }
+        });
+      });
       wizard.querySelector("#pickNext").addEventListener("click", () => {
-        const picks = [...wizard.querySelectorAll("input:checked")].map((i) => i.value).slice(0, 2);
-        if (!picks.length) return;
+        const picks = boxes.filter((b) => b.checked).map((i) => i.value).slice(0, 2);
+        const msg = wizard.querySelector("#pickMsg");
+        if (!picks.length) {
+          msg.hidden = false;
+          msg.textContent = t.t("pick_need");
+          return;
+        }
+        msg.hidden = true;
         answers[q.id] = picks;
         advance();
       });
@@ -548,7 +653,14 @@ async function startTest() {
 }
 
 function finishTest(design, answers) {
-  const result = window.BRIDGE_TEST.buildResult(design, answers);
+  let result;
+  try {
+    result = window.BRIDGE_TEST.buildResult(design, answers);
+  } catch (err) {
+    console.error(err);
+    document.getElementById("testWizard").innerHTML = `<p class="form-note">Error building result</p>`;
+    return;
+  }
   Auth().saveUserResult(result);
   document.getElementById("testWizard").hidden = true;
   document.getElementById("testResult").hidden = false;
@@ -556,7 +668,9 @@ function finishTest(design, answers) {
   renderUniversities("mine");
   document.querySelectorAll(".uni-filters button").forEach((b) => b.classList.remove("active"));
   document.getElementById("filterMine")?.classList.add("active");
-  location.hash = "#/unis";
+  // Stay on test results (do NOT jump away — that looked like "nothing happened")
+  if (location.hash !== "#/test") location.hash = "#/test";
+  setTimeout(() => document.getElementById("test")?.scrollIntoView({ behavior: "smooth" }), 50);
 }
 
 function renderTestResult(result) {
@@ -566,9 +680,13 @@ function renderTestResult(result) {
     .map((id) => (window.BRIDGE_UNIS || []).find((u) => u.id === id))
     .filter(Boolean);
 
+  box.hidden = false;
   box.innerHTML = `
-    <h3>${t.t("result_title")}</h3>
-    <p>${result.summary}</p>
+    <div class="result-banner">
+      <h3>${t.t("result_title")}</h3>
+      <p>${result.summary}</p>
+      <p class="muted">${t.t("result_match_note")}</p>
+    </div>
     <div class="cluster-pills">
       ${(result.rankedClusters || [])
         .map((c) => `<span class="pill">${c.label} <em>${c.score}</em></span>`)
@@ -582,22 +700,28 @@ function renderTestResult(result) {
     </ul>
     <h4>${t.t("result_unis")}</h4>
     <div class="result-unis">
-      ${unis
-        .map(
-          (u) => `
+      ${unis.length
+        ? unis
+            .map(
+              (u) => `
         <a class="result-uni" href="#/uni/${u.id}">
           <strong>${t.loc(u.name)}</strong>
-          <span>${(u.englishPrograms || []).slice(0, 1).join("") || (u.majors || [])[0] || ""}</span>
+          <span>${trPhrase((u.englishPrograms || [])[0] || (u.majors || [])[0] || "")}</span>
           <em>${moneyTriple(u.tuitionYear)}</em>
         </a>`
-        )
-        .join("")}
+            )
+            .join("")
+        : `<p class="form-note">—</p>`}
+    </div>
+    <div class="hero-actions" style="margin-top:16px">
+      <a class="btn primary" href="#/unis">${t.t("result_see_unis")}</a>
+      <button class="btn ghost" type="button" id="retakeTest">${t.t("result_retake")}</button>
     </div>
     <p class="muted">${t.t("result_disclaimer")}</p>
-    <button class="btn tiny" type="button" id="retakeTest">${t.t("result_retake")}</button>
   `;
   document.getElementById("retakeTest")?.addEventListener("click", async () => {
     Auth().saveUserResult(null);
+    box.hidden = true;
     await startTest();
   });
 }
@@ -614,6 +738,12 @@ function setupNav() {
   document.getElementById("resetChecks")?.addEventListener("click", () => {
     localStorage.removeItem(checklistKey());
     renderChecklist();
+  });
+  document.querySelectorAll("[data-close-doc]").forEach((el) => {
+    el.addEventListener("click", closeDocModal);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeDocModal();
   });
 }
 
@@ -643,12 +773,13 @@ function setupScrollProgress() {
   onScroll();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   setupLang();
   setupAuthUI();
   setupNav();
   setupReveal();
   setupScrollProgress();
+  await loadLiveFees();
   window.addEventListener("hashchange", route);
   enforceGate();
   if (Auth().isAuthed()) route();

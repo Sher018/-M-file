@@ -15,6 +15,7 @@ Interactive guide for students from Tajikistan / Russia choosing English-track s
 
 - Universities expanded from public guides including [chinacampus.ru](https://chinacampus.ru/) and official portals — always verify fees/quotas on the university site.
 - Test design inspired by layers used at [gorisont.com](https://gorisont.com/) (short form, not clinical).
+- **Live tuition hints:** run `node scripts/parse-tuition.mjs` to scrape public fee pages into `fees-live.json` (SPA merges on load). Unresolved sites keep catalog values.
 
 ## Files
 
