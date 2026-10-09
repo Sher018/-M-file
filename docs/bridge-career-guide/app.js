@@ -264,12 +264,14 @@ function setupAuthUI() {
     }
   });
 
-  document.getElementById("otpForm").addEventListener("submit", (e) => {
+  document.getElementById("otpForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const fd = new FormData(e.target);
     const msg = document.getElementById("gateMsg");
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    if (submitBtn) submitBtn.disabled = true;
     try {
-      Auth().verifyOtp(fd.get("code"));
+      await Auth().verifyOtp(fd.get("code"));
       msg.textContent = "";
       hideGate();
       refreshUserUI();
@@ -277,13 +279,21 @@ function setupAuthUI() {
       route();
     } catch (err) {
       msg.textContent =
-        err.message === "expired" ? "Code expired — request again" : "Wrong code";
+        err.message === "expired"
+          ? "Code expired — request again"
+          : err.message === "no_pending"
+            ? "Сначала запросите код"
+            : "Wrong code";
+      // stay on OTP step
+      showGate("otp");
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
     }
   });
 
   window.addEventListener("bridge:auth", () => {
-    refreshUserUI();
-    if (!Auth().isAuthed()) enforceGate();
+    // Always re-evaluate gate: hide when session appears, show when cleared
+    enforceGate();
   });
 }
 
