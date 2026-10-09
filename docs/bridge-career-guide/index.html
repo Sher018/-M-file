@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>BRIDGE — Твой путь в Китай</title>
-  <meta name="description" content="Персональный гид: профиль, направления, вузы и чек-лист поступления в Китай на английском." />
+  <meta name="description" content="Персональный гид в вузы Китая: тест, вузы, документы, экзамены, бюджет и прогресс." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
@@ -16,13 +16,16 @@
   <nav class="topnav" aria-label="Навигация">
     <a class="logo" href="#top">BRIDGE</a>
     <div class="nav-links">
-      <a href="#profile">Профиль</a>
-      <a href="#path">Путь</a>
+      <a href="#auth">Вход</a>
+      <a href="#test">Тест</a>
       <a href="#unis">Вузы</a>
       <a href="#checklist">Чек-лист</a>
       <a href="#plan">План</a>
     </div>
-    <button class="nav-cta" type="button" data-scroll="#checklist">Чек-лист</button>
+    <div class="nav-right">
+      <span class="user-pill" id="userPill" hidden></span>
+      <button class="nav-cta" type="button" id="navAuthBtn">Регистрация</button>
+    </div>
   </nav>
 
   <header class="hero" id="top">
@@ -31,105 +34,132 @@
       <div class="hero-shade"></div>
     </div>
     <div class="hero-content">
-      <p class="eyebrow reveal">Таджикистан → Китай · English track</p>
+      <p class="eyebrow reveal">Таджикистан / РФ → Китай · English track</p>
       <h1 class="reveal delay-1">Ты не инженер.<br /><span>Ты — мост.</span></h1>
       <p class="hero-lead reveal delay-2">
-        Персональный гид по твоим сильным сторонам, направлениям учёбы и шагам поступления.
-        Читай как историю — отмечай прогресс в чек-листе.
+        Зарегистрируйся, пройди тест, получи свой список вузов Китая —
+        с документами, экзаменами и бюджетом. Жми на вуз — откроется полная карточка.
       </p>
       <div class="hero-actions reveal delay-3">
-        <button class="btn primary" type="button" data-scroll="#profile">Начать путешествие</button>
-        <button class="btn ghost" type="button" data-scroll="#checklist">Открыть чек-лист</button>
+        <button class="btn primary" type="button" data-scroll="#auth">Создать аккаунт</button>
+        <button class="btn ghost" type="button" data-scroll="#unis">Смотреть вузы</button>
       </div>
       <div class="hero-stats reveal delay-4">
-        <div><strong>EN</strong><span>твой суперсила</span></div>
-        <div><strong>Trade</strong><span>лучшее направление</span></div>
-        <div><strong>8</strong><span>вузов в шортлисте</span></div>
+        <div><strong>EN</strong><span>учёба на английском</span></div>
+        <div><strong>8</strong><span>вузов в базе</span></div>
+        <div><strong>Тест</strong><span>персональный путь</span></div>
       </div>
     </div>
   </header>
 
   <main>
-    <section class="story" id="profile">
+    <section class="auth-section" id="auth">
       <div class="section-head">
-        <p class="eyebrow">Глава 1</p>
-        <h2>Кто ты на самом деле</h2>
-        <p>По тесту ты не «слабый технарь». Ты сильный коммуникатор с международным кругозором и бизнес-голодом.</p>
+        <p class="eyebrow">Глава 0</p>
+        <h2>Регистрация и прогресс</h2>
+        <p>
+          Email-аккаунт хранит прогресс на этом устройстве (MVP). Согласия оформлены с учётом
+          требований к персональным данным <strong>РФ (152-ФЗ)</strong> и <strong>Республики Таджикистан</strong>.
+        </p>
       </div>
 
+      <div class="auth-grid">
+        <form class="glass auth-card" id="registerForm">
+          <h3>Создать аккаунт</h3>
+          <label>Имя <input name="name" type="text" required placeholder="Как к тебе обращаться" autocomplete="name" /></label>
+          <label>Email <input name="email" type="email" required placeholder="you@email.com" autocomplete="email" /></label>
+          <label>Пароль <input name="password" type="password" required minlength="6" placeholder="минимум 6 символов" autocomplete="new-password" /></label>
+          <label>Страна
+            <select name="country" required>
+              <option value="TJ">Таджикистан</option>
+              <option value="RU">Россия</option>
+              <option value="OTHER">Другая</option>
+            </select>
+          </label>
+          <label class="checkline">
+            <input type="checkbox" name="consentPd" required />
+            <span>Согласен(на) на обработку персональных данных (имя, email, ответы теста, прогресс) для работы сервиса BRIDGE. Могу отозвать согласие, удалив аккаунт.</span>
+          </label>
+          <label class="checkline">
+            <input type="checkbox" name="consentAge" required />
+            <span>Мне есть 14 лет. Если мне нет 18 — родители/опекун знают о регистрации.</span>
+          </label>
+          <label class="checkline">
+            <input type="checkbox" name="consentTerms" required />
+            <span>Принимаю, что советы по вузам информационные; официальные требования всегда сверяю на сайте вуза.</span>
+          </label>
+          <button class="btn primary" type="submit">Зарегистрироваться и пройти тест</button>
+          <p class="form-note" id="registerMsg"></p>
+        </form>
+
+        <form class="glass auth-card" id="loginForm">
+          <h3>Уже есть аккаунт</h3>
+          <label>Email <input name="email" type="email" required autocomplete="email" /></label>
+          <label>Пароль <input name="password" type="password" required autocomplete="current-password" /></label>
+          <button class="btn ghost" type="submit">Войти</button>
+          <button class="btn tiny" type="button" id="logoutBtn">Выйти / удалить локальные данные</button>
+          <p class="form-note" id="loginMsg"></p>
+          <div class="legal-box">
+            <h4>Правовая рамка (кратко)</h4>
+            <ul>
+              <li>РФ: обработка по принципам 152-ФЗ — цель, согласие, минимизация, право на удаление.</li>
+              <li>Таджикистан: согласие субъекта на сбор/хранение персональных данных для заявленной цели.</li>
+              <li>Сейчас данные только в браузере (localStorage). При серверном хостинге понадобится политика конфиденциальности и защищённый бэкенд.</li>
+            </ul>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="test-section" id="test">
+      <div class="section-head">
+        <p class="eyebrow">Глава 1</p>
+        <h2>Тест направления</h2>
+        <p id="testLead">После регистрации откроется короткий тест. По ответам соберём список вузов Китая под тебя.</p>
+      </div>
+      <div class="glass test-panel" id="testPanel">
+        <p class="locked-note" id="testLocked">Сначала зарегистрируйся или войди — затем тест станет доступен.</p>
+        <div id="testWizard" hidden></div>
+        <div id="testResult" hidden></div>
+      </div>
+    </section>
+
+    <section class="story" id="profile">
+      <div class="section-head">
+        <p class="eyebrow">Ориентир</p>
+        <h2>Пример профиля коммуникатора</h2>
+        <p>Так может выглядеть разбор после теста (у брата — business / media / trade).</p>
+      </div>
       <div class="card-grid profile-grid">
         <article class="glass card reveal">
           <h3>Суперсила</h3>
           <ul class="chip-list">
-            <li>Английский — очень сильный</li>
-            <li>История и культуры стран</li>
-            <li>Креатив и влияние на аудиторию</li>
-            <li>Лидерство и самообучение</li>
-            <li>Дисциплина без контроля</li>
+            <li>Английский</li>
+            <li>Культуры и страны</li>
+            <li>Креатив и влияние</li>
+            <li>Лидерство</li>
           </ul>
         </article>
         <article class="glass card reveal delay-1">
           <h3>Зона роста</h3>
           <ul class="chip-list muted">
-            <li>Математика пока даётся тяжело</li>
-            <li>Физика / химия — не твоё</li>
-            <li>Инженерия раздражает</li>
-            <li>Страх жёсткой STEM-конкуренции</li>
+            <li>Жёсткая математика</li>
+            <li>Физика / химия</li>
+            <li>Инженерия</li>
           </ul>
         </article>
         <article class="quote-card reveal delay-2">
-          <p>«Я бы мог учить людей быть заметнее в обществе… любым действием иметь внимание общества.»</p>
-          <span>Это не слабость. Это профессия: бренд, медиа, переговоры, влияние.</span>
+          <p>«Стать мостом между странами через торговлю и коммуникации.»</p>
+          <span>Это сильная цель для English-track бизнес-программ в Китае.</span>
         </article>
-      </div>
-
-      <div class="meter-block reveal">
-        <h3>Твой профиль в одной картинке</h3>
-        <div class="meters">
-          <div class="meter"><span>Коммуникации</span><i style="--v:92%"></i></div>
-          <div class="meter"><span>Бизнес-мышление</span><i style="--v:90%"></i></div>
-          <div class="meter"><span>Креатив</span><i style="--v:95%"></i></div>
-          <div class="meter"><span>Английский</span><i style="--v:96%"></i></div>
-          <div class="meter"><span>IT как инструмент</span><i style="--v:78%"></i></div>
-          <div class="meter weak"><span>Чистая математика / инженерия</span><i style="--v:28%"></i></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="path" id="path">
-      <div class="path-bg" aria-hidden="true">
-        <img src="assets/bridge-campus.jpg" alt="" />
-        <div class="path-shade"></div>
-      </div>
-      <div class="path-inner">
-        <p class="eyebrow">Глава 2</p>
-        <h2>Твоя дорога</h2>
-        <p class="lead">Мечта про ИИ — ок. Но не как «инженер нейросетей», а как человек, который использует ИИ в бизнесе, маркетинге и торговле.</p>
-
-        <div class="path-choices">
-          <article class="choice yes reveal">
-            <p class="tag">Твой путь</p>
-            <h3>International Business / Trade / Communication</h3>
-            <p>Торговля, бренд, переговоры, экспорт Таджикистан ↔ Китай, digital и AI-инструменты.</p>
-          </article>
-          <article class="choice no reveal delay-1">
-            <p class="tag">Не сейчас</p>
-            <h3>Инженерия / чистый AI-code / химия</h3>
-            <p>Там нужна математика и физика, которые сейчас выжигают мотивацию. Это ловушка отчисления.</p>
-          </article>
-        </div>
-
-        <div class="one-liner reveal">
-          <p>Одной фразой: <strong>международный бизнес-коммуникатор</strong>, а не инженер.</p>
-        </div>
       </div>
     </section>
 
     <section class="unis" id="unis">
       <div class="section-head">
-        <p class="eyebrow">Глава 3</p>
-        <h2>8 вузов, куда целиться</h2>
-        <p>Листай карточки. Зелёные — главный план. Жёлтые — сильный запас. Серые — бюджетный/премиум край.</p>
+        <p class="eyebrow">Глава 2</p>
+        <h2>Вузы Китая</h2>
+        <p id="uniLead">Нажми на карточку вуза — откроются документы, экзамены и бюджет. Вкладки: Все / Мечта / Реализм / Бюджет.</p>
       </div>
 
       <div class="uni-filters" role="tablist">
@@ -137,147 +167,53 @@
         <button data-filter="dream" type="button">Мечта</button>
         <button data-filter="real" type="button">Реализм</button>
         <button data-filter="budget" type="button">Бюджет</button>
+        <button data-filter="mine" type="button" id="filterMine">Мои (после теста)</button>
       </div>
 
-      <div class="uni-track" id="uniTrack">
-        <article class="uni-card dream" data-tier="dream">
-          <div class="uni-rank">01</div>
-          <h3>Zhejiang University</h3>
-          <p class="major">Global Communication & Management</p>
-          <p>Бизнес + коммуникации + Китай как мост. Почти идеально под тебя.</p>
-          <div class="uni-meta"><span>~65k CNY/год</span><span>IELTS 6.5</span></div>
-        </article>
-        <article class="uni-card dream" data-tier="dream">
-          <div class="uni-rank">02</div>
-          <h3>UIBE · Пекин</h3>
-          <p class="major">International Trade / BBA / Marketing</p>
-          <p>Топ торговый вуз Китая. Прямая дорога в экспорт и сделки.</p>
-          <div class="uni-meta"><span>~50k CNY/год</span><span>IELTS 6.0</span></div>
-        </article>
-        <article class="uni-card dream" data-tier="dream">
-          <div class="uni-rank">03</div>
-          <h3>BFSU · Пекин</h3>
-          <p class="major">International Business / Trade</p>
-          <p>Международный бренд, языки, дипломатия + бизнес.</p>
-          <div class="uni-meta"><span>~40k CNY/год</span><span>IELTS ~6.0</span></div>
-        </article>
-        <article class="uni-card real" data-tier="real">
-          <div class="uni-rank">04</div>
-          <h3>SILC · Shanghai University</h3>
-          <p class="major">International Trade · Cross-Border E-commerce</p>
-          <p>Интернет-торговля и экспорт — твой сценарий «магазин / бизнес».</p>
-          <div class="uni-meta"><span>~30k CNY/год</span><span>IELTS ~6.0</span></div>
-        </article>
-        <article class="uni-card real" data-tier="real">
-          <div class="uni-rank">05</div>
-          <h3>BIT · Пекин</h3>
-          <p class="major">International Economics and Trade</p>
-          <p>Сильный бренд столицы без тяжёлой инженерии.</p>
-          <div class="uni-meta"><span>уточнять</span><span>IELTS ~6.0</span></div>
-        </article>
-        <article class="uni-card budget" data-tier="budget">
-          <div class="uni-rank">06</div>
-          <h3>Jiangsu University</h3>
-          <p class="major">Marketing (English)</p>
-          <p>Дешевле и реалистично. Тема бренда и внимания аудитории.</p>
-          <div class="uni-meta"><span>~18k CNY/год</span><span>IELTS 5.5+</span></div>
-        </article>
-        <article class="uni-card real" data-tier="real">
-          <div class="uni-rank">07</div>
-          <h3>XJTLU · Сучжоу</h3>
-          <p class="major">International Business with a Language</p>
-          <p>Британский диплом + бизнес + язык. Премиум-вариант.</p>
-          <div class="uni-meta"><span>UK-модель</span><span>высокий EN</span></div>
-        </article>
-        <article class="uni-card budget" data-tier="budget">
-          <div class="uni-rank">08</div>
-          <h3>Nottingham Ningbo</h3>
-          <p class="major">English + International Business</p>
-          <p>Полностью EN, портовый город, британский диплом. Дорого, но мощно.</p>
-          <div class="uni-meta"><span>~120k CNY/год</span><span>высокий EN</span></div>
-        </article>
-      </div>
+      <div class="uni-track" id="uniTrack"></div>
+      <p class="hint-line">Подсказка: клик по карточке = полная таблица поступления.</p>
     </section>
 
     <section class="checklist-section" id="checklist">
       <div class="section-head">
-        <p class="eyebrow">Глава 4</p>
+        <p class="eyebrow">Глава 3</p>
         <h2>Живой чек-лист</h2>
-        <p>Отмечай пункты — прогресс сохранится в этом браузере. Начни с «этой недели».</p>
+        <p>Отметки сохраняются в браузере (и в профиле, если ты вошёл).</p>
       </div>
-
       <div class="checklist-panel glass">
         <div class="check-progress">
-          <div class="ring" id="checkRing" style="--p:0">
-            <strong id="checkPct">0%</strong>
-          </div>
+          <div class="ring" id="checkRing" style="--p:0"><strong id="checkPct">0%</strong></div>
           <div>
             <h3>Твой прогресс</h3>
             <p id="checkCount">0 из 0 выполнено</p>
             <button class="btn tiny" type="button" id="resetChecks">Сбросить отметки</button>
           </div>
         </div>
-
         <div class="check-groups" id="checkGroups"></div>
       </div>
     </section>
 
     <section class="plan" id="plan">
       <div class="section-head">
-        <p class="eyebrow">Глава 5</p>
+        <p class="eyebrow">Глава 4</p>
         <h2>12 месяцев как сериал</h2>
-        <p>Не зубри всё сразу. Смотри сезон за сезоном.</p>
       </div>
-
       <div class="timeline">
-        <article class="tl reveal">
-          <span>Сезон 1</span>
-          <h3>Месяцы 1–3</h3>
-          <p>IELTS → цель 6.5. CSCA Math только на английском. Обновить паспорт.</p>
-        </article>
-        <article class="tl reveal delay-1">
-          <span>Сезон 2</span>
-          <h3>Месяцы 2–6</h3>
-          <p>Канал/контент про культуры и бизнес. Кейс «таджикский товар → Китай». Черновик motivation letter.</p>
-        </article>
-        <article class="tl reveal delay-2">
-          <span>Сезон 3</span>
-          <h3>Месяцы 4–8</h3>
-          <p>AI как инструмент: ChatGPT для маркетинга, Canva, Excel. Не учить «нейросети с нуля».</p>
-        </article>
-        <article class="tl reveal delay-3">
-          <span>Сезон 4</span>
-          <h3>Месяцы 6–10</h3>
-          <p>Подача в 6–8 вузов + CSC Type A через посольство КНР в Таджикистане.</p>
-        </article>
-        <article class="tl reveal delay-4">
-          <span>Финал</span>
-          <h3>Месяцы 10–12</h3>
-          <p>Offer → оплата → JW202 → виза X1 → бытовой китайский для жизни.</p>
-        </article>
-      </div>
-
-      <div class="week glass reveal">
-        <h3>Расписание недели</h3>
-        <div class="week-grid">
-          <div><b>Пн</b><span>IELTS Writing / Speaking</span></div>
-          <div><b>Вт</b><span>CSCA Math 40–60 мин</span></div>
-          <div><b>Ср</b><span>IELTS Reading / Listening</span></div>
-          <div><b>Чт</b><span>Контент / бизнес-кейс</span></div>
-          <div><b>Пт</b><span>CSCA повтор</span></div>
-          <div><b>Сб</b><span>Mock IELTS / письмо</span></div>
-          <div><b>Вс</b><span>Отдых или лёгкий китайский</span></div>
-        </div>
+        <article class="tl reveal"><span>Сезон 1</span><h3>Месяцы 1–3</h3><p>IELTS + CSCA Math. Паспорт.</p></article>
+        <article class="tl reveal delay-1"><span>Сезон 2</span><h3>Месяцы 2–6</h3><p>Портфолио, кейс, motivation letter.</p></article>
+        <article class="tl reveal delay-2"><span>Сезон 3</span><h3>Месяцы 4–8</h3><p>AI-инструменты для бизнеса.</p></article>
+        <article class="tl reveal delay-3"><span>Сезон 4</span><h3>Месяцы 6–10</h3><p>Подача в вузы + CSC Type A.</p></article>
+        <article class="tl reveal delay-4"><span>Финал</span><h3>Месяцы 10–12</h3><p>Offer → виза X1 → переезд.</p></article>
       </div>
     </section>
 
     <section class="finale" id="finale">
       <div class="finale-card reveal">
-        <p class="eyebrow">Эпилог</p>
-        <h2>Твоя сила — не формулы.<br />Твоя сила — люди, страны и сделки.</h2>
-        <p>Иди в International Business / Trade / Global Communication. Используй ИИ как инструмент. Стань мостом между Таджикистаном и Китаем.</p>
+        <p class="eyebrow">Дальше</p>
+        <h2>Сначала фичи — потом домен и хостинг</h2>
+        <p>Когда карточки вузов и регистрация ок, купим дешёвый домен и стабильный хостинг. Пока жми вузы и проходи тест.</p>
         <div class="finale-actions">
-          <button class="btn primary" type="button" data-scroll="#checklist">Вернуться к чек-листу</button>
+          <button class="btn primary" type="button" data-scroll="#unis">Открыть вузы</button>
           <button class="btn ghost" type="button" id="printBtn">Распечатать / PDF</button>
         </div>
       </div>
@@ -285,9 +221,19 @@
   </main>
 
   <footer class="footer">
-    <p>BRIDGE · персональный гид · сделано для брата · English track China</p>
+    <p>BRIDGE · China English track · данные вузов ориентировочные — сверяй официальные сайты</p>
   </footer>
 
+  <!-- University detail modal -->
+  <div class="modal" id="uniModal" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-sheet" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" type="button" data-close-modal aria-label="Закрыть">×</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
