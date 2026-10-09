@@ -235,7 +235,9 @@ function setupAuthUI() {
             ? "Accept all consents"
             : err.message === "rate_limited"
               ? "Too many codes — try later"
-              : "Check email / form";
+              : err.message === "send_failed"
+                ? "Не удалось отправить письмо. Проверьте spam или попробуйте снова."
+                : "Check email / form";
     }
   });
 
@@ -256,7 +258,9 @@ function setupAuthUI() {
           ? "No account — register first"
           : err.message === "rate_limited"
             ? "Too many codes — try later"
-            : "Check email";
+            : err.message === "send_failed"
+              ? "Не удалось отправить письмо. Проверьте spam или попробуйте снова."
+              : "Check email";
     }
   });
 

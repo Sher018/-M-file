@@ -80,14 +80,16 @@
       };
 
       // Prefer server OTP (real email)
+      let allowDemoFallback = false;
       try {
         const res = await fetch("/api/otp/request", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
-        if (res.ok) {
-          const data = await res.json();
+        const data = await res.json().catch(() => ({}));
+        if (res.status === 429) throw new Error("rate_limited");
+        if (res.ok && data.ok) {
           const pending = {
             email: clean,
             name: payload.name,
@@ -103,14 +105,30 @@
           saveJSON(OTP_KEY, pending);
           return pending;
         }
-        if (res.status === 429) throw new Error("rate_limited");
-        // fall through to local demo if API not configured
+        // API exists but email not configured → demo; other errors → show to user
+        if (res.status === 503 || data.error === "email_not_configured" || res.status === 404) {
+          allowDemoFallback = true;
+        } else {
+          throw new Error(data.error === "send_failed" ? "send_failed" : data.error || "send_failed");
+        }
       } catch (e) {
-        if (e.message === "rate_limited") throw e;
-        /* offline / pure static host */
+        if (
+          e.message === "rate_limited" ||
+          e.message === "send_failed" ||
+          e.message === "bad_email" ||
+          e.message === "exists" ||
+          e.message === "not_found" ||
+          e.message === "consents"
+        ) {
+          throw e;
+        }
+        // network / pure static host → demo
+        allowDemoFallback = true;
       }
 
-      // Local demo fallback (code on screen)
+      if (!allowDemoFallback) throw new Error("send_failed");
+
+      // Local demo fallback (static host / API missing only)
       const code = genCode();
       const pending = {
         email: clean,
