@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>BRIDGE — Твой путь в Китай</title>
-  <meta name="description" content="Персональный гид в вузы Китая: тест, вузы, документы, экзамены, бюджет и прогресс." />
+  <title>BRIDGE — Ориентация и вузы Китая</title>
+  <meta name="description" content="Тест ориентации, профессии и вузы Китая для иностранцев: рейтинг, квоты, цены в CNY / USD / TJS." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
@@ -13,227 +13,199 @@
 <body>
   <div class="progress-bar" aria-hidden="true"><i id="scrollProgress"></i></div>
 
-  <nav class="topnav" aria-label="Навигация">
-    <a class="logo" href="#top">BRIDGE</a>
-    <div class="nav-links">
-      <a href="#auth">Вход</a>
-      <a href="#test">Тест</a>
-      <a href="#unis">Вузы</a>
-      <a href="#checklist">Чек-лист</a>
-      <a href="#plan">План</a>
-    </div>
-    <div class="nav-right">
-      <span class="user-pill" id="userPill" hidden></span>
-      <button class="nav-cta" type="button" id="navAuthBtn">Регистрация</button>
-    </div>
-  </nav>
-
-  <header class="hero" id="top">
-    <div class="hero-media" aria-hidden="true">
-      <img src="assets/bridge-hero.jpg" alt="" />
-      <div class="hero-shade"></div>
-    </div>
-    <div class="hero-content">
-      <p class="eyebrow reveal">Таджикистан / РФ → Китай · English track</p>
-      <h1 class="reveal delay-1">Ты не инженер.<br /><span>Ты — мост.</span></h1>
-      <p class="hero-lead reveal delay-2">
-        Зарегистрируйся, пройди тест, получи свой список вузов Китая —
-        с документами, экзаменами и бюджетом. Жми на вуз — откроется полная карточка.
-      </p>
-      <div class="hero-actions reveal delay-3">
-        <button class="btn primary" type="button" data-scroll="#auth">Создать аккаунт</button>
-        <button class="btn ghost" type="button" data-scroll="#unis">Смотреть вузы</button>
-      </div>
-      <div class="hero-stats reveal delay-4">
-        <div><strong>EN</strong><span>учёба на английском</span></div>
-        <div><strong>8</strong><span>вузов в базе</span></div>
-        <div><strong>Тест</strong><span>персональный путь</span></div>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    <section class="auth-section" id="auth">
-      <div class="section-head">
-        <p class="eyebrow">Глава 0</p>
-        <h2>Регистрация и прогресс</h2>
-        <p>
-          Email-аккаунт хранит прогресс на этом устройстве (MVP). Согласия оформлены с учётом
-          требований к персональным данным <strong>РФ (152-ФЗ)</strong> и <strong>Республики Таджикистан</strong>.
-        </p>
+  <!-- Auth gate -->
+  <div class="auth-gate" id="authGate" hidden>
+    <div class="auth-gate-card glass">
+      <p class="logo gate-brand">BRIDGE</p>
+      <div class="lang-switch gate-lang" role="group" aria-label="Language">
+        <button type="button" data-lang="ru">RU</button>
+        <button type="button" data-lang="tg">TG</button>
+        <button type="button" data-lang="en">EN</button>
       </div>
 
-      <div class="auth-grid">
-        <form class="glass auth-card" id="registerForm">
-          <h3>Создать аккаунт</h3>
-          <label>Имя <input name="name" type="text" required placeholder="Как к тебе обращаться" autocomplete="name" /></label>
-          <label>Email <input name="email" type="email" required placeholder="you@email.com" autocomplete="email" /></label>
-          <label>Пароль <input name="password" type="password" required minlength="6" placeholder="минимум 6 символов" autocomplete="new-password" /></label>
-          <label>Страна
+      <div id="gateRegister">
+        <h2 data-i18n="gate_title_reg">Регистрация</h2>
+        <form id="registerForm">
+          <label><span data-i18n="gate_name">Имя</span>
+            <input name="name" type="text" required autocomplete="name" />
+          </label>
+          <label><span data-i18n="gate_email">Email</span>
+            <input name="email" type="email" required autocomplete="email" />
+          </label>
+          <label><span data-i18n="gate_country">Страна</span>
             <select name="country" required>
-              <option value="TJ">Таджикистан</option>
-              <option value="RU">Россия</option>
-              <option value="OTHER">Другая</option>
+              <option value="TJ" data-i18n="gate_country_tj">Таджикистан</option>
+              <option value="RU" data-i18n="gate_country_ru">Россия</option>
+              <option value="OTHER" data-i18n="gate_country_other">Другая</option>
             </select>
           </label>
           <label class="checkline">
             <input type="checkbox" name="consentPd" required />
-            <span>Согласен(на) на обработку персональных данных (имя, email, ответы теста, прогресс) для работы сервиса BRIDGE. Могу отозвать согласие, удалив аккаунт.</span>
+            <span><span data-i18n="consent_pd"></span> —
+              <a href="legal/privacy-consent.html" target="_blank" rel="noopener" data-i18n="consent_pd_link">полное согласие</a></span>
           </label>
           <label class="checkline">
             <input type="checkbox" name="consentAge" required />
-            <span>Мне есть 14 лет. Если мне нет 18 — родители/опекун знают о регистрации.</span>
+            <span><span data-i18n="consent_age"></span> —
+              <a href="legal/age-consent.html" target="_blank" rel="noopener" data-i18n="consent_age_link">согласие о возрасте</a></span>
           </label>
           <label class="checkline">
             <input type="checkbox" name="consentTerms" required />
-            <span>Принимаю, что советы по вузам информационные; официальные требования всегда сверяю на сайте вуза.</span>
+            <span><span data-i18n="consent_terms"></span> —
+              <a href="legal/terms.html" target="_blank" rel="noopener" data-i18n="consent_terms_link">условия</a></span>
           </label>
-          <button class="btn primary" type="submit">Зарегистрироваться и пройти тест</button>
-          <p class="form-note" id="registerMsg"></p>
+          <button class="btn primary" type="submit" data-i18n="gate_send_code">Получить код на почту</button>
         </form>
+        <button class="btn linkish" type="button" id="toLogin" data-i18n="gate_switch_login">Уже есть аккаунт? Войти</button>
+      </div>
 
-        <form class="glass auth-card" id="loginForm">
-          <h3>Уже есть аккаунт</h3>
-          <label>Email <input name="email" type="email" required autocomplete="email" /></label>
-          <label>Пароль <input name="password" type="password" required autocomplete="current-password" /></label>
-          <button class="btn ghost" type="submit">Войти</button>
-          <button class="btn tiny" type="button" id="logoutBtn">Выйти / удалить локальные данные</button>
-          <p class="form-note" id="loginMsg"></p>
-          <div class="legal-box">
-            <h4>Правовая рамка (кратко)</h4>
-            <ul>
-              <li>РФ: обработка по принципам 152-ФЗ — цель, согласие, минимизация, право на удаление.</li>
-              <li>Таджикистан: согласие субъекта на сбор/хранение персональных данных для заявленной цели.</li>
-              <li>Сейчас данные только в браузере (localStorage). При серверном хостинге понадобится политика конфиденциальности и защищённый бэкенд.</li>
-            </ul>
-          </div>
+      <div id="gateLogin" hidden>
+        <h2 data-i18n="gate_title_login">Вход</h2>
+        <form id="loginForm">
+          <label><span data-i18n="gate_email">Email</span>
+            <input name="email" type="email" required autocomplete="email" />
+          </label>
+          <button class="btn primary" type="submit" data-i18n="gate_send_code">Получить код на почту</button>
+        </form>
+        <button class="btn linkish" type="button" id="toRegister" data-i18n="gate_switch_reg">Нет аккаунта? Зарегистрироваться</button>
+      </div>
+
+      <div id="gateOtp" hidden>
+        <h2 data-i18n="gate_code">4-значный код</h2>
+        <p class="muted" id="otpHint" data-i18n="gate_demo_hint"></p>
+        <p class="otp-demo" id="otpDemo" hidden></p>
+        <form id="otpForm">
+          <label>
+            <input name="code" type="text" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" required placeholder="1234" autocomplete="one-time-code" />
+          </label>
+          <button class="btn primary" type="submit" data-i18n="gate_verify">Подтвердить и войти</button>
         </form>
       </div>
-    </section>
-
-    <section class="test-section" id="test">
-      <div class="section-head">
-        <p class="eyebrow">Глава 1</p>
-        <h2>Тест направления</h2>
-        <p id="testLead">После регистрации откроется короткий тест. По ответам соберём список вузов Китая под тебя.</p>
-      </div>
-      <div class="glass test-panel" id="testPanel">
-        <p class="locked-note" id="testLocked">Сначала зарегистрируйся или войди — затем тест станет доступен.</p>
-        <div id="testWizard" hidden></div>
-        <div id="testResult" hidden></div>
-      </div>
-    </section>
-
-    <section class="story" id="profile">
-      <div class="section-head">
-        <p class="eyebrow">Ориентир</p>
-        <h2>Пример профиля коммуникатора</h2>
-        <p>Так может выглядеть разбор после теста (у брата — business / media / trade).</p>
-      </div>
-      <div class="card-grid profile-grid">
-        <article class="glass card reveal">
-          <h3>Суперсила</h3>
-          <ul class="chip-list">
-            <li>Английский</li>
-            <li>Культуры и страны</li>
-            <li>Креатив и влияние</li>
-            <li>Лидерство</li>
-          </ul>
-        </article>
-        <article class="glass card reveal delay-1">
-          <h3>Зона роста</h3>
-          <ul class="chip-list muted">
-            <li>Жёсткая математика</li>
-            <li>Физика / химия</li>
-            <li>Инженерия</li>
-          </ul>
-        </article>
-        <article class="quote-card reveal delay-2">
-          <p>«Стать мостом между странами через торговлю и коммуникации.»</p>
-          <span>Это сильная цель для English-track бизнес-программ в Китае.</span>
-        </article>
-      </div>
-    </section>
-
-    <section class="unis" id="unis">
-      <div class="section-head">
-        <p class="eyebrow">Глава 2</p>
-        <h2>Вузы Китая</h2>
-        <p id="uniLead">Нажми на карточку вуза — откроются документы, экзамены и бюджет. Вкладки: Все / Мечта / Реализм / Бюджет.</p>
-      </div>
-
-      <div class="uni-filters" role="tablist">
-        <button class="active" data-filter="all" type="button">Все</button>
-        <button data-filter="dream" type="button">Мечта</button>
-        <button data-filter="real" type="button">Реализм</button>
-        <button data-filter="budget" type="button">Бюджет</button>
-        <button data-filter="mine" type="button" id="filterMine">Мои (после теста)</button>
-      </div>
-
-      <div class="uni-track" id="uniTrack"></div>
-      <p class="hint-line">Подсказка: клик по карточке = полная таблица поступления.</p>
-    </section>
-
-    <section class="checklist-section" id="checklist">
-      <div class="section-head">
-        <p class="eyebrow">Глава 3</p>
-        <h2>Живой чек-лист</h2>
-        <p>Отметки сохраняются в браузере (и в профиле, если ты вошёл).</p>
-      </div>
-      <div class="checklist-panel glass">
-        <div class="check-progress">
-          <div class="ring" id="checkRing" style="--p:0"><strong id="checkPct">0%</strong></div>
-          <div>
-            <h3>Твой прогресс</h3>
-            <p id="checkCount">0 из 0 выполнено</p>
-            <button class="btn tiny" type="button" id="resetChecks">Сбросить отметки</button>
-          </div>
-        </div>
-        <div class="check-groups" id="checkGroups"></div>
-      </div>
-    </section>
-
-    <section class="plan" id="plan">
-      <div class="section-head">
-        <p class="eyebrow">Глава 4</p>
-        <h2>12 месяцев как сериал</h2>
-      </div>
-      <div class="timeline">
-        <article class="tl reveal"><span>Сезон 1</span><h3>Месяцы 1–3</h3><p>IELTS + CSCA Math. Паспорт.</p></article>
-        <article class="tl reveal delay-1"><span>Сезон 2</span><h3>Месяцы 2–6</h3><p>Портфолио, кейс, motivation letter.</p></article>
-        <article class="tl reveal delay-2"><span>Сезон 3</span><h3>Месяцы 4–8</h3><p>AI-инструменты для бизнеса.</p></article>
-        <article class="tl reveal delay-3"><span>Сезон 4</span><h3>Месяцы 6–10</h3><p>Подача в вузы + CSC Type A.</p></article>
-        <article class="tl reveal delay-4"><span>Финал</span><h3>Месяцы 10–12</h3><p>Offer → виза X1 → переезд.</p></article>
-      </div>
-    </section>
-
-    <section class="finale" id="finale">
-      <div class="finale-card reveal">
-        <p class="eyebrow">Дальше</p>
-        <h2>Сначала фичи — потом домен и хостинг</h2>
-        <p>Когда карточки вузов и регистрация ок, купим дешёвый домен и стабильный хостинг. Пока жми вузы и проходи тест.</p>
-        <div class="finale-actions">
-          <button class="btn primary" type="button" data-scroll="#unis">Открыть вузы</button>
-          <button class="btn ghost" type="button" id="printBtn">Распечатать / PDF</button>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <p>BRIDGE · China English track · данные вузов ориентировочные — сверяй официальные сайты</p>
-  </footer>
-
-  <!-- University detail modal -->
-  <div class="modal" id="uniModal" hidden>
-    <div class="modal-backdrop" data-close-modal></div>
-    <div class="modal-sheet" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <button class="modal-close" type="button" data-close-modal aria-label="Закрыть">×</button>
-      <div id="modalBody"></div>
+      <p class="form-note" id="gateMsg"></p>
     </div>
   </div>
 
-  <script src="data.js"></script>
+  <div id="appShell">
+    <nav class="topnav" aria-label="Navigation">
+      <a class="logo" href="#/">BRIDGE</a>
+      <div class="nav-links">
+        <a href="#/test" data-i18n="nav_test">Тест</a>
+        <a href="#/unis" data-i18n="nav_unis">Вузы</a>
+        <a href="#/checklist" data-i18n="nav_check">Чек-лист</a>
+        <a href="#/plan" data-i18n="nav_plan">План</a>
+      </div>
+      <div class="nav-right">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="ru">RU</button>
+          <button type="button" data-lang="tg">TG</button>
+          <button type="button" data-lang="en">EN</button>
+        </div>
+        <span class="user-pill" id="userPill" hidden></span>
+        <button class="nav-cta" type="button" id="navAuthBtn" data-i18n="nav_logout">Выйти</button>
+      </div>
+    </nav>
+
+    <div id="homeView">
+      <header class="hero" id="top">
+        <div class="hero-media" aria-hidden="true">
+          <img src="assets/bridge-hero.jpg" alt="" />
+          <div class="hero-shade"></div>
+        </div>
+        <div class="hero-content">
+          <p class="brand-mark reveal">BRIDGE</p>
+          <p class="eyebrow reveal" data-i18n="hero_eyebrow">Таджикистан / РФ → Китай · English track</p>
+          <h1 class="reveal delay-1" data-i18n="hero_title">Ориентация. Вузы Китая. Твой маршрут.</h1>
+          <p class="hero-lead reveal delay-2" data-i18n="hero_lead"></p>
+          <div class="hero-actions reveal delay-3">
+            <a class="btn primary" href="#/test" data-i18n="hero_cta_test">Пройти тест</a>
+            <a class="btn ghost" href="#/unis" data-i18n="hero_cta_unis">Вузы Китая</a>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section class="test-section" id="test">
+          <div class="section-head">
+            <p class="eyebrow">01</p>
+            <h2 data-i18n="test_title">Тест ориентации</h2>
+            <p id="testLead" data-i18n="test_lead"></p>
+          </div>
+          <div class="glass test-panel" id="testPanel">
+            <div id="testWizard"></div>
+            <div id="testResult" hidden></div>
+          </div>
+        </section>
+
+        <section class="unis" id="unis">
+          <div class="section-head">
+            <p class="eyebrow">02</p>
+            <h2 data-i18n="unis_title">Вузы Китая</h2>
+            <p id="uniLead" data-i18n="unis_lead"></p>
+          </div>
+          <div class="uni-filters" role="tablist">
+            <button class="active" data-filter="all" type="button" data-i18n="filter_all">Все</button>
+            <button data-filter="dream" type="button" data-i18n="filter_dream">Мечта</button>
+            <button data-filter="real" type="button" data-i18n="filter_real">Реализм</button>
+            <button data-filter="budget" type="button" data-i18n="filter_budget">Бюджет</button>
+            <button data-filter="mine" type="button" id="filterMine" data-i18n="filter_mine">Мои</button>
+          </div>
+          <div class="uni-track" id="uniTrack"></div>
+        </section>
+
+        <section class="checklist-section" id="checklist">
+          <div class="section-head">
+            <p class="eyebrow">03</p>
+            <h2 data-i18n="check_title">Чек-лист</h2>
+          </div>
+          <div class="checklist-panel glass">
+            <div class="check-progress">
+              <div class="ring" id="checkRing" style="--p:0"><strong id="checkPct">0%</strong></div>
+              <div>
+                <h3>Progress</h3>
+                <p id="checkCount">0 / 0</p>
+                <button class="btn tiny" type="button" id="resetChecks">Reset</button>
+              </div>
+            </div>
+            <div class="check-groups" id="checkGroups"></div>
+          </div>
+        </section>
+
+        <section class="plan" id="plan">
+          <div class="section-head">
+            <p class="eyebrow">04</p>
+            <h2 data-i18n="plan_title">12 месяцев</h2>
+          </div>
+          <div class="timeline">
+            <article class="tl reveal"><span>1</span><h3>IELTS + CSCA</h3><p>Passport · Math EN</p></article>
+            <article class="tl reveal delay-1"><span>2</span><h3>Portfolio</h3><p>PS · recommendations</p></article>
+            <article class="tl reveal delay-2"><span>3</span><h3>Apply</h3><p>Unis + CSC Type A</p></article>
+            <article class="tl reveal delay-3"><span>4</span><h3>Offer</h3><p>JW202 → X1 visa</p></article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- University detail page (hash route) -->
+    <section class="uni-page" id="uniPage" hidden>
+      <div class="uni-page-inner" id="uniPageBody"></div>
+    </section>
+
+    <footer class="footer">
+      <p data-i18n="footer">BRIDGE · ориентация и вузы Китая</p>
+      <p class="legal-links">
+        <a href="legal/privacy-consent.html">Privacy</a> ·
+        <a href="legal/age-consent.html">Age</a> ·
+        <a href="legal/terms.html">Terms</a>
+      </p>
+    </footer>
+  </div>
+
+  <script src="fx.js"></script>
+  <script src="data-universities.js"></script>
+  <script src="professions.js"></script>
+  <script src="i18n.js"></script>
+  <script src="auth.js"></script>
+  <script src="test-engine.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

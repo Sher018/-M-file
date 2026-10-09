@@ -1,50 +1,39 @@
-const STORAGE_KEY = "bridge-checklist-v1";
-const USERS_KEY = "bridge-users-v1";
-const SESSION_KEY = "bridge-session-v1";
-
 const CHECKLIST = [
   {
-    title: "На этой неделе",
+    title: { ru: "На этой неделе", en: "This week", tg: "Ин ҳафта" },
     items: [
-      { id: "w1", label: "Записаться на IELTS Academic", hint: "Цель: overall 6.5 (минимум 6.0)" },
-      { id: "w2", label: "Создать аккаунт на CSCA (csca.cn)", hint: "Mathematics на английском" },
-      { id: "w3", label: "Проверить срок паспорта", hint: "Лучше до 2028–2029+" },
-      { id: "w4", label: "Выбрать 6 вузов из шортлиста", hint: "2 мечта + 2 реализм + 2 запас" },
+      { id: "w1", label: { ru: "Записаться на IELTS Academic", en: "Book IELTS Academic", tg: "Ба IELTS Academic сабт шавед" } },
+      { id: "w2", label: { ru: "Создать аккаунт CSCA (csca.cn)", en: "Create CSCA account", tg: "Аккаунти CSCA созед" } },
+      { id: "w3", label: { ru: "Проверить срок паспорта", en: "Check passport validity", tg: "Мӯҳлати шиносномаро санҷед" } },
+      { id: "w4", label: { ru: "Выбрать 6 вузов", en: "Shortlist 6 universities", tg: "6 донишгоҳро интихоб кунед" } },
     ],
   },
   {
-    title: "Документы",
+    title: { ru: "Документы", en: "Documents", tg: "Ҳуҷҷатҳо" },
     items: [
-      { id: "d1", label: "Скан паспорта" },
-      { id: "d2", label: "Аттестат / справка о выпуске" },
-      { id: "d3", label: "Транскрипт + нотариальный перевод EN" },
-      { id: "d4", label: "Справка о несудимости" },
-      { id: "d5", label: "Медсправка Foreigner Physical Examination" },
-      { id: "d6", label: "1–2 рекомендации" },
-      { id: "d7", label: "Фото на белом фоне" },
+      { id: "d1", label: { ru: "Скан паспорта", en: "Passport scan", tg: "Скани шиноснома" } },
+      { id: "d2", label: { ru: "Аттестат / справка", en: "Diploma / leaving cert", tg: "Аттестат / маълумотнома" } },
+      { id: "d3", label: { ru: "Транскрипт + перевод EN", en: "Transcript + EN translation", tg: "Транскрипт + тарҷумаи EN" } },
+      { id: "d4", label: { ru: "Справка о несудимости", en: "No-criminal record", tg: "Маълумотнома аз судият" } },
+      { id: "d5", label: { ru: "Медсправка", en: "Medical form", tg: "Маълумотномаи тиббӣ" } },
+      { id: "d6", label: { ru: "1–2 рекомендации", en: "1–2 recommendations", tg: "1–2 тавсиянома" } },
     ],
   },
   {
-    title: "Подача",
+    title: { ru: "Подача", en: "Applications", tg: "Пешниҳод" },
     items: [
-      { id: "s1", label: "Подать в 2–3 вуза «мечты»" },
-      { id: "s2", label: "Подать в 2–3 реалистичных / бюджетных" },
-      { id: "s3", label: "Следить за CSC Type A (посольство КНР)" },
-      { id: "s4", label: "Загрузить CSCA transcript во все заявки" },
-      { id: "s5", label: "После offer: JW202 → виза X1" },
+      { id: "s1", label: { ru: "Подать в 2–3 вуза мечты", en: "Apply to 2–3 dream unis", tg: "Ба 2–3 донишгоҳи орзу" } },
+      { id: "s2", label: { ru: "Подать в бюджетные / реализм", en: "Apply to realistic / budget", tg: "Ба буҷетӣ / воқеӣ" } },
+      { id: "s3", label: { ru: "CSC Type A (посольство)", en: "CSC Type A (embassy)", tg: "CSC Type A (сафоратхона)" } },
+      { id: "s4", label: { ru: "CSCA transcript во все заявки", en: "CSCA in all apps", tg: "CSCA ба ҳамаи дархостҳо" } },
+      { id: "s5", label: { ru: "Offer → JW202 → виза X1", en: "Offer → JW202 → X1 visa", tg: "Offer → JW202 → визаи X1" } },
     ],
   },
 ];
 
-function money(n) {
-  if (n == null) return "—";
-  return `${Number(n).toLocaleString("ru-RU")} CNY`;
-}
-
-function yearBudget(c) {
-  const living = (c.livingMonth || 0) * 10;
-  return (c.tuitionYear || 0) + (c.dormYear || 0) + (c.insuranceYear || 0) + living + (c.application || 0);
-}
+const I18N = () => window.BRIDGE_I18N;
+const Auth = () => window.BRIDGE_AUTH;
+const FX = () => window.BRIDGE_FX;
 
 function loadJSON(key, fallback) {
   try {
@@ -53,216 +42,388 @@ function loadJSON(key, fallback) {
     return fallback;
   }
 }
-
 function saveJSON(key, value) {
   localStorage.setItem(key, JSON.stringify(value));
 }
 
-function simpleHash(str) {
-  let h = 0;
-  for (let i = 0; i < str.length; i++) h = (h << 5) - h + str.charCodeAt(i);
-  return `h${Math.abs(h)}`;
+function moneyTriple(cny) {
+  return FX().format(cny).label;
 }
 
-function getSession() {
-  return loadJSON(SESSION_KEY, null);
+function yearBudget(u) {
+  return (u.tuitionYear || 0) + (u.dormYear || 0) + (u.insuranceYear || 0) + (u.livingMonth || 0) * 10 + (u.applicationFee || 0);
 }
 
-function setSession(user) {
-  if (!user) localStorage.removeItem(SESSION_KEY);
-  else saveJSON(SESSION_KEY, { email: user.email, name: user.name });
-  refreshUserUI();
+/* ---------- i18n apply ---------- */
+function applyI18n() {
+  const t = I18N();
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.getAttribute("data-i18n");
+    const val = t.t(key);
+    if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") el.placeholder = val;
+    else el.textContent = val;
+  });
+  document.querySelectorAll(".lang-switch button").forEach((b) => {
+    b.classList.toggle("active", b.dataset.lang === t.lang);
+  });
+  document.title =
+    t.lang === "en"
+      ? "BRIDGE — Orientation & China universities"
+      : t.lang === "tg"
+        ? "BRIDGE — Ориентатсия ва донишгоҳҳои Чин"
+        : "BRIDGE — Ориентация и вузы Китая";
 }
 
-function getUsers() {
-  return loadJSON(USERS_KEY, {});
+function setupLang() {
+  document.querySelectorAll("[data-lang]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      I18N().setLang(btn.dataset.lang);
+      applyI18n();
+      route();
+    });
+  });
+  window.addEventListener("bridge:lang", () => {
+    applyI18n();
+  });
+  applyI18n();
 }
 
-function getCurrentUser() {
-  const s = getSession();
-  if (!s) return null;
-  return getUsers()[s.email] || null;
+/* ---------- Auth gate ---------- */
+function showGate(mode) {
+  const gate = document.getElementById("authGate");
+  const shell = document.getElementById("appShell");
+  gate.hidden = false;
+  shell.classList.add("gated");
+  const reg = document.getElementById("gateRegister");
+  const login = document.getElementById("gateLogin");
+  const otp = document.getElementById("gateOtp");
+  if (mode === "otp") {
+    reg.hidden = true;
+    login.hidden = true;
+    otp.hidden = false;
+  } else if (mode === "login") {
+    reg.hidden = true;
+    login.hidden = false;
+    otp.hidden = true;
+  } else {
+    reg.hidden = false;
+    login.hidden = true;
+    otp.hidden = true;
+  }
+}
+
+function hideGate() {
+  document.getElementById("authGate").hidden = true;
+  document.getElementById("appShell").classList.remove("gated");
 }
 
 function refreshUserUI() {
-  const user = getCurrentUser();
+  const user = Auth().currentUser();
   const pill = document.getElementById("userPill");
   const btn = document.getElementById("navAuthBtn");
   if (user) {
     pill.hidden = false;
     pill.textContent = user.name;
-    btn.textContent = "Мой тест";
-    btn.onclick = () => document.getElementById("test").scrollIntoView({ behavior: "smooth" });
+    btn.textContent = I18N().t("nav_logout");
+    btn.onclick = () => {
+      Auth().logout(false);
+      enforceGate();
+    };
   } else {
     pill.hidden = true;
-    btn.textContent = "Регистрация";
-    btn.onclick = () => document.getElementById("auth").scrollIntoView({ behavior: "smooth" });
   }
-  setupTestUI();
-  renderUniversities(currentFilter);
+}
+
+function enforceGate() {
+  if (Auth().isAuthed()) {
+    hideGate();
+    refreshUserUI();
+    route();
+  } else {
+    const users = Auth().getUsers();
+    const hasUsers = Object.keys(users).length > 0;
+    showGate(hasUsers ? "login" : "register");
+    refreshUserUI();
+  }
+}
+
+function setupAuthUI() {
+  document.getElementById("toLogin").addEventListener("click", () => showGate("login"));
+  document.getElementById("toRegister").addEventListener("click", () => showGate("register"));
+
+  document.getElementById("registerForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const msg = document.getElementById("gateMsg");
+    msg.textContent = "";
+    try {
+      const pending = await Auth().requestOtp({
+        mode: "register",
+        name: String(fd.get("name")).trim(),
+        email: String(fd.get("email")),
+        country: fd.get("country"),
+        consents: {
+          pd: !!fd.get("consentPd"),
+          age: !!fd.get("consentAge"),
+          terms: !!fd.get("consentTerms"),
+        },
+      });
+      showOtpStep(pending);
+    } catch (err) {
+      msg.textContent =
+        err.message === "exists"
+          ? "Email already registered — sign in"
+          : err.message === "consents"
+            ? "Accept all consents"
+            : "Check email / form";
+    }
+  });
+
+  document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const msg = document.getElementById("gateMsg");
+    msg.textContent = "";
+    try {
+      const pending = await Auth().requestOtp({
+        mode: "login",
+        email: String(fd.get("email")),
+      });
+      showOtpStep(pending);
+    } catch (err) {
+      msg.textContent = err.message === "not_found" ? "No account — register first" : "Check email";
+    }
+  });
+
+  document.getElementById("otpForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const msg = document.getElementById("gateMsg");
+    try {
+      Auth().verifyOtp(fd.get("code"));
+      msg.textContent = "";
+      hideGate();
+      refreshUserUI();
+      location.hash = "#/test";
+      route();
+    } catch (err) {
+      msg.textContent =
+        err.message === "expired" ? "Code expired — request again" : "Wrong code";
+    }
+  });
+
+  window.addEventListener("bridge:auth", () => {
+    refreshUserUI();
+    if (!Auth().isAuthed()) enforceGate();
+  });
+}
+
+function showOtpStep(pending) {
+  showGate("otp");
+  const demo = document.getElementById("otpDemo");
+  if (pending.demo) {
+    demo.hidden = false;
+    demo.textContent = `CODE: ${pending.code}`;
+  } else {
+    demo.hidden = true;
+  }
+}
+
+/* ---------- Router ---------- */
+function parseHash() {
+  const h = (location.hash || "#/").replace(/^#/, "");
+  const parts = h.split("/").filter(Boolean);
+  if (parts[0] === "uni" && parts[1]) return { view: "uni", id: parts[1] };
+  if (parts[0] === "test") return { view: "home", scroll: "test" };
+  if (parts[0] === "unis") return { view: "home", scroll: "unis" };
+  if (parts[0] === "checklist") return { view: "home", scroll: "checklist" };
+  if (parts[0] === "plan") return { view: "home", scroll: "plan" };
+  return { view: "home" };
+}
+
+function route() {
+  if (!Auth().isAuthed()) {
+    enforceGate();
+    return;
+  }
+  const r = parseHash();
+  const home = document.getElementById("homeView");
+  const page = document.getElementById("uniPage");
+  if (r.view === "uni") {
+    home.hidden = true;
+    page.hidden = false;
+    renderUniPage(r.id);
+    window.scrollTo(0, 0);
+  } else {
+    home.hidden = false;
+    page.hidden = true;
+    renderUniversities(currentFilter);
+    setupTestUI();
+    renderChecklist();
+    if (r.scroll) {
+      setTimeout(() => document.getElementById(r.scroll)?.scrollIntoView({ behavior: "smooth" }), 50);
+    }
+  }
 }
 
 /* ---------- Universities ---------- */
 let currentFilter = "all";
 
-function recommendedIds(user) {
-  return (user && user.result && user.result.uniIds) || [];
+function recommendedIds() {
+  const u = Auth().currentUser();
+  return (u && u.result && u.result.uniIds) || [];
 }
 
 function renderUniversities(filter = "all") {
   currentFilter = filter;
   const track = document.getElementById("uniTrack");
-  const user = getCurrentUser();
-  const mine = new Set(recommendedIds(user));
-  const list = window.BRIDGE_DATA.universities.filter((u) => {
+  if (!track) return;
+  const mine = new Set(recommendedIds());
+  const list = (window.BRIDGE_UNIS || []).filter((u) => {
     if (filter === "all") return true;
     if (filter === "mine") return mine.has(u.id);
     return u.tier === filter;
   });
-
   track.innerHTML = "";
   if (!list.length) {
-    track.innerHTML = `<p class="empty-unis">Пока нет вузов в этом фильтре. Пройди тест — появится «Мои».</p>`;
+    track.innerHTML = `<p class="empty-unis">—</p>`;
     return;
   }
-
+  const t = I18N();
   list.forEach((u) => {
     const card = document.createElement("article");
     card.className = `uni-card ${u.tier}${mine.has(u.id) ? " is-mine" : ""}`;
-    card.dataset.tier = u.tier;
-    card.dataset.id = u.id;
     card.tabIndex = 0;
-    card.setAttribute("role", "button");
+    card.setAttribute("role", "link");
     card.innerHTML = `
-      <div class="uni-rank">${u.rank}</div>
-      <h3>${u.name}</h3>
-      <p class="major">${u.major}</p>
-      <p>${u.blurb}</p>
+      <div class="uni-rank">${u.rankCN ?? "—"}</div>
+      <h3>${t.loc(u.name)}</h3>
+      <p class="major">${(u.englishPrograms || u.majors || []).slice(0, 2).join(" · ")}</p>
+      <p>${t.loc(u.blurb)}</p>
       <div class="uni-meta">
-        <span>${money(u.costs.tuitionYear)}/год</span>
-        <span>${u.english.split("/")[0].trim()}</span>
+        <span>${moneyTriple(u.tuitionYear)}</span>
+        <span>${t.loc(u.city)}</span>
       </div>
-      <span class="uni-click-hint">Нажми → документы, экзамены, бюджет</span>
     `;
-    card.addEventListener("click", () => openUniModal(u.id));
+    const go = () => {
+      location.hash = `#/uni/${u.id}`;
+    };
+    card.addEventListener("click", go);
     card.addEventListener("keydown", (e) => {
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
-        openUniModal(u.id);
+        go();
       }
     });
     track.appendChild(card);
   });
 }
 
-function openUniModal(id) {
-  const u = window.BRIDGE_DATA.universities.find((x) => x.id === id);
-  if (!u) return;
-  const c = u.costs;
-  const body = document.getElementById("modalBody");
+function renderUniPage(id) {
+  const u = (window.BRIDGE_UNIS || []).find((x) => x.id === id);
+  const body = document.getElementById("uniPageBody");
+  const t = I18N();
+  if (!u) {
+    body.innerHTML = `<p>Not found</p><a href="#/unis">${t.t("uni_back")}</a>`;
+    return;
+  }
+  const q = u.quota || {};
+  const save = q.saveVsPaidYear || 0;
   body.innerHTML = `
-    <p class="eyebrow">${u.city} · ${u.short}</p>
-    <h2 id="modalTitle">${u.name}</h2>
-    <p class="modal-major">${u.major}</p>
-    <p class="modal-blurb">${u.blurb}</p>
+    <a class="btn ghost uni-back" href="#/unis">${t.t("uni_back")}</a>
+    <p class="eyebrow">${t.loc(u.city)} · ${u.tier}</p>
+    <h1>${t.loc(u.name)}</h1>
+    <p class="modal-blurb">${t.loc(u.blurb)}</p>
     <div class="modal-links">
-      <a class="btn tiny" href="${u.portal}" target="_blank" rel="noopener">Сайт вуза</a>
-      <a class="btn tiny" href="${u.apply}" target="_blank" rel="noopener">Подача онлайн</a>
+      <a class="btn primary" href="${u.portal}" target="_blank" rel="noopener">${t.t("uni_portal")}</a>
+      ${u.apply ? `<a class="btn ghost" href="${u.apply}" target="_blank" rel="noopener">${t.t("uni_apply")}</a>` : ""}
     </div>
 
-    <div class="modal-grid">
-      <div class="modal-block">
-        <h3>Документы</h3>
+    <div class="uni-detail-grid">
+      <article class="glass detail-block">
+        <h3>${t.t("uni_rank")}</h3>
         <table class="info-table">
-          <thead><tr><th>#</th><th>Документ</th></tr></thead>
-          <tbody>
-            ${u.documents.map((d, i) => `<tr><td>${i + 1}</td><td>${d}</td></tr>`).join("")}
-          </tbody>
+          <tr><td>CN</td><td>${u.rankCN ?? "—"}</td></tr>
+          <tr><td>World</td><td>${u.rankWorld ?? "—"}</td></tr>
+          <tr><td>English</td><td>${u.englishReq || "—"}</td></tr>
+          <tr><td>CSCA</td><td>${(u.csca || []).join("; ") || "—"}</td></tr>
         </table>
-      </div>
-      <div class="modal-block">
-        <h3>Испытания / экзамены</h3>
-        <table class="info-table">
-          <thead><tr><th>Тип</th><th>Детали</th></tr></thead>
-          <tbody>
-            <tr><td>Английский</td><td>${u.english}</td></tr>
-            <tr><td>CSCA</td><td>${u.csca.join("; ")}</td></tr>
-            ${u.exams.map((e) => `<tr><td>Этап</td><td>${e}</td></tr>`).join("")}
-          </tbody>
-        </table>
-      </div>
-    </div>
+      </article>
 
-    <div class="modal-block">
-      <h3>Бюджет (ориентир)</h3>
-      <p class="muted">${window.BRIDGE_DATA.currencyNote}</p>
-      <table class="info-table cost-table">
-        <thead><tr><th>Статья</th><th>Сумма</th></tr></thead>
-        <tbody>
-          <tr><td>Application fee</td><td>${money(c.application)}</td></tr>
-          ${c.deposit ? `<tr><td>Депозит / advance</td><td>${money(c.deposit)}</td></tr>` : ""}
-          <tr><td>Tuition / год</td><td>${money(c.tuitionYear)}</td></tr>
-          <tr><td>Общежитие / год</td><td>${money(c.dormYear)}</td></tr>
-          <tr><td>Страховка / год</td><td>${money(c.insuranceYear)}</td></tr>
-          <tr><td>Жизнь / месяц</td><td>${money(c.livingMonth)}</td></tr>
-          <tr class="total"><td>Ориентир 1-го года*</td><td>${money(yearBudget(c))}</td></tr>
-        </tbody>
-      </table>
-      <p class="muted">*Tuition + dorm + insurance + ~10 мес. жизни + application. ${c.notes || ""}</p>
-      <div class="cost-bars" aria-hidden="true">
-        <div class="cbar"><span>Учёба</span><i style="--w:${Math.min(100, (c.tuitionYear / 120000) * 100)}%"></i></div>
-        <div class="cbar"><span>Жильё</span><i style="--w:${Math.min(100, (c.dormYear / 15000) * 100)}%"></i></div>
-        <div class="cbar"><span>Жизнь×10</span><i style="--w:${Math.min(100, ((c.livingMonth * 10) / 30000) * 100)}%"></i></div>
-      </div>
+      <article class="glass detail-block">
+        <h3>${t.t("uni_majors")}</h3>
+        <ul class="chip-list">
+          ${(u.majors || []).map((m) => `<li>${m}</li>`).join("")}
+        </ul>
+        <p class="muted">EN: ${(u.englishPrograms || []).join(", ") || "—"}</p>
+      </article>
+
+      <article class="glass detail-block">
+        <h3>${t.t("uni_tuition")}</h3>
+        <p class="muted">${t.t("uni_fx_note")} · FX ${FX().updated}</p>
+        <table class="info-table cost-table">
+          <tr><td>${t.t("uni_tuition")}</td><td>${moneyTriple(u.tuitionYear)}</td></tr>
+          <tr><td>${t.t("uni_dorm")}</td><td>${moneyTriple(u.dormYear)}</td></tr>
+          <tr><td>Insurance / year</td><td>${moneyTriple(u.insuranceYear)}</td></tr>
+          <tr><td>${t.t("uni_living")}</td><td>${moneyTriple(u.livingMonth)}</td></tr>
+          <tr><td>Application</td><td>${moneyTriple(u.applicationFee || 0)}</td></tr>
+          <tr class="total"><td>${t.t("uni_year")}</td><td>${moneyTriple(yearBudget(u))}</td></tr>
+        </table>
+      </article>
+
+      <article class="glass detail-block highlight">
+        <h3>${t.t("uni_quota")}</h3>
+        <p><strong>${q.type || "CSC / university"}</strong></p>
+        <ul>
+          <li>Tuition cover: ${q.coverTuition ?? "—"}</li>
+          <li>Stipend / month: ${q.stipendMonth != null ? moneyTriple(q.stipendMonth) : "—"}</li>
+          <li>Dorm: ${q.dormCovered ?? "—"}</li>
+        </ul>
+        <p class="save-line"><span>${t.t("uni_save")}</span><strong>${moneyTriple(save)}</strong></p>
+        ${u.sourceNote ? `<p class="muted">Source: ${u.sourceNote}</p>` : ""}
+      </article>
+
+      <article class="glass detail-block">
+        <h3>${t.t("uni_docs")}</h3>
+        <ol>${(u.documents || []).map((d) => `<li>${d}</li>`).join("")}</ol>
+      </article>
+
+      <article class="glass detail-block">
+        <h3>${t.t("uni_exams")}</h3>
+        <ul>${(u.exams || []).map((d) => `<li>${d}</li>`).join("")}</ul>
+      </article>
     </div>
   `;
-  const modal = document.getElementById("uniModal");
-  modal.hidden = false;
-  document.body.style.overflow = "hidden";
-}
-
-function closeModal() {
-  document.getElementById("uniModal").hidden = true;
-  document.body.style.overflow = "";
 }
 
 /* ---------- Checklist ---------- */
-function checklistStorageKey() {
-  const u = getCurrentUser();
-  return u ? `bridge-check-${u.email}` : STORAGE_KEY;
-}
-
-function loadChecks() {
-  return loadJSON(checklistStorageKey(), {});
-}
-
-function saveChecks(state) {
-  saveJSON(checklistStorageKey(), state);
-}
-
-function allItemIds() {
-  return CHECKLIST.flatMap((g) => g.items.map((i) => i.id));
+function checklistKey() {
+  const u = Auth().currentUser();
+  return u ? `bridge-check-${u.email}` : "bridge-check-anon";
 }
 
 function renderChecklist() {
   const root = document.getElementById("checkGroups");
-  const state = loadChecks();
+  if (!root) return;
+  const state = loadJSON(checklistKey(), {});
+  const t = I18N();
   root.innerHTML = "";
   CHECKLIST.forEach((group) => {
     const wrap = document.createElement("div");
     wrap.className = "check-group";
-    wrap.innerHTML = `<h4>${group.title}</h4>`;
+    wrap.innerHTML = `<h4>${t.loc(group.title)}</h4>`;
     group.items.forEach((item) => {
       const row = document.createElement("div");
       row.className = "check-item" + (state[item.id] ? " done" : "");
+      const id = `c_${item.id}`;
       row.innerHTML = `
-        <input type="checkbox" id="${item.id}" ${state[item.id] ? "checked" : ""} />
-        <label for="${item.id}">${item.label}${item.hint ? `<small>${item.hint}</small>` : ""}</label>
+        <input type="checkbox" id="${id}" ${state[item.id] ? "checked" : ""} />
+        <label for="${id}">${t.loc(item.label)}</label>
       `;
       row.querySelector("input").addEventListener("change", (e) => {
-        const next = loadChecks();
+        const next = loadJSON(checklistKey(), {});
         next[item.id] = e.target.checked;
-        saveChecks(next);
+        saveJSON(checklistKey(), next);
         row.classList.toggle("done", e.target.checked);
         updateProgress();
       });
@@ -274,239 +435,175 @@ function renderChecklist() {
 }
 
 function updateProgress() {
-  const state = loadChecks();
-  const ids = allItemIds();
+  const state = loadJSON(checklistKey(), {});
+  const ids = CHECKLIST.flatMap((g) => g.items.map((i) => i.id));
   const done = ids.filter((id) => state[id]).length;
   const pct = ids.length ? Math.round((done / ids.length) * 100) : 0;
-  document.getElementById("checkRing").style.setProperty("--p", String(pct));
-  document.getElementById("checkPct").textContent = `${pct}%`;
-  document.getElementById("checkCount").textContent = `${done} из ${ids.length} выполнено`;
-}
-
-/* ---------- Auth ---------- */
-function setupAuth() {
-  document.getElementById("registerForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const fd = new FormData(e.target);
-    const email = String(fd.get("email")).trim().toLowerCase();
-    const users = getUsers();
-    const msg = document.getElementById("registerMsg");
-    if (users[email]) {
-      msg.textContent = "Такой email уже зарегистрирован. Войди справа.";
-      return;
-    }
-    const user = {
-      email,
-      name: String(fd.get("name")).trim(),
-      country: fd.get("country"),
-      pass: simpleHash(String(fd.get("password"))),
-      createdAt: new Date().toISOString(),
-      consents: {
-        pd: true,
-        age: true,
-        terms: true,
-        at: new Date().toISOString(),
-        lawNote: "Consent under RF 152-FZ principles + TJ personal data consent for service purpose",
-      },
-      result: null,
-    };
-    users[email] = user;
-    saveJSON(USERS_KEY, users);
-    setSession(user);
-    msg.textContent = "Готово! Переходим к тесту…";
-    document.getElementById("test").scrollIntoView({ behavior: "smooth" });
-    setupTestUI();
-  });
-
-  document.getElementById("loginForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const fd = new FormData(e.target);
-    const email = String(fd.get("email")).trim().toLowerCase();
-    const user = getUsers()[email];
-    const msg = document.getElementById("loginMsg");
-    if (!user || user.pass !== simpleHash(String(fd.get("password")))) {
-      msg.textContent = "Неверный email или пароль.";
-      return;
-    }
-    setSession(user);
-    msg.textContent = `С возвращением, ${user.name}!`;
-    renderChecklist();
-    setupTestUI();
-  });
-
-  document.getElementById("logoutBtn").addEventListener("click", () => {
-    if (!confirm("Выйти и очистить локальные данные этого браузера (аккаунты + прогресс)?")) return;
-    localStorage.clear();
-    setSession(null);
-    renderChecklist();
-    setupTestUI();
-    renderUniversities("all");
-    document.getElementById("loginMsg").textContent = "Локальные данные очищены.";
-  });
+  document.getElementById("checkRing")?.style.setProperty("--p", String(pct));
+  const pctEl = document.getElementById("checkPct");
+  const countEl = document.getElementById("checkCount");
+  if (pctEl) pctEl.textContent = `${pct}%`;
+  if (countEl) countEl.textContent = `${done} / ${ids.length}`;
 }
 
 /* ---------- Test ---------- */
-function setupTestUI() {
-  const user = getCurrentUser();
-  const locked = document.getElementById("testLocked");
+let designPromise = null;
+
+function getDesign() {
+  if (!designPromise) designPromise = window.BRIDGE_TEST.loadDesign();
+  return designPromise;
+}
+
+async function setupTestUI() {
+  const user = Auth().currentUser();
   const wizard = document.getElementById("testWizard");
   const result = document.getElementById("testResult");
-  const lead = document.getElementById("testLead");
+  if (!wizard) return;
+  if (!user) return;
 
-  if (!user) {
-    locked.hidden = false;
-    wizard.hidden = true;
-    result.hidden = true;
-    lead.textContent = "После регистрации откроется короткий тест.";
-    return;
-  }
-
-  locked.hidden = true;
   if (user.result) {
     wizard.hidden = true;
     result.hidden = false;
     renderTestResult(user.result);
-    lead.textContent = `${user.name}, твой результат сохранён. Можно пройти тест заново ниже.`;
-    result.insertAdjacentHTML(
-      "beforeend",
-      `<button class="btn tiny" type="button" id="retakeTest">Пройти тест заново</button>`
-    );
-    document.getElementById("retakeTest")?.addEventListener("click", () => startTest());
   } else {
-    startTest();
+    result.hidden = true;
+    wizard.hidden = false;
+    await startTest();
   }
 }
 
-function startTest() {
+async function startTest() {
+  const design = await getDesign();
   const wizard = document.getElementById("testWizard");
   const result = document.getElementById("testResult");
   result.hidden = true;
   wizard.hidden = false;
-  const questions = window.BRIDGE_DATA.testQuestions;
+  const questions = design.questions;
   let step = 0;
   const answers = {};
+  const t = I18N();
 
   function draw() {
     const q = questions[step];
+    let optionsHtml = "";
+    if (q.format === "likert5") {
+      optionsHtml = [1, 2, 3, 4, 5]
+        .map(
+          (n) =>
+            `<button type="button" class="test-opt" data-v="${n}">${n}. ${t.t("likert_" + n)}</button>`
+        )
+        .join("");
+    } else if (q.format === "forced4") {
+      optionsHtml = (q.options || [])
+        .map((o) => {
+          const id = o.id || o.k;
+          return `<button type="button" class="test-opt" data-v="${id}">${o.text || o.t}</button>`;
+        })
+        .join("");
+    } else if (q.format === "pick2of4") {
+      optionsHtml = `
+        <div class="pick-grid">
+          ${(q.options || [])
+            .map((o) => {
+              const id = o.id || o.k;
+              return `<label class="pick-opt"><input type="checkbox" value="${id}" /><span>${o.text || o.t}</span></label>`;
+            })
+            .join("")}
+        </div>
+        <button type="button" class="btn primary" id="pickNext">OK</button>
+      `;
+    }
+
+    const text = typeof q.text === "object" ? t.loc(q.text) : q.text;
     wizard.innerHTML = `
-      <div class="test-progress">Вопрос ${step + 1} / ${questions.length}</div>
-      <h3>${q.text}</h3>
-      <div class="test-options">
-        ${q.options
-          .map(
-            (o) => `<button type="button" class="test-opt" data-k="${o.k}">${o.k}) ${o.t}</button>`
-          )
-          .join("")}
-      </div>
+      <div class="test-progress">${t.t("test_progress", { n: step + 1, total: questions.length })}</div>
+      <h3>${text}</h3>
+      <div class="test-options">${optionsHtml}</div>
     `;
-    wizard.querySelectorAll(".test-opt").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        answers[q.id] = btn.dataset.k;
-        step += 1;
-        if (step >= questions.length) finishTest(answers);
-        else draw();
+
+    if (q.format === "pick2of4") {
+      wizard.querySelector("#pickNext").addEventListener("click", () => {
+        const picks = [...wizard.querySelectorAll("input:checked")].map((i) => i.value).slice(0, 2);
+        if (!picks.length) return;
+        answers[q.id] = picks;
+        advance();
       });
-    });
+    } else {
+      wizard.querySelectorAll(".test-opt").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          answers[q.id] = btn.dataset.v;
+          advance();
+        });
+      });
+    }
   }
+
+  function advance() {
+    step += 1;
+    if (step >= questions.length) finishTest(design, answers);
+    else draw();
+  }
+
   draw();
 }
 
-function finishTest(answers) {
-  const scores = {};
-  const banned = new Set();
-  window.BRIDGE_DATA.testQuestions.forEach((q) => {
-    const key = answers[q.id];
-    const opt = q.options.find((o) => o.k === key);
-    if (!opt) return;
-    Object.entries(opt.tags || {}).forEach(([t, v]) => {
-      scores[t] = (scores[t] || 0) + v;
-    });
-    (opt.ban || []).forEach((b) => banned.add(b));
-  });
-
-  // Rank universities by tag overlap
-  const ranked = window.BRIDGE_DATA.universities
-    .map((u) => {
-      let score = 0;
-      u.tags.forEach((t) => {
-        score += scores[t] || 0;
-      });
-      if (banned.has("eng") && u.tags.includes("eng")) score -= 10;
-      // budget preference
-      if (scores.budget && u.tier === "budget") score += 2;
-      if (scores.premium && (u.tier === "dream" || u.id === "xjtlu" || u.id === "unnc")) score += 1;
-      return { id: u.id, score, u };
-    })
-    .sort((a, b) => b.score - a.score);
-
-  const top = ranked.slice(0, 5);
-  const profile = Object.entries(scores)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 4)
-    .map(([k]) => k);
-
-  const result = {
-    at: new Date().toISOString(),
-    scores,
-    profile,
-    uniIds: top.map((t) => t.id),
-    summary:
-      profile[0] === "tech" || profile[0] === "eng"
-        ? "У тебя тяга к технологиям — но для Китая English business/trade всё равно часто реалистичнее без сильной математики."
-        : "Тебе ближе бизнес, коммуникации и международная среда — English-track trade/business/media в Китае.",
-  };
-
-  const users = getUsers();
-  const session = getSession();
-  if (session && users[session.email]) {
-    users[session.email].result = result;
-    saveJSON(USERS_KEY, users);
-  }
-
+function finishTest(design, answers) {
+  const result = window.BRIDGE_TEST.buildResult(design, answers);
+  Auth().saveUserResult(result);
   document.getElementById("testWizard").hidden = true;
   document.getElementById("testResult").hidden = false;
   renderTestResult(result);
   renderUniversities("mine");
   document.querySelectorAll(".uni-filters button").forEach((b) => b.classList.remove("active"));
-  document.getElementById("filterMine").classList.add("active");
-  document.getElementById("unis").scrollIntoView({ behavior: "smooth" });
+  document.getElementById("filterMine")?.classList.add("active");
+  location.hash = "#/unis";
 }
 
 function renderTestResult(result) {
   const box = document.getElementById("testResult");
-  const unis = result.uniIds
-    .map((id) => window.BRIDGE_DATA.universities.find((u) => u.id === id))
+  const t = I18N();
+  const unis = (result.uniIds || [])
+    .map((id) => (window.BRIDGE_UNIS || []).find((u) => u.id === id))
     .filter(Boolean);
+
   box.innerHTML = `
-    <h3>Твой результат</h3>
+    <h3>${t.t("result_title")}</h3>
     <p>${result.summary}</p>
-    <p><strong>Профиль:</strong> ${result.profile.join(" · ")}</p>
+    <div class="cluster-pills">
+      ${(result.rankedClusters || [])
+        .map((c) => `<span class="pill">${c.label} <em>${c.score}</em></span>`)
+        .join("")}
+    </div>
+    <h4>${t.t("result_professions")}</h4>
+    <ul class="prof-list">
+      ${(result.professions || [])
+        .map((p) => `<li><strong>${p.name}</strong> <span class="muted">${p.clusterLabel}</span></li>`)
+        .join("")}
+    </ul>
+    <h4>${t.t("result_unis")}</h4>
     <div class="result-unis">
       ${unis
         .map(
           (u) => `
-        <button type="button" class="result-uni" data-id="${u.id}">
-          <strong>${u.name}</strong>
-          <span>${u.major}</span>
-          <em>${money(u.costs.tuitionYear)}/год</em>
-        </button>`
+        <a class="result-uni" href="#/uni/${u.id}">
+          <strong>${t.loc(u.name)}</strong>
+          <span>${(u.englishPrograms || []).slice(0, 1).join("") || (u.majors || [])[0] || ""}</span>
+          <em>${moneyTriple(u.tuitionYear)}</em>
+        </a>`
         )
         .join("")}
     </div>
-    <p class="muted">Нажми вуз — откроются документы, экзамены и бюджет.</p>
+    <p class="muted">${t.t("result_disclaimer")}</p>
+    <button class="btn tiny" type="button" id="retakeTest">${t.t("result_retake")}</button>
   `;
-  box.querySelectorAll(".result-uni").forEach((btn) => {
-    btn.addEventListener("click", () => openUniModal(btn.dataset.id));
+  document.getElementById("retakeTest")?.addEventListener("click", async () => {
+    Auth().saveUserResult(null);
+    await startTest();
   });
 }
 
-/* ---------- UI chrome ---------- */
+/* ---------- Chrome ---------- */
 function setupNav() {
-  document.querySelectorAll("[data-scroll]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      document.querySelector(btn.getAttribute("data-scroll"))?.scrollIntoView({ behavior: "smooth" });
-    });
-  });
   document.querySelectorAll(".uni-filters button").forEach((btn) => {
     btn.addEventListener("click", () => {
       document.querySelectorAll(".uni-filters button").forEach((b) => b.classList.remove("active"));
@@ -514,19 +611,10 @@ function setupNav() {
       renderUniversities(btn.dataset.filter);
     });
   });
-  document.querySelectorAll("[data-close-modal]").forEach((el) => {
-    el.addEventListener("click", closeModal);
+  document.getElementById("resetChecks")?.addEventListener("click", () => {
+    localStorage.removeItem(checklistKey());
+    renderChecklist();
   });
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeModal();
-  });
-  document.getElementById("resetChecks").addEventListener("click", () => {
-    if (confirm("Сбросить отметки чек-листа?")) {
-      localStorage.removeItem(checklistStorageKey());
-      renderChecklist();
-    }
-  });
-  document.getElementById("printBtn").addEventListener("click", () => window.print());
 }
 
 function setupReveal() {
@@ -534,13 +622,13 @@ function setupReveal() {
   const io = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
+        if (entry.intersecting || entry.isIntersecting) {
           entry.target.classList.add("visible");
           io.unobserve(entry.target);
         }
       });
     },
-    { threshold: 0.15 }
+    { threshold: 0.12 }
   );
   nodes.forEach((n) => io.observe(n));
 }
@@ -556,11 +644,12 @@ function setupScrollProgress() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  setupLang();
+  setupAuthUI();
   setupNav();
-  setupAuth();
   setupReveal();
   setupScrollProgress();
-  refreshUserUI();
-  renderUniversities("all");
-  renderChecklist();
+  window.addEventListener("hashchange", route);
+  enforceGate();
+  if (Auth().isAuthed()) route();
 });
