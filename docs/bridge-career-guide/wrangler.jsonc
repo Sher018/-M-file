@@ -1,9 +1,14 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "bridge-career-guide",
-  "account_id": "3080857feaf6a89da8d851b96ecac94c",
+  "account_id": "fd027a39d93e766f4d1774eab4e81291",
   "main": "worker.js",
   "compatibility_date": "2026-10-09",
+  "workers_dev": false,
+  "routes": [
+    { "pattern": "bridge-tj.lol", "custom_domain": true },
+    { "pattern": "www.bridge-tj.lol", "custom_domain": true }
+  ],
   "assets": {
     "directory": ".",
     "binding": "ASSETS",
