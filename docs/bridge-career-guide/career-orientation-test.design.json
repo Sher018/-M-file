@@ -1,0 +1,699 @@
+{
+  "meta": {
+    "id": "bridge-career-orientation-v1",
+    "title": "Short career orientation test (Gorisont-inspired)",
+    "inspiredBy": {
+      "source": "https://gorisont.com/",
+      "layers": [
+        { "name": "Big Five (OCEAN / IPIP-50)", "fullItems": 50, "role": "stable traits" },
+        { "name": "DISC", "fullItems": 28, "role": "workplace behaviour style" },
+        { "name": "Values (PVQ-21 / Schwartz)", "fullItems": 21, "role": "what must be true in life/work" },
+        { "name": "Motivation (WEIMS)", "fullItems": 12, "role": "what sustains effort" },
+        { "name": "MBTI", "fullItems": 60, "role": "skipped in short form (overlaps Big Five for career routing)" }
+      ],
+      "fullSuiteApproxItems": 171,
+      "fullSuiteApproxMinutes": 25
+    },
+    "designGoals": [
+      "12–16 questions, ~3–5 minutes",
+      "Multi-layer signal without full psychometrics",
+      "Map to career clusters for university / major routing",
+      "JSON-ready for a web wizard (Likert + forced-choice)"
+    ],
+    "caveats": [
+      "Not a clinical or hiring instrument; orientation hypotheses only.",
+      "Short forms trade reliability for completion rate.",
+      "Prefer top-3 clusters + narrative, not a single locked profession."
+    ],
+    "locale": "ru",
+    "version": "1.0.0"
+  },
+
+  "responseFormats": {
+    "likert5": {
+      "id": "likert5",
+      "labels": {
+        "1": "Совсем не про меня",
+        "2": "Скорее нет",
+        "3": "Иногда / нейтрально",
+        "4": "Скорее да",
+        "5": "Точно про меня"
+      }
+    },
+    "forced4": {
+      "id": "forced4",
+      "description": "Pick one option; each option adds weights to dimensions and/or clusters"
+    },
+    "pick2of4": {
+      "id": "pick2of4",
+      "description": "Pick up to 2 options; each selected option adds weights"
+    }
+  },
+
+  "dimensions": {
+    "traits": [
+      { "id": "openness", "layer": "big_five", "label": "Открытость", "short": "O", "range": [0, 100] },
+      { "id": "conscientiousness", "layer": "big_five", "label": "Дисциплина", "short": "C", "range": [0, 100] },
+      { "id": "extraversion", "layer": "big_five", "label": "Экстраверсия", "short": "E", "range": [0, 100] },
+      { "id": "agreeableness", "layer": "big_five", "label": "Эмпатия", "short": "A", "range": [0, 100] },
+      { "id": "stability", "layer": "big_five", "label": "Устойчивость", "short": "S", "range": [0, 100], "note": "Emotional stability = inverse of neuroticism (Gorisont-style label)" }
+    ],
+    "disc": [
+      { "id": "dominance", "layer": "disc", "label": "Dominance", "short": "D", "range": [0, 100] },
+      { "id": "influence", "layer": "disc", "label": "Influence", "short": "I", "range": [0, 100] },
+      { "id": "steadiness", "layer": "disc", "label": "Steadiness", "short": "S", "range": [0, 100] },
+      { "id": "compliance", "layer": "disc", "label": "Compliance", "short": "C", "range": [0, 100] }
+    ],
+    "values": [
+      { "id": "val_autonomy", "layer": "values", "label": "Самостоятельность", "schwartz": "self-direction" },
+      { "id": "val_achievement", "layer": "values", "label": "Достижения", "schwartz": "achievement" },
+      { "id": "val_power", "layer": "values", "label": "Статус / влияние", "schwartz": "power" },
+      { "id": "val_security", "layer": "values", "label": "Безопасность", "schwartz": "security" },
+      { "id": "val_benevolence", "layer": "values", "label": "Забота о людях", "schwartz": "benevolence+universalism" },
+      { "id": "val_stimulation", "layer": "values", "label": "Новизна / вызов", "schwartz": "stimulation" }
+    ],
+    "motivation": [
+      { "id": "mot_intrinsic", "layer": "motivation", "label": "Внутренний интерес", "weims": "intrinsic" },
+      { "id": "mot_identified", "layer": "motivation", "label": "Смысл / идентичность", "weims": "identified" },
+      { "id": "mot_extrinsic", "layer": "motivation", "label": "Внешние награды", "weims": "external" },
+      { "id": "mot_people", "layer": "motivation", "label": "Люди и влияние", "note": "practical career driver (not pure WEIMS)" },
+      { "id": "mot_systems", "layer": "motivation", "label": "Системы и точность", "note": "practical career driver" }
+    ]
+  },
+
+  "careerClusters": [
+    { "id": "business", "label": "Бизнес / менеджджмент", "aliases": ["management", "entrepreneurship"] },
+    { "id": "finance", "label": "Финансы / экономика", "aliases": ["accounting", "banking"] },
+    { "id": "media", "label": "Медиа / коммуникации", "aliases": ["communication", "marketing", "pr"] },
+    { "id": "design", "label": "Дизайн / креатив", "aliases": ["creative", "ux", "art"] },
+    { "id": "it", "label": "IT / digital products", "aliases": ["tech", "software", "data"] },
+    { "id": "engineering", "label": "Инженерия", "aliases": ["eng", "mechanical", "civil", "electronics"] },
+    { "id": "medicine", "label": "Медицина / healthcare", "aliases": ["health", "pharma"] },
+    { "id": "law", "label": "Право", "aliases": ["legal"] },
+    { "id": "education", "label": "Образование / педагогика", "aliases": ["teaching"] },
+    { "id": "hospitality", "label": "Гостеприимство / туризм", "aliases": ["tourism", "service"] },
+    { "id": "logistics", "label": "Логистика / supply chain", "aliases": ["operations", "transport"] },
+    { "id": "international_relations", "label": "Международные отношения", "aliases": ["diplomacy", "ir", "trade"] }
+  ],
+
+  "questions": [
+    {
+      "id": "q01",
+      "block": "traits",
+      "format": "likert5",
+      "text": "Мне нравится разбирать новые идеи, культуры и необычные подходы — даже если это не «практично» сразу.",
+      "weights": { "openness": 1 }
+    },
+    {
+      "id": "q02",
+      "block": "traits",
+      "format": "likert5",
+      "text": "Я легко держу план, дедлайны и порядок в задачах, даже когда никто не контролирует.",
+      "weights": { "conscientiousness": 1 }
+    },
+    {
+      "id": "q03",
+      "block": "traits",
+      "format": "likert5",
+      "text": "В группе я быстро включаюсь: знакомлюсь, говорю, заряжаю атмосферу.",
+      "weights": { "extraversion": 1, "influence": 0.4 }
+    },
+    {
+      "id": "q04",
+      "block": "traits",
+      "format": "likert5",
+      "text": "Мне важно, чтобы людям рядом было комфортно; я скорее сглажу конфликт, чем усилю его.",
+      "weights": { "agreeableness": 1, "steadiness": 0.3 }
+    },
+    {
+      "id": "q05",
+      "block": "traits",
+      "format": "likert5",
+      "text": "Под давлением я обычно сохраняю ясность и не «сыпаюсь» эмоционально.",
+      "weights": { "stability": 1 }
+    },
+    {
+      "id": "q06",
+      "block": "disc",
+      "format": "forced4",
+      "text": "В рабочей ситуации я чаще всего…",
+      "options": [
+        {
+          "k": "A",
+          "t": "Беру ответственность и давлю на результат",
+          "weights": { "dominance": 2, "val_achievement": 1, "mot_extrinsic": 0.5 }
+        },
+        {
+          "k": "B",
+          "t": "Вовлекаю людей, убеждаю, держу энергию команды",
+          "weights": { "influence": 2, "extraversion": 0.5, "mot_people": 1 }
+        },
+        {
+          "k": "C",
+          "t": "Поддерживаю стабильный ритм и помогаю довести дело",
+          "weights": { "steadiness": 2, "agreeableness": 0.5, "val_security": 0.5 }
+        },
+        {
+          "k": "D",
+          "t": "Проверяю детали, стандарты и логику решения",
+          "weights": { "compliance": 2, "conscientiousness": 0.5, "mot_systems": 1 }
+        }
+      ]
+    },
+    {
+      "id": "q07",
+      "block": "disc",
+      "format": "forced4",
+      "text": "Что раздражает сильнее всего?",
+      "options": [
+        {
+          "k": "A",
+          "t": "Медлительность и отсутствие решений",
+          "weights": { "dominance": 2, "val_stimulation": 0.5 }
+        },
+        {
+          "k": "B",
+          "t": "Холодная атмосфера и игнор идей",
+          "weights": { "influence": 2, "mot_people": 0.5 }
+        },
+        {
+          "k": "C",
+          "t": "Хаос, резкие перемены без подготовки",
+          "weights": { "steadiness": 2, "val_security": 1 }
+        },
+        {
+          "k": "D",
+          "t": "Низкое качество и «примерно сойдёт»",
+          "weights": { "compliance": 2, "conscientiousness": 0.5 }
+        }
+      ]
+    },
+    {
+      "id": "q08",
+      "block": "values",
+      "format": "forced4",
+      "text": "Через 10 лет важнее всего, чтобы…",
+      "options": [
+        {
+          "k": "A",
+          "t": "Я сам(а) выбирал(а) проекты и темп",
+          "weights": { "val_autonomy": 2, "mot_intrinsic": 1, "openness": 0.3 }
+        },
+        {
+          "k": "B",
+          "t": "Был измеримый успех и рост статуса",
+          "weights": { "val_achievement": 2, "val_power": 1, "mot_extrinsic": 1 }
+        },
+        {
+          "k": "C",
+          "t": "Моя работа реально помогала людям",
+          "weights": { "val_benevolence": 2, "mot_identified": 1, "agreeableness": 0.3 }
+        },
+        {
+          "k": "D",
+          "t": "Была стабильность, понятные правила и надёжный трек",
+          "weights": { "val_security": 2, "steadiness": 0.5, "conscientiousness": 0.3 }
+        }
+      ]
+    },
+    {
+      "id": "q09",
+      "block": "values",
+      "format": "likert5",
+      "text": "Мне нужен вызов и новизна: рутина без развития быстро выматывает.",
+      "weights": { "val_stimulation": 1, "openness": 0.4, "mot_intrinsic": 0.3 }
+    },
+    {
+      "id": "q10",
+      "block": "motivation",
+      "format": "forced4",
+      "text": "Что сильнее всего держит меня в деле?",
+      "options": [
+        {
+          "k": "A",
+          "t": "Интерес к самой задаче / мастерству",
+          "weights": { "mot_intrinsic": 2, "val_autonomy": 0.5 }
+        },
+        {
+          "k": "B",
+          "t": "Ощущение, что это «моё» и имеет смысл",
+          "weights": { "mot_identified": 2, "val_benevolence": 0.5 }
+        },
+        {
+          "k": "C",
+          "t": "Деньги, признание, карьерная лестница",
+          "weights": { "mot_extrinsic": 2, "val_achievement": 0.5, "val_power": 0.5 }
+        },
+        {
+          "k": "D",
+          "t": "Команда, клиенты, живой отклик людей",
+          "weights": { "mot_people": 2, "influence": 0.5, "extraversion": 0.3 }
+        }
+      ]
+    },
+    {
+      "id": "q11",
+      "block": "motivation",
+      "format": "likert5",
+      "text": "Мне нравится, когда работа — это чёткие системы, данные и проверяемый результат.",
+      "weights": { "mot_systems": 1, "compliance": 0.4, "conscientiousness": 0.3 }
+    },
+    {
+      "id": "q12",
+      "block": "interests",
+      "format": "forced4",
+      "text": "Что интереснее делать прямо сейчас?",
+      "options": [
+        {
+          "k": "A",
+          "t": "Запускать продукт / сделку / команду",
+          "clusterBoost": { "business": 3, "finance": 1, "logistics": 1 },
+          "weights": { "dominance": 0.5, "val_achievement": 0.5 }
+        },
+        {
+          "k": "B",
+          "t": "Создавать контент, бренд, визуал, историю",
+          "clusterBoost": { "media": 3, "design": 2 },
+          "weights": { "openness": 0.5, "influence": 0.5 }
+        },
+        {
+          "k": "C",
+          "t": "Собирать системы: код, данные, инженерию",
+          "clusterBoost": { "it": 3, "engineering": 2 },
+          "weights": { "mot_systems": 0.5, "compliance": 0.3 }
+        },
+        {
+          "k": "D",
+          "t": "Помогать людям: здоровье, право, обучение, сервис",
+          "clusterBoost": { "medicine": 2, "law": 1, "education": 2, "hospitality": 1 },
+          "weights": { "val_benevolence": 0.5, "agreeableness": 0.3 }
+        }
+      ]
+    },
+    {
+      "id": "q13",
+      "block": "interests",
+      "format": "forced4",
+      "text": "Какая среда ближе?",
+      "options": [
+        {
+          "k": "A",
+          "t": "Международные переговоры, рынки, разные культуры",
+          "clusterBoost": { "international_relations": 3, "business": 1, "media": 1 },
+          "weights": { "openness": 0.4, "extraversion": 0.3 }
+        },
+        {
+          "k": "B",
+          "t": "Офис анализа: цифры, риски, регламенты",
+          "clusterBoost": { "finance": 3, "law": 2, "logistics": 1 },
+          "weights": { "compliance": 0.5, "conscientiousness": 0.4 }
+        },
+        {
+          "k": "C",
+          "t": "Лаборатория / производство / физический объект",
+          "clusterBoost": { "engineering": 3, "medicine": 1, "it": 1 },
+          "weights": { "mot_systems": 0.4, "conscientiousness": 0.3 }
+        },
+        {
+          "k": "D",
+          "t": "Гости, события, сервис, живой опыт людей",
+          "clusterBoost": { "hospitality": 3, "education": 1, "media": 1 },
+          "weights": { "mot_people": 0.5, "steadiness": 0.3 }
+        }
+      ]
+    },
+    {
+      "id": "q14",
+      "block": "interests",
+      "format": "pick2of4",
+      "text": "Отметь до двух сильных сторон (можно одну).",
+      "maxSelections": 2,
+      "options": [
+        {
+          "k": "A",
+          "t": "Логика, математика, структуры",
+          "clusterBoost": { "it": 2, "engineering": 2, "finance": 2, "logistics": 1 },
+          "weights": { "mot_systems": 0.5, "compliance": 0.3 }
+        },
+        {
+          "k": "B",
+          "t": "Языки, убеждение, публичность",
+          "clusterBoost": { "media": 2, "international_relations": 2, "business": 1, "law": 1, "education": 1 },
+          "weights": { "influence": 0.5, "extraversion": 0.4 }
+        },
+        {
+          "k": "C",
+          "t": "Эмпатия, забота, педагогика",
+          "clusterBoost": { "medicine": 2, "education": 3, "hospitality": 1 },
+          "weights": { "agreeableness": 0.5, "val_benevolence": 0.5, "mot_people": 0.3 }
+        },
+        {
+          "k": "D",
+          "t": "Вкус, визуал, нестандартные идеи",
+          "clusterBoost": { "design": 3, "media": 2 },
+          "weights": { "openness": 0.5, "val_autonomy": 0.3 }
+        }
+      ]
+    }
+  ],
+
+  "scoring": {
+    "algorithm": "weighted_sum_then_normalize",
+    "steps": [
+      "1) Initialize all dimension raw scores to 0 and cluster scores to 0.",
+      "2) Likert5: add (answer - 1) * weight for each weight key (so 1→0 … 5→4*weight).",
+      "3) Forced4: add option.weights; add option.clusterBoost to clusters.",
+      "4) Pick2of4: same as Forced4 for each selected option.",
+      "5) Normalize each dimension to 0–100: score = round(100 * raw / maxPossibleRaw[dimension]).",
+      "6) DISC profile label = top 1–2 disc dimensions with score ≥ 55 (or relative top).",
+      "7) Big Five fingerprint = all five trait scores (Gorisont-style radar).",
+      "8) Values rank = sort value dims descending; keep top 3.",
+      "9) Motivation rank = sort motivation dims descending; keep top 2.",
+      "10) Cluster score = direct clusterBoost + affinity(dimensions→clusters).",
+      "11) Return top 3 clusters; if #1 − #2 < 8% of #1, mark as 'close call'."
+    ],
+    "likertMaxContributionPerWeight1": 4,
+    "maxPossibleRawHints": {
+      "note": "Compute per dimension from question weights at runtime; do not hardcode if questions change.",
+      "exampleOpenness": "q01(1)*4 + q09(0.4)*4 + q12B(0.5) + q13A(0.4) + q14D(0.5) ≈ depends on path"
+    },
+    "affinityMatrix": {
+      "description": "Add affinity[dim][cluster] * (dimScore/100) * affinityStrength to cluster totals after direct boosts.",
+      "affinityStrength": 12,
+      "matrix": {
+        "openness": {
+          "design": 1.0,
+          "media": 0.8,
+          "international_relations": 0.7,
+          "it": 0.5,
+          "education": 0.4
+        },
+        "conscientiousness": {
+          "finance": 0.9,
+          "law": 0.8,
+          "logistics": 0.8,
+          "engineering": 0.7,
+          "medicine": 0.7,
+          "it": 0.5
+        },
+        "extraversion": {
+          "media": 0.9,
+          "hospitality": 0.9,
+          "business": 0.8,
+          "international_relations": 0.7,
+          "education": 0.5
+        },
+        "agreeableness": {
+          "education": 1.0,
+          "medicine": 0.9,
+          "hospitality": 0.7,
+          "international_relations": 0.4
+        },
+        "stability": {
+          "medicine": 0.6,
+          "law": 0.5,
+          "logistics": 0.5,
+          "finance": 0.4,
+          "engineering": 0.4
+        },
+        "dominance": {
+          "business": 1.0,
+          "law": 0.6,
+          "logistics": 0.6,
+          "finance": 0.5,
+          "international_relations": 0.4
+        },
+        "influence": {
+          "media": 1.0,
+          "business": 0.7,
+          "hospitality": 0.7,
+          "education": 0.6,
+          "international_relations": 0.6
+        },
+        "steadiness": {
+          "hospitality": 0.8,
+          "education": 0.7,
+          "logistics": 0.6,
+          "medicine": 0.5
+        },
+        "compliance": {
+          "engineering": 0.9,
+          "it": 0.8,
+          "finance": 0.8,
+          "law": 0.8,
+          "medicine": 0.6,
+          "logistics": 0.5
+        },
+        "val_autonomy": {
+          "design": 0.8,
+          "it": 0.7,
+          "media": 0.5,
+          "business": 0.4
+        },
+        "val_achievement": {
+          "business": 0.9,
+          "finance": 0.8,
+          "law": 0.5,
+          "engineering": 0.4
+        },
+        "val_power": {
+          "business": 0.8,
+          "law": 0.7,
+          "international_relations": 0.7,
+          "finance": 0.5
+        },
+        "val_security": {
+          "finance": 0.7,
+          "law": 0.6,
+          "logistics": 0.6,
+          "medicine": 0.5,
+          "education": 0.4
+        },
+        "val_benevolence": {
+          "medicine": 1.0,
+          "education": 1.0,
+          "hospitality": 0.5,
+          "international_relations": 0.4,
+          "law": 0.4
+        },
+        "val_stimulation": {
+          "media": 0.7,
+          "design": 0.7,
+          "it": 0.6,
+          "business": 0.5,
+          "international_relations": 0.5
+        },
+        "mot_intrinsic": {
+          "it": 0.7,
+          "design": 0.7,
+          "engineering": 0.6,
+          "medicine": 0.5,
+          "education": 0.4
+        },
+        "mot_identified": {
+          "medicine": 0.8,
+          "education": 0.8,
+          "international_relations": 0.6,
+          "law": 0.5
+        },
+        "mot_extrinsic": {
+          "business": 0.9,
+          "finance": 0.9,
+          "law": 0.5,
+          "international_relations": 0.4
+        },
+        "mot_people": {
+          "media": 0.8,
+          "hospitality": 0.9,
+          "education": 0.8,
+          "business": 0.5,
+          "medicine": 0.5
+        },
+        "mot_systems": {
+          "it": 1.0,
+          "engineering": 0.9,
+          "finance": 0.7,
+          "logistics": 0.7,
+          "medicine": 0.4
+        }
+      }
+    },
+    "tieBreakers": [
+      "Prefer cluster with higher direct clusterBoost over pure affinity.",
+      "If still tied, prefer cluster matching top value + top motivation combo (see comboHints)."
+    ],
+    "comboHints": [
+      {
+        "when": { "valuesTop": "val_benevolence", "motivationTop": "mot_identified" },
+        "boost": { "medicine": 4, "education": 4 }
+      },
+      {
+        "when": { "valuesTop": "val_achievement", "motivationTop": "mot_extrinsic" },
+        "boost": { "business": 4, "finance": 3 }
+      },
+      {
+        "when": { "discTop": "compliance", "traitsHigh": ["conscientiousness", "openness"] },
+        "boost": { "it": 3, "engineering": 3 }
+      },
+      {
+        "when": { "discTop": "influence", "traitsHigh": ["extraversion", "openness"] },
+        "boost": { "media": 4, "international_relations": 2 }
+      },
+      {
+        "when": { "discTop": "dominance", "valuesTop": "val_power" },
+        "boost": { "business": 3, "law": 2, "international_relations": 2 }
+      }
+    ]
+  },
+
+  "resultSchema": {
+    "type": "object",
+    "properties": {
+      "version": { "const": "1.0.0" },
+      "completedAt": { "type": "string", "format": "date-time" },
+      "answers": {
+        "type": "object",
+        "additionalProperties": {
+          "oneOf": [
+            { "type": "integer", "minimum": 1, "maximum": 5 },
+            { "type": "string", "pattern": "^[A-D]$" },
+            { "type": "array", "items": { "type": "string", "pattern": "^[A-D]$" }, "maxItems": 2 }
+          ]
+        }
+      },
+      "fingerprint": {
+        "traits": {
+          "openness": "0-100",
+          "conscientiousness": "0-100",
+          "extraversion": "0-100",
+          "agreeableness": "0-100",
+          "stability": "0-100"
+        },
+        "disc": {
+          "dominance": "0-100",
+          "influence": "0-100",
+          "steadiness": "0-100",
+          "compliance": "0-100",
+          "primary": "D|I|S|C",
+          "secondary": "D|I|S|C|null"
+        },
+        "valuesTop": ["val_*", "val_*", "val_*"],
+        "motivationTop": ["mot_*", "mot_*"]
+      },
+      "clusters": {
+        "type": "array",
+        "maxItems": 3,
+        "items": {
+          "id": "cluster_id",
+          "score": "number",
+          "share": "0-1 normalized among top3",
+          "why": ["short reason strings from top contributing dims"]
+        }
+      },
+      "narrative": {
+        "portrait": "2–3 sentences",
+        "strengths": ["…"],
+        "blindSpots": ["…"],
+        "nextSteps": ["course / internship / talk-to-someone"]
+      },
+      "bridgeHooks": {
+        "description": "Optional mapping into existing BRIDGE university tags",
+        "tagAliases": {
+          "business": ["business", "leadership", "trade", "marketing"],
+          "finance": ["business", "trade"],
+          "media": ["media", "communication", "creative", "marketing"],
+          "design": ["creative", "media"],
+          "it": ["tech"],
+          "engineering": ["eng", "tech"],
+          "international_relations": ["communication", "trade", "leadership", "business"],
+          "logistics": ["trade", "business"],
+          "law": ["leadership", "communication"],
+          "education": ["communication"],
+          "hospitality": ["communication", "creative"],
+          "medicine": []
+        }
+      }
+    },
+    "exampleResult": {
+      "version": "1.0.0",
+      "completedAt": "2026-10-09T15:00:00.000Z",
+      "fingerprint": {
+        "traits": {
+          "openness": 78,
+          "conscientiousness": 55,
+          "extraversion": 72,
+          "agreeableness": 64,
+          "stability": 60
+        },
+        "disc": {
+          "dominance": 48,
+          "influence": 81,
+          "steadiness": 40,
+          "compliance": 35,
+          "primary": "I",
+          "secondary": "D"
+        },
+        "valuesTop": ["val_stimulation", "val_achievement", "val_autonomy"],
+        "motivationTop": ["mot_people", "mot_intrinsic"]
+      },
+      "clusters": [
+        {
+          "id": "media",
+          "score": 41.2,
+          "share": 0.39,
+          "why": ["Influence + Extraversion", "Интерес к контенту/бренду", "Мотивация через людей"]
+        },
+        {
+          "id": "international_relations",
+          "score": 33.5,
+          "share": 0.32,
+          "why": ["Openness", "Международная среда", "Influence"]
+        },
+        {
+          "id": "business",
+          "score": 30.1,
+          "share": 0.29,
+          "why": ["Achievement value", "Dominance secondary"]
+        }
+      ],
+      "narrative": {
+        "portrait": "Ты энергичный коммуникатор с вкусом к новизне: сильнее всего раскрываешься там, где нужно убеждать, собирать смысл и держать аудиторию.",
+        "strengths": ["Вовлечение людей", "Гибкость к новому", "Публичность"],
+        "blindSpots": ["Риск недооценки рутины и качества процессов", "Может не хватать глубины системной аналитики"],
+        "nextSteps": [
+          "1 мини-проект: контент/кампания за 2 недели",
+          "Разговор с кем-то из media/IR/trade",
+          "Сверить топ-кластеры с English-track программами"
+        ]
+      }
+    }
+  },
+
+  "uiCopy": {
+    "intro": "14 коротких вопросов → психологический отпечаток и карта направлений. Не приговор, а черновик маршрута.",
+    "progress": "Вопрос {n} из {total}",
+    "resultTitle": "Твой карьерный горизонт",
+    "disclaimer": "Ориентир для выбора направления обучения, не диагностика личности."
+  },
+
+  "implementationNotes": {
+    "recommendedFlow": [
+      "Auth gate (optional) → intro → 14-step wizard → fingerprint radar → top-3 clusters → link universities by tagAliases"
+    ],
+    "storage": {
+      "answers": "persist raw answers for retake / audit",
+      "result": "persist fingerprint + clusters + narrative seeds"
+    },
+    "i18n": "Keep question ids stable; translate text/labels only.",
+    "vsCurrentBridgeTest": {
+      "current": "8 forced-choice items scoring university tags directly",
+      "proposed": "14 items → trait/DISC/values/motivation layers → clusters → university tags",
+      "migration": "Keep budget/premium questions outside this psychometrics block if still needed for China admissions filtering"
+    },
+    "optionalExtensions": [
+      "Add q15 budget sensitivity (BRIDGE-specific, not psychometrics)",
+      "Add q16 English readiness (BRIDGE-specific)",
+      "A/B: 12-item cut by dropping q05 + q11 if completion drops"
+    ]
+  }
+}

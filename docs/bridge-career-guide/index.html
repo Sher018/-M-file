@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>BRIDGE — Ориентация и вузы Китая</title>
+  <meta name="description" content="Тест ориентации, профессии и вузы Китая для иностранцев: рейтинг, квоты, цены в CNY / USD / TJS." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><i id="scrollProgress"></i></div>
+
+  <!-- Auth gate -->
+  <div class="auth-gate" id="authGate" hidden>
+    <div class="auth-gate-card glass">
+      <p class="logo gate-brand">BRIDGE</p>
+      <div class="lang-switch gate-lang" role="group" aria-label="Language">
+        <button type="button" data-lang="ru">RU</button>
+        <button type="button" data-lang="tg">TG</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
+
+      <div id="gateRegister">
+        <h2 data-i18n="gate_title_reg">Регистрация</h2>
+        <form id="registerForm">
+          <label><span data-i18n="gate_name">Имя</span>
+            <input name="name" type="text" required autocomplete="name" />
+          </label>
+          <label><span data-i18n="gate_email">Email</span>
+            <input name="email" type="email" required autocomplete="email" />
+          </label>
+          <label><span data-i18n="gate_country">Страна</span>
+            <select name="country" required>
+              <option value="TJ" data-i18n="gate_country_tj">Таджикистан</option>
+              <option value="RU" data-i18n="gate_country_ru">Россия</option>
+              <option value="OTHER" data-i18n="gate_country_other">Другая</option>
+            </select>
+          </label>
+          <label class="checkline">
+            <input type="checkbox" name="consentPd" required />
+            <span><span data-i18n="consent_pd"></span> —
+              <a href="legal/privacy-consent.html" target="_blank" rel="noopener" data-i18n="consent_pd_link">полное согласие</a></span>
+          </label>
+          <label class="checkline">
+            <input type="checkbox" name="consentAge" required />
+            <span><span data-i18n="consent_age"></span> —
+              <a href="legal/age-consent.html" target="_blank" rel="noopener" data-i18n="consent_age_link">согласие о возрасте</a></span>
+          </label>
+          <label class="checkline">
+            <input type="checkbox" name="consentTerms" required />
+            <span><span data-i18n="consent_terms"></span> —
+              <a href="legal/terms.html" target="_blank" rel="noopener" data-i18n="consent_terms_link">условия</a></span>
+          </label>
+          <button class="btn primary" type="submit" data-i18n="gate_send_code">Получить код на почту</button>
+        </form>
+        <button class="btn linkish" type="button" id="toLogin" data-i18n="gate_switch_login">Уже есть аккаунт? Войти</button>
+      </div>
+
+      <div id="gateLogin" hidden>
+        <h2 data-i18n="gate_title_login">Вход</h2>
+        <form id="loginForm">
+          <label><span data-i18n="gate_email">Email</span>
+            <input name="email" type="email" required autocomplete="email" />
+          </label>
+          <button class="btn primary" type="submit" data-i18n="gate_send_code">Получить код на почту</button>
+        </form>
+        <button class="btn linkish" type="button" id="toRegister" data-i18n="gate_switch_reg">Нет аккаунта? Зарегистрироваться</button>
+      </div>
+
+      <div id="gateOtp" hidden>
+        <h2 data-i18n="gate_code">4-значный код</h2>
+        <p class="muted" id="otpHint" data-i18n="gate_demo_hint"></p>
+        <p class="otp-demo" id="otpDemo" hidden></p>
+        <form id="otpForm">
+          <label>
+            <input name="code" type="text" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" required placeholder="1234" autocomplete="one-time-code" />
+          </label>
+          <button class="btn primary" type="submit" data-i18n="gate_verify">Подтвердить и войти</button>
+        </form>
+      </div>
+      <p class="form-note" id="gateMsg"></p>
+    </div>
+  </div>
+
+  <div id="appShell">
+    <nav class="topnav" aria-label="Navigation">
+      <a class="logo" href="#/">BRIDGE</a>
+      <div class="nav-links">
+        <a href="#/test" data-i18n="nav_test">Тест</a>
+        <a href="#/unis" data-i18n="nav_unis">Вузы</a>
+        <a href="#/checklist" data-i18n="nav_check">Чек-лист</a>
+        <a href="#/plan" data-i18n="nav_plan">План</a>
+      </div>
+      <div class="nav-right">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="ru">RU</button>
+          <button type="button" data-lang="tg">TG</button>
+          <button type="button" data-lang="en">EN</button>
+        </div>
+        <span class="user-pill" id="userPill" hidden></span>
+        <button class="nav-cta" type="button" id="navAuthBtn" data-i18n="nav_logout">Выйти</button>
+      </div>
+    </nav>
+
+    <div id="homeView">
+      <header class="hero" id="top">
+        <div class="hero-media" aria-hidden="true">
+          <img src="assets/bridge-hero.jpg" alt="" />
+          <div class="hero-shade"></div>
+        </div>
+        <div class="hero-content">
+          <p class="brand-mark reveal">BRIDGE</p>
+          <p class="eyebrow reveal" data-i18n="hero_eyebrow">Таджикистан / РФ → Китай · English track</p>
+          <h1 class="reveal delay-1" data-i18n="hero_title">Ориентация. Вузы Китая. Твой маршрут.</h1>
+          <p class="hero-lead reveal delay-2" data-i18n="hero_lead"></p>
+          <div class="hero-actions reveal delay-3">
+            <a class="btn primary" href="#/test" data-i18n="hero_cta_test">Пройти тест</a>
+            <a class="btn ghost" href="#/unis" data-i18n="hero_cta_unis">Вузы Китая</a>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section class="test-section" id="test">
+          <div class="section-head">
+            <p class="eyebrow">01</p>
+            <h2 data-i18n="test_title">Тест ориентации</h2>
+            <p id="testLead" data-i18n="test_lead"></p>
+          </div>
+          <div class="glass test-panel" id="testPanel">
+            <div id="testWizard"></div>
+            <div id="testResult" hidden></div>
+          </div>
+        </section>
+
+        <section class="unis" id="unis">
+          <div class="section-head">
+            <p class="eyebrow">02</p>
+            <h2 data-i18n="unis_title">Вузы Китая</h2>
+            <p id="uniLead" data-i18n="unis_lead"></p>
+          </div>
+          <div class="uni-filters" role="tablist">
+            <button class="active" data-filter="all" type="button" data-i18n="filter_all">Все</button>
+            <button data-filter="dream" type="button" data-i18n="filter_dream">Мечта</button>
+            <button data-filter="real" type="button" data-i18n="filter_real">Реализм</button>
+            <button data-filter="budget" type="button" data-i18n="filter_budget">Бюджет</button>
+            <button data-filter="mine" type="button" id="filterMine" data-i18n="filter_mine">Мои</button>
+          </div>
+          <div class="uni-track" id="uniTrack"></div>
+        </section>
+
+        <section class="checklist-section" id="checklist">
+          <div class="section-head">
+            <p class="eyebrow">03</p>
+            <h2 data-i18n="check_title">Чек-лист</h2>
+          </div>
+          <div class="checklist-panel glass">
+            <div class="check-progress">
+              <div class="ring" id="checkRing" style="--p:0"><strong id="checkPct">0%</strong></div>
+              <div>
+                <h3>Progress</h3>
+                <p id="checkCount">0 / 0</p>
+                <button class="btn tiny" type="button" id="resetChecks">Reset</button>
+              </div>
+            </div>
+            <div class="check-groups" id="checkGroups"></div>
+          </div>
+        </section>
+
+        <section class="plan" id="plan">
+          <div class="section-head">
+            <p class="eyebrow">04</p>
+            <h2 data-i18n="plan_title">12 месяцев</h2>
+          </div>
+          <div class="timeline">
+            <article class="tl reveal"><span>1</span><h3>IELTS + CSCA</h3><p>Passport · Math EN</p></article>
+            <article class="tl reveal delay-1"><span>2</span><h3>Portfolio</h3><p>PS · recommendations</p></article>
+            <article class="tl reveal delay-2"><span>3</span><h3>Apply</h3><p>Unis + CSC Type A</p></article>
+            <article class="tl reveal delay-3"><span>4</span><h3>Offer</h3><p>JW202 → X1 visa</p></article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- University detail page (hash route) -->
+    <section class="uni-page" id="uniPage" hidden>
+      <div class="uni-page-inner" id="uniPageBody"></div>
+    </section>
+
+    <footer class="footer">
+      <p data-i18n="footer">BRIDGE · ориентация и вузы Китая</p>
+      <p class="legal-links">
+        <a href="legal/privacy-consent.html">Privacy</a> ·
+        <a href="legal/age-consent.html">Age</a> ·
+        <a href="legal/terms.html">Terms</a>
+      </p>
+    </footer>
+  </div>
+
+  <div class="modal" id="docModal" hidden>
+    <div class="modal-backdrop" data-close-doc></div>
+    <div class="modal-sheet" role="dialog" aria-modal="true">
+      <button class="modal-close" type="button" data-close-doc aria-label="Close">×</button>
+      <div id="docModalBody"></div>
+    </div>
+  </div>
+
+  <script src="fx.js"></script>
+  <script src="data-universities.js"></script>
+  <script src="documents-catalog.js"></script>
+  <script src="majors-catalog.js"></script>
+  <script src="professions.js"></script>
+  <script src="i18n.js"></script>
+  <script src="auth.js"></script>
+  <script src="test-engine.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
