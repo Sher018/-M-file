@@ -1049,3 +1049,27 @@ section {
   animation: brandIn 0.55s ease both;
 }
 #testResult:not([hidden]) { display: block; }
+
+.uni-toolbar {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr auto;
+  gap: 12px;
+  align-items: end;
+  padding: 14px 16px;
+  margin: 14px 0 18px;
+  border-radius: 18px;
+}
+.uni-toolbar label { display: grid; gap: 6px; font-size: 0.82rem; color: var(--soft); }
+.uni-toolbar input,
+.uni-toolbar select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.05);
+  color: var(--sand);
+}
+.uni-count { margin: 0; color: var(--soft); font-size: 0.9rem; align-self: center; }
+@media (max-width: 900px) {
+  .uni-toolbar { grid-template-columns: 1fr; }
+}

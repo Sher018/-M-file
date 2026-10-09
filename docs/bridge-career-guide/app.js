@@ -46,6 +46,15 @@ function saveJSON(key, value) {
   localStorage.setItem(key, JSON.stringify(value));
 }
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function moneyTriple(cny) {
   return FX().format(cny).label;
 }
@@ -335,41 +344,66 @@ function route() {
 
 /* ---------- Universities ---------- */
 let currentFilter = "all";
+let currentSort = "default";
+let currentQuery = "";
+let currentCluster = "all";
 
 function recommendedIds() {
   const u = Auth().currentUser();
   return (u && u.result && u.result.uniIds) || [];
 }
 
-function renderUniversities(filter = "all") {
+function renderUniversities(filter = currentFilter) {
   currentFilter = filter;
   const track = document.getElementById("uniTrack");
   if (!track) return;
   const mine = new Set(recommendedIds());
-  const list = (window.BRIDGE_UNIS || []).filter((u) => {
-    if (filter === "all") return true;
+  const t = I18N();
+  const q = currentQuery.trim().toLowerCase();
+  let list = (window.BRIDGE_UNIS || []).filter((u) => {
     if (filter === "mine") return mine.has(u.id);
-    return u.tier === filter;
+    if (filter !== "all" && u.tier !== filter) return false;
+    if (currentCluster !== "all" && !(u.clusters || []).includes(currentCluster)) return false;
+    if (!q) return true;
+    const blob = [
+      t.loc(u.name),
+      t.loc(u.city),
+      t.loc(u.blurb),
+      ...(u.majors || []),
+      ...(u.englishPrograms || []),
+      ...(u.clusters || []),
+    ]
+      .join(" ")
+      .toLowerCase();
+    return blob.includes(q);
   });
+  if (currentSort === "price_asc") list = [...list].sort((a, b) => (a.tuitionYear || 0) - (b.tuitionYear || 0));
+  if (currentSort === "price_desc") list = [...list].sort((a, b) => (b.tuitionYear || 0) - (a.tuitionYear || 0));
+  if (currentSort === "name") {
+    list = [...list].sort((a, b) => t.loc(a.name).localeCompare(t.loc(b.name), t.lang));
+  }
+
   track.innerHTML = "";
+  const countEl = document.getElementById("uniCount");
+  if (countEl) countEl.textContent = String(list.length);
   if (!list.length) {
     track.innerHTML = `<p class="empty-unis">—</p>`;
     return;
   }
-  const t = I18N();
   list.forEach((u) => {
     const card = document.createElement("article");
     card.className = `uni-card ${u.tier}${mine.has(u.id) ? " is-mine" : ""}`;
     card.tabIndex = 0;
     card.setAttribute("role", "link");
+    const majors = (u.englishPrograms || u.majors || []).slice(0, 2).map(trPhrase).map(escapeHtml).join(" · ");
     card.innerHTML = `
-      <div class="uni-rank">${u.rankCN ?? "—"}</div>
-      <h3>${t.loc(u.name)}</h3>
-      <p class="major">${(u.englishPrograms || u.majors || []).slice(0, 2).map(trPhrase).join(" · ")}</p>
-      <p>${t.loc(u.blurb)}</p>
+      <div class="uni-rank">${escapeHtml(u.rankCN ?? "—")}</div>
+      <h3>${escapeHtml(t.loc(u.name))}</h3>
+      <p class="major">${majors}</p>
+      <p>${escapeHtml(t.loc(u.blurb))}</p>
       <div class="uni-meta">
-        <span>${moneyTriple(u.tuitionYear)}</span>
-        <span>${t.loc(u.city)}</span>
+        <span>${escapeHtml(moneyTriple(u.tuitionYear))}</span>
+        <span>${escapeHtml(t.loc(u.city))}</span>
       </div>
     `;
     const go = () => {
@@ -400,9 +434,9 @@ function renderUniPage(id) {
   const docs = (u.documents || []).map((raw) => window.BRIDGE_DOC_UTILS.resolve(raw));
   body.innerHTML = `
     <a class="btn ghost uni-back" href="#/unis">${t.t("uni_back")}</a>
-    <p class="eyebrow">${t.loc(u.city)} · ${tierLabel(u.tier)}</p>
-    <h1>${t.loc(u.name)}</h1>
-    <p class="modal-blurb">${t.loc(u.blurb)}</p>
+    <p class="eyebrow">${escapeHtml(t.loc(u.city))} · ${escapeHtml(tierLabel(u.tier))}</p>
+    <h1>${escapeHtml(t.loc(u.name))}</h1>
+    <p class="modal-blurb">${escapeHtml(t.loc(u.blurb))}</p>
     <div class="modal-links">
       <a class="btn primary" href="${u.portal}" target="_blank" rel="noopener">${t.t("uni_portal")}</a>
       ${u.apply ? `<a class="btn ghost" href="${u.apply}" target="_blank" rel="noopener">${t.t("uni_apply")}</a>` : ""}
@@ -752,6 +786,18 @@ function setupNav() {
       btn.classList.add("active");
       renderUniversities(btn.dataset.filter);
     });
+  });
+  document.getElementById("uniSearch")?.addEventListener("input", (e) => {
+    currentQuery = e.target.value || "";
+    renderUniversities(currentFilter);
+  });
+  document.getElementById("uniSort")?.addEventListener("change", (e) => {
+    currentSort = e.target.value || "default";
+    renderUniversities(currentFilter);
+  });
+  document.getElementById("uniCluster")?.addEventListener("change", (e) => {
+    currentCluster = e.target.value || "all";
+    renderUniversities(currentFilter);
   });
   document.getElementById("resetChecks")?.addEventListener("click", () => {
     localStorage.removeItem(checklistKey());

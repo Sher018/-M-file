@@ -97,6 +97,7 @@
             expires: Date.now() + (data.expiresIn || 600) * 1000,
             demo: !!data.demo,
             server: true,
+            token: data.token || null,
             code: data.demo ? data.code : null,
           };
           saveJSON(OTP_KEY, pending);
@@ -134,15 +135,32 @@
       }
       const typed = String(code).trim();
 
-      if (pending.server && !pending.demo) {
+      if (pending.server && pending.token && !pending.demo) {
         const res = await fetch("/api/otp/verify", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: pending.email, code: typed }),
+          body: JSON.stringify({ email: pending.email, code: typed, token: pending.token }),
         });
         const data = await res.json().catch(() => ({}));
         if (!res.ok || !data.ok) {
           throw new Error(data.error === "expired" ? "expired" : "bad_code");
+        }
+      } else if (pending.server && pending.token && pending.demo) {
+        // Demo with token: still verify via API when possible
+        try {
+          const res = await fetch("/api/otp/verify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: pending.email, code: typed, token: pending.token }),
+          });
+          if (res.ok) {
+            /* ok */
+          } else if (typed !== String(pending.code)) {
+            throw new Error("bad_code");
+          }
+        } catch (e) {
+          if (e.message === "bad_code" || e.message === "expired") throw e;
+          if (typed !== String(pending.code)) throw new Error("bad_code");
         }
       } else if (typed !== String(pending.code)) {
         throw new Error("bad_code");

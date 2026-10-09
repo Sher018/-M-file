@@ -23,3 +23,6 @@ desktop.ini
 *.log
 *.tmp
 ~$*.xlsx
+
+# local secrets
+docs/bridge-career-guide/.dev.vars

@@ -149,6 +149,40 @@
             <button data-filter="budget" type="button" data-i18n="filter_budget">Бюджет</button>
             <button data-filter="mine" type="button" id="filterMine" data-i18n="filter_mine">Мои</button>
           </div>
+          <div class="uni-toolbar glass">
+            <label class="uni-search">
+              <span data-i18n="uni_search">Поиск</span>
+              <input type="search" id="uniSearch" autocomplete="off" placeholder="ZJU, Shanghai, business…" />
+            </label>
+            <label>
+              <span data-i18n="uni_sort">Сортировка</span>
+              <select id="uniSort">
+                <option value="default" data-i18n="sort_default">По умолчанию</option>
+                <option value="price_asc" data-i18n="sort_price_asc">Цена ↑</option>
+                <option value="price_desc" data-i18n="sort_price_desc">Цена ↓</option>
+                <option value="name" data-i18n="sort_name">Имя</option>
+              </select>
+            </label>
+            <label>
+              <span data-i18n="uni_cluster">Кластер</span>
+              <select id="uniCluster">
+                <option value="all" data-i18n="cluster_all">Все направления</option>
+                <option value="business">Business</option>
+                <option value="finance">Finance</option>
+                <option value="media">Media</option>
+                <option value="it">IT</option>
+                <option value="engineering">Engineering</option>
+                <option value="medicine">Medicine</option>
+                <option value="law">Law</option>
+                <option value="education">Education</option>
+                <option value="hospitality">Hospitality</option>
+                <option value="logistics">Logistics</option>
+                <option value="international_relations">International</option>
+                <option value="design">Design</option>
+              </select>
+            </label>
+            <p class="uni-count"><span data-i18n="uni_showing">Показано</span>: <strong id="uniCount">0</strong></p>
+          </div>
           <div class="uni-track" id="uniTrack"></div>
         </section>
 

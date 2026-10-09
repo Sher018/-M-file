@@ -1,0 +1,8 @@
+# Copy to .dev.vars (never commit .dev.vars):
+#   cp .dev.vars.example .dev.vars
+#
+# Paste your Resend key after the = (from resend.com → API Keys)
+
+RESEND_API_KEY=re_xxxxxxxx
+ALLOW_DEMO_OTP=true
+OTP_FROM_EMAIL=BRIDGE <onboarding@resend.dev>
