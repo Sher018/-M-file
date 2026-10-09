@@ -224,7 +224,9 @@ function setupAuthUI() {
           ? "Email already registered — sign in"
           : err.message === "consents"
             ? "Accept all consents"
-            : "Check email / form";
+            : err.message === "rate_limited"
+              ? "Too many codes — try later"
+              : "Check email / form";
     }
   });
 
@@ -240,7 +242,12 @@ function setupAuthUI() {
       });
       showOtpStep(pending);
     } catch (err) {
-      msg.textContent = err.message === "not_found" ? "No account — register first" : "Check email";
+      msg.textContent =
+        err.message === "not_found"
+          ? "No account — register first"
+          : err.message === "rate_limited"
+            ? "Too many codes — try later"
+            : "Check email";
     }
   });
 
@@ -270,11 +277,22 @@ function setupAuthUI() {
 function showOtpStep(pending) {
   showGate("otp");
   const demo = document.getElementById("otpDemo");
-  if (pending.demo) {
+  const hint = document.getElementById("otpHint");
+  if (pending.demo && pending.code) {
     demo.hidden = false;
     demo.textContent = `CODE: ${pending.code}`;
+    if (hint) hint.hidden = false;
   } else {
     demo.hidden = true;
+    if (hint) {
+      hint.hidden = false;
+      hint.textContent =
+        I18N().lang === "en"
+          ? "We sent a 4-digit code to your email."
+          : I18N().lang === "tg"
+            ? "Рамзи 4-рақама ба почтаи шумо фиристода шуд."
+            : "Мы отправили 4-значный код на вашу почту.";
+    }
   }
 }
 

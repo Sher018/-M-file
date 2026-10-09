@@ -1,4 +1,4 @@
-/* Email OTP auth gate (demo-local + optional /api/send-otp worker). */
+/* Email OTP auth gate — prefers Worker /api/otp/* (Resend), falls back to local demo. */
 (function () {
   const USERS_KEY = "bridge-users-v2";
   const SESSION_KEY = "bridge-session-v2";
@@ -16,7 +16,9 @@
   }
 
   function genCode() {
-    return String(Math.floor(1000 + Math.random() * 9000));
+    const a = new Uint32Array(1);
+    crypto.getRandomValues(a);
+    return String(1000 + (a[0] % 9000));
   }
 
   const Auth = {
@@ -68,41 +70,83 @@
         throw new Error("not_found");
       }
 
-      const code = genCode();
-      const pending = {
+      const payload = {
         email: clean,
         name: name || users[clean]?.name || "",
         country: country || users[clean]?.country || "TJ",
         mode,
         consents: consents || null,
+        lang: window.BRIDGE_I18N?.lang || "ru",
+      };
+
+      // Prefer server OTP (real email)
+      try {
+        const res = await fetch("/api/otp/request", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const pending = {
+            email: clean,
+            name: payload.name,
+            country: payload.country,
+            mode,
+            consents: payload.consents,
+            expires: Date.now() + (data.expiresIn || 600) * 1000,
+            demo: !!data.demo,
+            server: true,
+            code: data.demo ? data.code : null,
+          };
+          saveJSON(OTP_KEY, pending);
+          return pending;
+        }
+        if (res.status === 429) throw new Error("rate_limited");
+        // fall through to local demo if API not configured
+      } catch (e) {
+        if (e.message === "rate_limited") throw e;
+        /* offline / pure static host */
+      }
+
+      // Local demo fallback (code on screen)
+      const code = genCode();
+      const pending = {
+        email: clean,
+        name: payload.name,
+        country: payload.country,
+        mode,
+        consents: payload.consents,
         code,
         expires: Date.now() + 10 * 60 * 1000,
         demo: true,
+        server: false,
       };
-
-      // Try server endpoint; fall back to demo display
-      try {
-        const res = await fetch("/api/send-otp", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: clean, code, lang: window.BRIDGE_I18N?.lang || "ru" }),
-        });
-        if (res.ok) pending.demo = false;
-      } catch {
-        /* offline / static host */
-      }
-
       saveJSON(OTP_KEY, pending);
       return pending;
     },
-    verifyOtp(code) {
+    async verifyOtp(code) {
       const pending = loadJSON(OTP_KEY, null);
       if (!pending) throw new Error("no_pending");
       if (Date.now() > pending.expires) {
         localStorage.removeItem(OTP_KEY);
         throw new Error("expired");
       }
-      if (String(code).trim() !== String(pending.code)) throw new Error("bad_code");
+      const typed = String(code).trim();
+
+      if (pending.server && !pending.demo) {
+        const res = await fetch("/api/otp/verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: pending.email, code: typed }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.ok) {
+          throw new Error(data.error === "expired" ? "expired" : "bad_code");
+        }
+      } else if (typed !== String(pending.code)) {
+        throw new Error("bad_code");
+      }
 
       const users = this.getUsers();
       let user = users[pending.email];

@@ -19,31 +19,305 @@ const OUT = path.join(ROOT, "fees-live.json");
 
 const SOURCES = [
   {
-    id: "zju-gcm",
-    urls: [
-      "https://zibs.zju.edu.cn/zibsenglish/admissions/undergraduate.htm",
-      "https://zibs.zju.edu.cn",
-    ],
+    "id": "zju-gcm",
+    "urls": [
+      "https://zibs.zju.edu.cn"
+    ]
   },
-  { id: "uibe", urls: ["https://sie.uibe.edu.cn/en/Admission/Tuition_and_Fees.htm", "https://sie.uibe.edu.cn"] },
-  { id: "bfsu", urls: ["http://study.bfsu.edu.cn/info/1107/1284.htm", "http://study.bfsu.edu.cn"] },
-  { id: "sjtu", urls: ["https://isc.sjtu.edu.cn/EN/content.aspx?info_lb=280&flag=2", "https://isc.sjtu.edu.cn"] },
-  { id: "fudan", urls: ["https://iso.fudan.edu.cn/isoenglish/wnglijkx/", "https://iso.fudan.edu.cn"] },
-  { id: "xjtu", urls: ["http://sie.xjtu.edu.cn/en/Admissions1/Tuition_and_Fees.htm", "http://sie.xjtu.edu.cn"] },
-  { id: "tju", urls: ["https://sie.tju.edu.cn/en/jxj/Tuition_Fees.htm", "https://sie.tju.edu.cn"] },
-  { id: "bjtu", urls: ["https://is.bjtu.edu.cn"] },
-  { id: "hit", urls: ["http://studyathit.hit.edu.cn/18266/list.htm", "http://studyathit.hit.edu.cn"] },
-  { id: "nuaa", urls: ["https://ciee.nuaa.edu.cn"] },
-  { id: "scut", urls: ["http://www2.scut.edu.cn/sse/1176/list.htm", "http://www2.scut.edu.cn/sse"] },
-  { id: "hust", urls: ["http://iso.hust.edu.cn"] },
-  { id: "whu", urls: ["https://admission.whu.edu.cn"] },
-  { id: "tongji", urls: ["https://study.tongji.edu.cn"] },
-  { id: "blcu", urls: ["https://admission.blcu.edu.cn"] },
-  { id: "nbut", urls: ["https://gjxy.nbut.edu.cn"] },
-  { id: "zust", urls: ["https://ies.zust.edu.cn"] },
-  { id: "xjtlu", urls: ["https://www.xjtlu.edu.cn/en/admissions/undergraduate/fees", "https://www.xjtlu.edu.cn/en/admissions"] },
-  { id: "unnc", urls: ["https://www.nottingham.edu.cn/en/study-with-us/undergraduate/fees.aspx", "https://www.nottingham.edu.cn/en/study-with-us"] },
-  { id: "sdu", urls: ["https://www.istudy.sdu.edu.cn"] },
+  {
+    "id": "uibe",
+    "urls": [
+      "https://sie.uibe.edu.cn"
+    ]
+  },
+  {
+    "id": "bfsu",
+    "urls": [
+      "http://study.bfsu.edu.cn"
+    ]
+  },
+  {
+    "id": "sjtu",
+    "urls": [
+      "https://en.sjtu.edu.cn"
+    ]
+  },
+  {
+    "id": "fudan",
+    "urls": [
+      "https://iso.fudan.edu.cn"
+    ]
+  },
+  {
+    "id": "xjtu",
+    "urls": [
+      "http://sie.xjtu.edu.cn"
+    ]
+  },
+  {
+    "id": "tju",
+    "urls": [
+      "https://www.tju.edu.cn"
+    ]
+  },
+  {
+    "id": "bjtu",
+    "urls": [
+      "https://www.bjtu.edu.cn"
+    ]
+  },
+  {
+    "id": "hit",
+    "urls": [
+      "https://studyathit.hit.edu.cn"
+    ]
+  },
+  {
+    "id": "npu",
+    "urls": [
+      "https://studyat.nwpu.edu.cn"
+    ]
+  },
+  {
+    "id": "whut",
+    "urls": [
+      "https://english.whut.edu.cn"
+    ]
+  },
+  {
+    "id": "silc",
+    "urls": [
+      "https://shusilc.shu.edu.cn"
+    ]
+  },
+  {
+    "id": "bit",
+    "urls": [
+      "https://isc.bit.edu.cn"
+    ]
+  },
+  {
+    "id": "jsu",
+    "urls": [
+      "https://oec.ujs.edu.cn"
+    ]
+  },
+  {
+    "id": "zust",
+    "urls": [
+      "https://ies.zust.edu.cn"
+    ]
+  },
+  {
+    "id": "nbut",
+    "urls": [
+      "https://gjxy.nbut.edu.cn"
+    ]
+  },
+  {
+    "id": "xjtlu",
+    "urls": [
+      "https://www.xjtlu.edu.cn"
+    ]
+  },
+  {
+    "id": "unnc",
+    "urls": [
+      "https://www.nottingham.edu.cn"
+    ]
+  },
+  {
+    "id": "sdu",
+    "urls": [
+      "https://www.sdu.edu.cn"
+    ]
+  },
+  {
+    "id": "blcu",
+    "urls": [
+      "https://admission.blcu.edu.cn"
+    ]
+  },
+  {
+    "id": "tongji",
+    "urls": [
+      "https://study.tongji.edu.cn"
+    ]
+  },
+  {
+    "id": "hust",
+    "urls": [
+      "http://iso.hust.edu.cn"
+    ]
+  },
+  {
+    "id": "whu",
+    "urls": [
+      "https://admission.whu.edu.cn"
+    ]
+  },
+  {
+    "id": "scut",
+    "urls": [
+      "http://www2.scut.edu.cn/sse"
+    ]
+  },
+  {
+    "id": "pku",
+    "urls": [
+      "https://www.is.pku.edu.cn"
+    ]
+  },
+  {
+    "id": "tsinghua",
+    "urls": [
+      "https://international.join-tsinghua.edu.cn"
+    ]
+  },
+  {
+    "id": "nju",
+    "urls": [
+      "https://hwxy.nju.edu.cn"
+    ]
+  },
+  {
+    "id": "sysu",
+    "urls": [
+      "https://iso.sysu.edu.cn"
+    ]
+  },
+  {
+    "id": "buaa",
+    "urls": [
+      "https://is.buaa.edu.cn"
+    ]
+  },
+  {
+    "id": "bnu",
+    "urls": [
+      "https://admission-is.bnu.edu.cn"
+    ]
+  },
+  {
+    "id": "ecnu",
+    "urls": [
+      "https://lxs.ecnu.edu.cn"
+    ]
+  },
+  {
+    "id": "cufe",
+    "urls": [
+      "https://isie.cufe.edu.cn"
+    ]
+  },
+  {
+    "id": "suibe",
+    "urls": [
+      "https://www.suibe.edu.cn"
+    ]
+  },
+  {
+    "id": "cupl",
+    "urls": [
+      "https://www.cupl.edu.cn"
+    ]
+  },
+  {
+    "id": "bisu",
+    "urls": [
+      "https://www.bisu.edu.cn"
+    ]
+  },
+  {
+    "id": "seu",
+    "urls": [
+      "https://cis.seu.edu.cn"
+    ]
+  },
+  {
+    "id": "hust_med",
+    "urls": [
+      "http://iso.hust.edu.cn"
+    ]
+  },
+  {
+    "id": "cmu",
+    "urls": [
+      "https://www.cmu.edu.cn"
+    ]
+  },
+  {
+    "id": "jlu",
+    "urls": [
+      "https://cie.jlu.edu.cn"
+    ]
+  },
+  {
+    "id": "lzu",
+    "urls": [
+      "https://sice.lzu.edu.cn"
+    ]
+  },
+  {
+    "id": "ynu",
+    "urls": [
+      "https://www.ynu.edu.cn"
+    ]
+  },
+  {
+    "id": "xmu",
+    "urls": [
+      "https://admissions.xmu.edu.cn"
+    ]
+  },
+  {
+    "id": "hnu",
+    "urls": [
+      "https://www-en.hnu.edu.cn"
+    ]
+  },
+  {
+    "id": "nankai",
+    "urls": [
+      "https://study.nankai.edu.cn"
+    ]
+  },
+  {
+    "id": "ouc",
+    "urls": [
+      "https://sie.ouc.edu.cn"
+    ]
+  },
+  {
+    "id": "dufe",
+    "urls": [
+      "https://sie.dufe.edu.cn"
+    ]
+  },
+  {
+    "id": "shisu",
+    "urls": [
+      "https://www.oisa.shisu.edu.cn"
+    ]
+  },
+  {
+    "id": "ccnu",
+    "urls": [
+      "https://cice.ccnu.edu.cn"
+    ]
+  },
+  {
+    "id": "hzau",
+    "urls": [
+      "https://international.hzau.edu.cn"
+    ]
+  },
+  {
+    "id": "dgut",
+    "urls": [
+      "https://www.dgut.edu.cn"
+    ]
+  }
 ];
 
 const UA =

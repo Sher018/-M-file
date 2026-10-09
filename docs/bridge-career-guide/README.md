@@ -43,3 +43,12 @@ python3 -m http.server 8787
 ## Deploy
 
 Cloudflare Workers static assets: `wrangler.jsonc` in this folder. Temporary `workers.dev` may block some mobile browsers (Turnstile); prefer a custom domain or trycloudflare for demos.
+
+
+## Email OTP
+
+See [EMAIL-OTP-SETUP.md](./EMAIL-OTP-SETUP.md) for Resend + Cloudflare KV.
+
+## Architecture notes
+
+See [ANALYSIS.md](./ANALYSIS.md).
