@@ -456,9 +456,9 @@ function renderUniPage(id) {
       <article class="glass detail-block">
         <h3>${t.t("uni_majors")}</h3>
         <ul class="chip-list">
-          ${(u.majors || []).map((m) => `<li>${trPhrase(m)}</li>`).join("")}
+          ${(u.majors || []).map((m) => `<li>${escapeHtml(trPhrase(m))}</li>`).join("")}
         </ul>
-        <p class="muted">${t.t("uni_en_programs")}: ${(u.englishPrograms || []).map(trPhrase).join(", ") || "—"}</p>
+        <p class="muted">${escapeHtml(t.t("uni_en_programs"))}: ${escapeHtml((u.englishPrograms || []).map(trPhrase).join(", ") || "—")}</p>
       </article>
 
       <article class="glass detail-block">
@@ -736,18 +736,21 @@ function renderTestResult(result) {
   box.innerHTML = `
     <div class="result-banner">
       <h3>${t.t("result_title")}</h3>
-      <p>${result.summary}</p>
-      <p class="muted">${t.t("result_match_note")}</p>
+      <p>${escapeHtml(result.summary)}</p>
+      <p class="muted">${escapeHtml(t.t("result_match_note"))}</p>
     </div>
     <div class="cluster-pills">
       ${(result.rankedClusters || [])
-        .map((c) => `<span class="pill">${c.label} <em>${c.score}</em></span>`)
+        .map((c) => `<span class="pill">${escapeHtml(c.label)} <em>${escapeHtml(c.score)}</em></span>`)
         .join("")}
     </div>
-    <h4>${t.t("result_professions")}</h4>
+    <h4>${escapeHtml(t.t("result_professions"))}</h4>
     <ul class="prof-list">
       ${(result.professions || [])
-        .map((p) => `<li><strong>${p.name}</strong> <span class="muted">${p.clusterLabel}</span></li>`)
+        .map(
+          (p) =>
+            `<li><strong>${escapeHtml(p.name)}</strong> <span class="muted">${escapeHtml(p.clusterLabel)}</span></li>`
+        )
         .join("")}
     </ul>
     <h4>${t.t("result_unis")}</h4>
