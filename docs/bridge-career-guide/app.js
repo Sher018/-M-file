@@ -449,17 +449,43 @@ function viewPath() {
 function viewSupport() {
   const t = I18N();
   const s = Cat().data()?.support || {};
-  const has = s.yoomoney_url || s.usdt_trc20;
+  const yo = s.yoomoney_url;
+  const yoNum = s.yoomoney_wallet;
+  const usdt = s.usdt_address || s.usdt_trc20;
+  const net = s.usdt_network || "TON";
+  if (!yo && !usdt) {
+    return `<div class="wrap" style="padding:48px 0"><h1>${escapeHtml(t.t("support_title"))}</h1><div class="card"><p>${escapeHtml(t.t("support_soon"))}</p></div></div>`;
+  }
   return `
     <div class="wrap" style="padding:48px 0">
       <h1>${escapeHtml(t.t("support_title"))}</h1>
       <p class="lead muted">${escapeHtml(t.t("support_lead"))}</p>
-      ${
-        has
-          ? `${s.yoomoney_url ? `<p><a class="btn btn--primary" href="${escapeHtml(s.yoomoney_url)}" target="_blank" rel="noopener">ЮMoney</a></p>` : ""}
-             ${s.usdt_trc20 ? `<p>USDT TRC-20: <code>${escapeHtml(s.usdt_trc20)}</code></p>` : ""}`
-          : `<div class="card"><p>${escapeHtml(t.t("support_soon"))}</p></div>`
-      }
+      <div class="grid-3" style="margin-top:28px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+        ${
+          yo
+            ? `<article class="card donate-card">
+                <h3>ЮMoney</h3>
+                <img class="qr" src="assets/brand/qr-yoomoney.svg" alt="QR YooMoney" width="160" height="160" />
+                <p><code>${escapeHtml(yoNum || yo)}</code></p>
+                <div class="hero-actions" style="justify-content:flex-start">
+                  <a class="btn btn--primary" href="${escapeHtml(yo)}" target="_blank" rel="noopener">${escapeHtml(t.t("support_open_yo"))}</a>
+                  <button class="btn btn--secondary" type="button" data-copy="${escapeHtml(yoNum || yo)}">${escapeHtml(t.t("support_copy"))}</button>
+                </div>
+              </article>`
+            : ""
+        }
+        ${
+          usdt
+            ? `<article class="card donate-card">
+                <h3>USDT · ${escapeHtml(net)}</h3>
+                <p class="muted">${escapeHtml(t.t("support_usdt_note"))}</p>
+                <img class="qr" src="assets/brand/qr-usdt-ton.svg" alt="QR USDT TON" width="160" height="160" />
+                <p><code class="addr">${escapeHtml(usdt)}</code></p>
+                <button class="btn btn--primary" type="button" data-copy="${escapeHtml(usdt)}">${escapeHtml(t.t("support_copy"))}</button>
+              </article>`
+            : ""
+        }
+      </div>
     </div>`;
 }
 
@@ -679,6 +705,16 @@ function bindView(route) {
     });
   });
   document.querySelectorAll("[data-close-sheet]").forEach((el) => el.addEventListener("click", closeSheet));
+  document.querySelectorAll("[data-copy]").forEach((b) => {
+    b.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(b.dataset.copy);
+        toast(I18N().t("support_copied"));
+      } catch {
+        toast(b.dataset.copy);
+      }
+    });
+  });
   document.querySelectorAll("[data-fk]").forEach((b) => {
     b.addEventListener("click", () => {
       const q = { ...parseHash().q };

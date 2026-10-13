@@ -1,10 +1,13 @@
 {
   "version": "2026-10-13",
-  "yoomoney_url": "",
+  "yoomoney_wallet": "4100119655920725",
+  "yoomoney_url": "https://yoomoney.ru/to/4100119655920725",
+  "usdt_network": "TON",
+  "usdt_address": "UQBC7GulZXH9lKWYChPkE4vn4AhMSdHJNgid7tiyN-60VLGc",
   "usdt_trc20": "",
   "note": {
-    "ru": "Реквизиты доната владелец подставляет сюда (ссылка ЮMoney и адрес USDT TRC-20). Пока поля пустые — на странице показывается «реквизиты скоро появятся», без выдуманных кошельков.",
-    "en": "Owner fills YooMoney URL and USDT TRC-20 here. Empty fields show “details coming soon” — no invented wallets.",
-    "tg": "Соҳиб URL-и ЮMoney ва суроғаи USDT TRC-20-ро мегузорад. Ҳоло холӣ — «ба наздикӣ»."
+    "ru": "ЮMoney — номер кошелька от владельца. USDT-адрес начинается с UQ: сеть TON, не TRC-20.",
+    "en": "YooMoney wallet from the owner. USDT address starts with UQ: TON network, not TRC-20.",
+    "tg": "ЮMoney — ҳамёни соҳиб. Суроғаи USDT бо UQ: шабакаи TON, на TRC-20."
   }
 }

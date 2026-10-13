@@ -237,6 +237,10 @@ footer.site .wrap { display: flex; justify-content: space-between; gap: 16px; fl
 }
 .tab-bar a { color: var(--n-500); font-size: 11px; text-align: center; text-decoration: none; }
 .tab-bar a.active { color: var(--brand-600); }
+.donate-card { text-align: center; }
+.donate-card .qr { margin: 12px auto; width: 160px; height: 160px; }
+.donate-card code { display: block; word-break: break-all; font-size: 13px; background: var(--n-50); padding: 10px 12px; border-radius: 12px; }
+.donate-card .hero-actions { justify-content: center; }
 
 @media (max-width: 1024px) {
   .uni-grid { grid-template-columns: repeat(2, 1fr); }
