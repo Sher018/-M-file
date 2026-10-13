@@ -106,7 +106,13 @@
           return pending;
         }
         // API exists but email not configured → demo; other errors → show to user
-        if (res.status === 503 || data.error === "email_not_configured" || res.status === 404) {
+        if (
+          res.status === 503 ||
+          res.status === 404 ||
+          res.status === 405 ||
+          res.status === 501 ||
+          data.error === "email_not_configured"
+        ) {
           allowDemoFallback = true;
         } else {
           throw new Error(data.error === "send_failed" ? "send_failed" : data.error || "send_failed");

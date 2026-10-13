@@ -68,7 +68,7 @@ function setupLang() {
     b.addEventListener("click", () => {
       I18N().setLang(b.dataset.lang);
       applyI18n();
-      route();
+      routeNow();
     });
   });
   I18N().setLang(I18N().lang);
@@ -121,8 +121,8 @@ function viewLanding() {
       </div>
       <div class="stats">
         <div class="stat"><strong>${c.unis}</strong><span>${escapeHtml(t.t("nav_unis"))}</span></div>
-        <div class="stat"><strong>${c.programs}</strong><span>programs</span></div>
-        <div class="stat"><strong>${c.scholarships}</strong><span>CSC</span></div>
+        <div class="stat"><strong>${c.programs}</strong><span>${escapeHtml(t.t("stat_programs"))}</span></div>
+        <div class="stat"><strong>${c.scholarships}</strong><span>${escapeHtml(t.t("stat_grants"))}</span></div>
         <div class="stat"><strong>${c.docs}</strong><span>${escapeHtml(t.t("uni_docs"))}</span></div>
       </div>
     </section>
@@ -287,7 +287,6 @@ function viewUni(id) {
   const inPath = Path().hasUni(u.id);
   const path = Path().get();
   const selectedSch = path.unis.find((x) => x.uni_id === id)?.scholarship_ids || [];
-  const country = Auth().currentUser()?.country || "TJ";
 
   const tiles = [
     [t.t("uni_from_year"), money(Cat().minTuition(u)), u],
@@ -328,7 +327,7 @@ function viewUni(id) {
           ${progs
             .map(
               (p) =>
-                `<tr><td>${escapeHtml(loc(p.name))}</td><td>${escapeHtml(t.t("degree_" + p.degree) || p.degree)}</td><td>${escapeHtml(money(p.tuition_year))} ${sourceTip(p)}</td><td>${escapeHtml(p.intake)}</td></tr>`
+                `<tr><td>${escapeHtml(loc(p.name))}</td><td>${escapeHtml(t.t("degree_" + p.degree) || p.degree)}</td><td>${escapeHtml(money(p.tuition_year))} ${sourceTip(p)}</td><td>${escapeHtml(t.t("intake_" + p.intake) || p.intake)}</td></tr>`
             )
             .join("")}
         </tbody>
@@ -376,7 +375,6 @@ function viewUni(id) {
       <p class="muted">${escapeHtml(t.t("disclaimer_not_agent"))}</p>
       <p><a href="mailto:?subject=${encodeURIComponent("[BRIDGE] uni:" + u.id)}">${escapeHtml(t.t("report_error"))}</a></p>
     </div>
-    <p class="wrap muted">${escapeHtml(country)}</p>
   `;
 }
 

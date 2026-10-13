@@ -79,6 +79,10 @@
       auth_change_email: "Изменить email",
       filters_btn: "Фильтры",
       showing: "Показано",
+      stat_programs: "Программы",
+      stat_grants: "Гранты",
+      intake_september: "сентябрь",
+      intake_march: "март",
     },
     en: {
       brand: "BRIDGE · To China",
@@ -159,6 +163,10 @@
       auth_change_email: "Change email",
       filters_btn: "Filters",
       showing: "Showing",
+      stat_programs: "Programs",
+      stat_grants: "Grants",
+      intake_september: "September",
+      intake_march: "March",
     },
     tg: {
       brand: "BRIDGE · To China",
@@ -239,6 +247,10 @@
       auth_change_email: "Email-ро иваз кунед",
       filters_btn: "Филтрҳо",
       showing: "Нишондода",
+      stat_programs: "Барномаҳо",
+      stat_grants: "Грантҳо",
+      intake_september: "сентябр",
+      intake_march: "март",
     },
   };
   const i18n = window.BRIDGE_I18N;
