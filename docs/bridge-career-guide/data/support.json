@@ -1,0 +1,10 @@
+{
+  "version": "2026-10-13",
+  "yoomoney_url": "",
+  "usdt_trc20": "",
+  "note": {
+    "ru": "Реквизиты доната владелец подставляет сюда (ссылка ЮMoney и адрес USDT TRC-20). Пока поля пустые — на странице показывается «реквизиты скоро появятся», без выдуманных кошельков.",
+    "en": "Owner fills YooMoney URL and USDT TRC-20 here. Empty fields show “details coming soon” — no invented wallets.",
+    "tg": "Соҳиб URL-и ЮMoney ва суроғаи USDT TRC-20-ро мегузорад. Ҳоло холӣ — «ба наздикӣ»."
+  }
+}

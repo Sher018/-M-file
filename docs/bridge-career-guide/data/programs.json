@@ -1,0 +1,2182 @@
+{
+  "version": "2026-10-13",
+  "items": [
+    {
+      "id": "zju-gcm-gcm-ba",
+      "uni_id": "zju-gcm",
+      "name": {
+        "ru": "GCM (BA)",
+        "en": "GCM (BA)",
+        "tg": "GCM (BA)"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "finance",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "media",
+        "international_relations"
+      ],
+      "duration_years": 4,
+      "tuition_year": 65000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.5 / TOEFL 80",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "http://isinfosys.zju.edu.cn/recruit/login.shtml",
+      "source_url": "https://zibs.zju.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "uibe-iup-english-bachelor-tracks",
+      "uni_id": "uibe",
+      "name": {
+        "ru": "IUP English bachelor tracks",
+        "en": "IUP English bachelor tracks",
+        "tg": "IUP English bachelor tracks"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "finance",
+      "cluster_ids": [
+        "business",
+        "finance"
+      ],
+      "duration_years": 4,
+      "tuition_year": 49750,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0 / TOEFL 86",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://isa.uibe.edu.cn",
+      "source_url": "https://sie.uibe.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "bfsu-ibs-english-bachelor",
+      "uni_id": "bfsu",
+      "name": {
+        "ru": "IBS English bachelor",
+        "en": "IBS English bachelor",
+        "tg": "IBS English bachelor"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "finance",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "media",
+        "international_relations"
+      ],
+      "duration_years": 4,
+      "tuition_year": 39900,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0 / TOEFL 79 / Duolingo 110",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "http://study.bfsu.edu.cn",
+      "source_url": "https://study.bfsu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "sjtu-engineering-cluster-en",
+      "uni_id": "sjtu",
+      "name": {
+        "ru": "Engineering Cluster (EN)",
+        "en": "Engineering Cluster (EN)",
+        "tg": "Engineering Cluster (EN)"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "it",
+        "engineering"
+      ],
+      "duration_years": 4,
+      "tuition_year": 80000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS/TOEFL per program guide",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://isc.sjtu.edu.cn",
+      "source_url": "https://en.sjtu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "fudan-uipe-economics-en",
+      "uni_id": "fudan",
+      "name": {
+        "ru": "UIPE Economics (EN)",
+        "en": "UIPE Economics (EN)",
+        "tg": "UIPE Economics (EN)"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "medicine",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "it",
+        "medicine"
+      ],
+      "duration_years": 4,
+      "tuition_year": 80000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "High English (program-specific)",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://istudent.fudan.edu.cn/apply",
+      "source_url": "https://iso.fudan.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "xjtu-en-undergraduate-engineering-tracks",
+      "uni_id": "xjtu",
+      "name": {
+        "ru": "EN undergraduate engineering tracks",
+        "en": "EN undergraduate engineering tracks",
+        "tg": "EN undergraduate engineering tracks"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "engineering",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "engineering"
+      ],
+      "duration_years": 4,
+      "tuition_year": 30000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0 / TOEFL 80",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "http://isso.xjtu.edu.cn/recruit/login",
+      "source_url": "https://sie.xjtu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "tju-selected-en-ccn-pathway",
+      "uni_id": "tju",
+      "name": {
+        "ru": "Selected EN / CCN pathway",
+        "en": "Selected EN / CCN pathway",
+        "tg": "Selected EN / CCN pathway"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "it",
+        "engineering"
+      ],
+      "duration_years": 4,
+      "tuition_year": 22000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS ~5.5–6.0 or Chinese track HSK",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://chinacampus.ru/universitety/tyanczinskij-universitet",
+      "source_url": "https://www.tju.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "bjtu-civil-mechanical-en-bachelor-listed-via-ccn-part",
+      "uni_id": "bjtu",
+      "name": {
+        "ru": "Civil / Mechanical EN bachelor (listed via CCN partners)",
+        "en": "Civil / Mechanical EN bachelor (listed via CCN partners)",
+        "tg": "Civil / Mechanical EN bachelor (listed via CCN partners)"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "it",
+        "engineering"
+      ],
+      "duration_years": 4,
+      "tuition_year": 24800,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS ~5.5+ or HSK for Chinese tracks",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://chinacampus.ru/universitety/pekinskij-transportnyj-universitet",
+      "source_url": "https://www.bjtu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "hit-multiple-en-bachelor-campus-dependent",
+      "uni_id": "hit",
+      "name": {
+        "ru": "Multiple EN bachelor (campus-dependent)",
+        "en": "Multiple EN bachelor (campus-dependent)",
+        "tg": "Multiple EN bachelor (campus-dependent)"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "it",
+        "engineering"
+      ],
+      "duration_years": 4,
+      "tuition_year": 26000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0 / TOEFL 80",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://studyathit.hit.edu.cn",
+      "source_url": "https://studyathit.hit.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "npu-en-engineering-business-tracks",
+      "uni_id": "npu",
+      "name": {
+        "ru": "EN engineering / business tracks",
+        "en": "EN engineering / business tracks",
+        "tg": "EN engineering / business tracks"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "it",
+        "engineering"
+      ],
+      "duration_years": 4,
+      "tuition_year": 22000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0 / TOEFL 80 / Duolingo 115",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://studyat.nwpu.edu.cn",
+      "source_url": "https://studyat.nwpu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "whut-civil",
+      "uni_id": "whut",
+      "name": {
+        "ru": "Civil",
+        "en": "Civil",
+        "tg": "Civil"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "it",
+        "engineering"
+      ],
+      "duration_years": 4,
+      "tuition_year": 24000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 5.5+ / TOEFL 80",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://admission.whut.edu.cn",
+      "source_url": "https://english.whut.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "whut-cs",
+      "uni_id": "whut",
+      "name": {
+        "ru": "CS",
+        "en": "CS",
+        "tg": "CS"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "it",
+        "engineering"
+      ],
+      "duration_years": 4,
+      "tuition_year": 24000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 5.5+ / TOEFL 80",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://admission.whut.edu.cn",
+      "source_url": "https://english.whut.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "whut-business-en-bachelor",
+      "uni_id": "whut",
+      "name": {
+        "ru": "Business EN bachelor",
+        "en": "Business EN bachelor",
+        "tg": "Business EN bachelor"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "it",
+        "engineering"
+      ],
+      "duration_years": 4,
+      "tuition_year": 24000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 5.5+ / TOEFL 80",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://admission.whut.edu.cn",
+      "source_url": "https://english.whut.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "silc-iet-cross-border-e-commerce",
+      "uni_id": "silc",
+      "name": {
+        "ru": "IET Cross-Border E-commerce",
+        "en": "IET Cross-Border E-commerce",
+        "tg": "IET Cross-Border E-commerce"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "it"
+      ],
+      "duration_years": 4,
+      "tuition_year": 40000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.5 / TOEFL 90 / Duolingo 120",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [],
+      "apply_url": "https://apply.shu.edu.cn",
+      "source_url": "https://shusilc.shu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "silc-digital-marketing",
+      "uni_id": "silc",
+      "name": {
+        "ru": "Digital Marketing",
+        "en": "Digital Marketing",
+        "tg": "Digital Marketing"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "it"
+      ],
+      "duration_years": 4,
+      "tuition_year": 40000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.5 / TOEFL 90 / Duolingo 120",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [],
+      "apply_url": "https://apply.shu.edu.cn",
+      "source_url": "https://shusilc.shu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "silc-bba-tracks",
+      "uni_id": "silc",
+      "name": {
+        "ru": "BBA tracks",
+        "en": "BBA tracks",
+        "tg": "BBA tracks"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "it"
+      ],
+      "duration_years": 4,
+      "tuition_year": 40000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.5 / TOEFL 90 / Duolingo 120",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [],
+      "apply_url": "https://apply.shu.edu.cn",
+      "source_url": "https://shusilc.shu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "bit-iet-en",
+      "uni_id": "bit",
+      "name": {
+        "ru": "IET EN",
+        "en": "IET EN",
+        "tg": "IET EN"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "it",
+        "engineering"
+      ],
+      "duration_years": 4,
+      "tuition_year": 30000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0 / TOEFL 85 / Duolingo 110",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "http://apply.isc.bit.edu.cn",
+      "source_url": "https://isc.bit.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "bit-cs-en",
+      "uni_id": "bit",
+      "name": {
+        "ru": "CS EN",
+        "en": "CS EN",
+        "tg": "CS EN"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "it",
+        "engineering"
+      ],
+      "duration_years": 4,
+      "tuition_year": 30000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0 / TOEFL 85 / Duolingo 110",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "http://apply.isc.bit.edu.cn",
+      "source_url": "https://isc.bit.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "bit-automation-en",
+      "uni_id": "bit",
+      "name": {
+        "ru": "Automation EN",
+        "en": "Automation EN",
+        "tg": "Automation EN"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "it",
+        "engineering"
+      ],
+      "duration_years": 4,
+      "tuition_year": 30000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0 / TOEFL 85 / Duolingo 110",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "http://apply.isc.bit.edu.cn",
+      "source_url": "https://isc.bit.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "jsu-marketing-en",
+      "uni_id": "jsu",
+      "name": {
+        "ru": "Marketing EN",
+        "en": "Marketing EN",
+        "tg": "Marketing EN"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "engineering",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "engineering"
+      ],
+      "duration_years": 4,
+      "tuition_year": 18000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0 / TOEFL 80 / Duolingo 100",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [],
+      "apply_url": "http://admission.ujs.edu.cn",
+      "source_url": "https://oec.ujs.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "jsu-bba",
+      "uni_id": "jsu",
+      "name": {
+        "ru": "BBA",
+        "en": "BBA",
+        "tg": "BBA"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "engineering",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "engineering"
+      ],
+      "duration_years": 4,
+      "tuition_year": 18000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0 / TOEFL 80 / Duolingo 100",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [],
+      "apply_url": "http://admission.ujs.edu.cn",
+      "source_url": "https://oec.ujs.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "jsu-e-commerce",
+      "uni_id": "jsu",
+      "name": {
+        "ru": "E-Commerce",
+        "en": "E-Commerce",
+        "tg": "E-Commerce"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "engineering",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "engineering"
+      ],
+      "duration_years": 4,
+      "tuition_year": 18000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0 / TOEFL 80 / Duolingo 100",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [],
+      "apply_url": "http://admission.ujs.edu.cn",
+      "source_url": "https://oec.ujs.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "zust-many-en-bachelor-majors-18-20k",
+      "uni_id": "zust",
+      "name": {
+        "ru": "Many EN bachelor majors (~18–20k)",
+        "en": "Many EN bachelor majors (~18–20k)",
+        "tg": "Many EN bachelor majors (~18–20k)"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "it",
+        "engineering"
+      ],
+      "duration_years": 4,
+      "tuition_year": 20000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 5.5 / TOEFL 80",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [],
+      "apply_url": "http://isam.zust.edu.cn",
+      "source_url": "https://ies.zust.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "nbut-intelligent-construction",
+      "uni_id": "nbut",
+      "name": {
+        "ru": "Intelligent Construction",
+        "en": "Intelligent Construction",
+        "tg": "Intelligent Construction"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "it",
+        "engineering"
+      ],
+      "duration_years": 4,
+      "tuition_year": 18000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 5.5 / TOEFL 80",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [],
+      "apply_url": "https://gjxy.nbut.edu.cn",
+      "source_url": "https://gjxy.nbut.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "nbut-cs",
+      "uni_id": "nbut",
+      "name": {
+        "ru": "CS",
+        "en": "CS",
+        "tg": "CS"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "it",
+        "engineering"
+      ],
+      "duration_years": 4,
+      "tuition_year": 18000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 5.5 / TOEFL 80",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [],
+      "apply_url": "https://gjxy.nbut.edu.cn",
+      "source_url": "https://gjxy.nbut.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "nbut-ai",
+      "uni_id": "nbut",
+      "name": {
+        "ru": "AI",
+        "en": "AI",
+        "tg": "AI"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "it",
+        "engineering"
+      ],
+      "duration_years": 4,
+      "tuition_year": 18000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 5.5 / TOEFL 80",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [],
+      "apply_url": "https://gjxy.nbut.edu.cn",
+      "source_url": "https://gjxy.nbut.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "nbut-business",
+      "uni_id": "nbut",
+      "name": {
+        "ru": "Business",
+        "en": "Business",
+        "tg": "Business"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "it",
+        "engineering"
+      ],
+      "duration_years": 4,
+      "tuition_year": 18000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 5.5 / TOEFL 80",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [],
+      "apply_url": "https://gjxy.nbut.edu.cn",
+      "source_url": "https://gjxy.nbut.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "xjtlu-almost-all-taught-in-english",
+      "uni_id": "xjtlu",
+      "name": {
+        "ru": "Almost all taught in English",
+        "en": "Almost all taught in English",
+        "tg": "Almost all taught in English"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "finance",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "media",
+        "international_relations"
+      ],
+      "duration_years": 4,
+      "tuition_year": 93000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS from 5.0 (Year 1) — check track",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [],
+      "apply_url": "https://www.xjtlu.edu.cn/en/admissions",
+      "source_url": "https://www.xjtlu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "unnc-all-english",
+      "uni_id": "unnc",
+      "name": {
+        "ru": "All English",
+        "en": "All English",
+        "tg": "All English"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "it",
+        "engineering"
+      ],
+      "duration_years": 4,
+      "tuition_year": 120000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 5.5–7.0 by track",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [],
+      "apply_url": "https://www.nottingham.edu.cn/en/study-with-us/how-to-apply",
+      "source_url": "https://www.nottingham.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "sdu-selected-en-chinese-tracks-via-ccn",
+      "uni_id": "sdu",
+      "name": {
+        "ru": "Selected EN / Chinese tracks via CCN",
+        "en": "Selected EN / Chinese tracks via CCN",
+        "tg": "Selected EN / Chinese tracks via CCN"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "finance",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "media",
+        "international_relations"
+      ],
+      "duration_years": 4,
+      "tuition_year": 20000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 5.5+ or HSK for CN tracks",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://chinacampus.ru/universitety",
+      "source_url": "https://www.sdu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "blcu-selected-business-international-tracks",
+      "uni_id": "blcu",
+      "name": {
+        "ru": "Selected business / international tracks",
+        "en": "Selected business / international tracks",
+        "tg": "Selected business / international tracks"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "finance",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "media",
+        "international_relations"
+      ],
+      "duration_years": 4,
+      "tuition_year": 23200,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 5.5+ or HSK by track",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://admission.blcu.edu.cn",
+      "source_url": "https://admission.blcu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "tongji-civil-eng-en",
+      "uni_id": "tongji",
+      "name": {
+        "ru": "Civil Eng EN",
+        "en": "Civil Eng EN",
+        "tg": "Civil Eng EN"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "it",
+        "engineering",
+        "design"
+      ],
+      "duration_years": 4,
+      "tuition_year": 30000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0 / TOEFL 80",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://study.tongji.edu.cn",
+      "source_url": "https://study.tongji.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "tongji-architecture-related-en-tracks",
+      "uni_id": "tongji",
+      "name": {
+        "ru": "Architecture related EN tracks",
+        "en": "Architecture related EN tracks",
+        "tg": "Architecture related EN tracks"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "it",
+        "engineering",
+        "design"
+      ],
+      "duration_years": 4,
+      "tuition_year": 30000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0 / TOEFL 80",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://study.tongji.edu.cn",
+      "source_url": "https://study.tongji.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "hust-selected-stem-en-mbbs-tracks",
+      "uni_id": "hust",
+      "name": {
+        "ru": "Selected STEM EN / MBBS tracks",
+        "en": "Selected STEM EN / MBBS tracks",
+        "tg": "Selected STEM EN / MBBS tracks"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "medicine",
+      "cluster_ids": [
+        "it",
+        "engineering",
+        "medicine"
+      ],
+      "duration_years": 6,
+      "tuition_year": 30000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0 / TOEFL 80",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "http://iso.hust.edu.cn",
+      "source_url": "https://iso.hust.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "whu-selected-en-programs",
+      "uni_id": "whu",
+      "name": {
+        "ru": "Selected EN programs",
+        "en": "Selected EN programs",
+        "tg": "Selected EN programs"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "finance",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "media",
+        "international_relations"
+      ],
+      "duration_years": 4,
+      "tuition_year": 23000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0+",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://admission.whu.edu.cn",
+      "source_url": "https://admission.whu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "scut-international-economics-trade",
+      "uni_id": "scut",
+      "name": {
+        "ru": "International Economics & Trade",
+        "en": "International Economics & Trade",
+        "tg": "International Economics & Trade"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "engineering",
+        "design"
+      ],
+      "duration_years": 4,
+      "tuition_year": 26000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0 / TOEFL 80",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "http://www2.scut.edu.cn/sse",
+      "source_url": "https://www2.scut.edu.cn/sse",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "scut-selected-eng",
+      "uni_id": "scut",
+      "name": {
+        "ru": "selected eng",
+        "en": "selected eng",
+        "tg": "selected eng"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "engineering",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "engineering",
+        "design"
+      ],
+      "duration_years": 4,
+      "tuition_year": 26000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0 / TOEFL 80",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "http://www2.scut.edu.cn/sse",
+      "source_url": "https://www2.scut.edu.cn/sse",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "pku-selected-en-graduate-undergrad-tracks",
+      "uni_id": "pku",
+      "name": {
+        "ru": "Selected EN graduate/undergrad tracks",
+        "en": "Selected EN graduate/undergrad tracks",
+        "tg": "Selected EN graduate/undergrad tracks"
+      },
+      "degree": "master",
+      "language": "en",
+      "discipline": "law",
+      "cluster_ids": [
+        "international_relations",
+        "law",
+        "media",
+        "business"
+      ],
+      "duration_years": 2,
+      "tuition_year": 30000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.5 / TOEFL 90",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://www.is.pku.edu.cn",
+      "source_url": "https://www.is.pku.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "tsinghua-selected-en-engineering-business",
+      "uni_id": "tsinghua",
+      "name": {
+        "ru": "Selected EN engineering / business",
+        "en": "Selected EN engineering / business",
+        "tg": "Selected EN engineering / business"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "engineering",
+        "it",
+        "business"
+      ],
+      "duration_years": 4,
+      "tuition_year": 30000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.5 / TOEFL 90",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://international.join-tsinghua.edu.cn",
+      "source_url": "https://international.join-tsinghua.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "nju-selected-en",
+      "uni_id": "nju",
+      "name": {
+        "ru": "Selected EN",
+        "en": "Selected EN",
+        "tg": "Selected EN"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "medicine",
+      "cluster_ids": [
+        "media",
+        "international_relations",
+        "it",
+        "medicine"
+      ],
+      "duration_years": 4,
+      "tuition_year": 24000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0+",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://hwxy.nju.edu.cn",
+      "source_url": "https://hwxy.nju.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "sysu-selected-en-mbbs-tracks",
+      "uni_id": "sysu",
+      "name": {
+        "ru": "Selected EN / MBBS tracks",
+        "en": "Selected EN / MBBS tracks",
+        "tg": "Selected EN / MBBS tracks"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "medicine",
+      "cluster_ids": [
+        "business",
+        "medicine",
+        "international_relations"
+      ],
+      "duration_years": 6,
+      "tuition_year": 28000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0 / TOEFL 80",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://iso.sysu.edu.cn",
+      "source_url": "https://iso.sysu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "buaa-engineering-en-tracks",
+      "uni_id": "buaa",
+      "name": {
+        "ru": "Engineering EN tracks",
+        "en": "Engineering EN tracks",
+        "tg": "Engineering EN tracks"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "engineering",
+        "it"
+      ],
+      "duration_years": 4,
+      "tuition_year": 30000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0+",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://is.buaa.edu.cn",
+      "source_url": "https://is.buaa.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "bnu-selected-en-chinese-teaching",
+      "uni_id": "bnu",
+      "name": {
+        "ru": "Selected EN / Chinese teaching",
+        "en": "Selected EN / Chinese teaching",
+        "tg": "Selected EN / Chinese teaching"
+      },
+      "degree": "language",
+      "language": "en",
+      "discipline": "media",
+      "cluster_ids": [
+        "education",
+        "media",
+        "international_relations"
+      ],
+      "duration_years": 1,
+      "tuition_year": 25000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0 or HSK",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://admission-is.bnu.edu.cn",
+      "source_url": "https://admission-is.bnu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "ecnu-selected-en",
+      "uni_id": "ecnu",
+      "name": {
+        "ru": "Selected EN",
+        "en": "Selected EN",
+        "tg": "Selected EN"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "education",
+        "media",
+        "it"
+      ],
+      "duration_years": 4,
+      "tuition_year": 25000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0+",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://lxs.ecnu.edu.cn",
+      "source_url": "https://lxs.ecnu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "cufe-iup-en-finance-tracks",
+      "uni_id": "cufe",
+      "name": {
+        "ru": "IUP / EN finance tracks",
+        "en": "IUP / EN finance tracks",
+        "tg": "IUP / EN finance tracks"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "finance",
+      "cluster_ids": [
+        "finance",
+        "business"
+      ],
+      "duration_years": 4,
+      "tuition_year": 48000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0 / TOEFL 80",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://isie.cufe.edu.cn",
+      "source_url": "https://isie.cufe.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "suibe-business-en-tracks",
+      "uni_id": "suibe",
+      "name": {
+        "ru": "Business EN tracks",
+        "en": "Business EN tracks",
+        "tg": "Business EN tracks"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "finance",
+      "cluster_ids": [
+        "business",
+        "trade",
+        "finance",
+        "logistics"
+      ],
+      "duration_years": 4,
+      "tuition_year": 32000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0+",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [],
+      "apply_url": "https://www.suibe.edu.cn",
+      "source_url": "https://www.suibe.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "cupl-selected-law-chinese-law-for-internationals",
+      "uni_id": "cupl",
+      "name": {
+        "ru": "Selected law / Chinese law for internationals",
+        "en": "Selected law / Chinese law for internationals",
+        "tg": "Selected law / Chinese law for internationals"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "law",
+      "cluster_ids": [
+        "law",
+        "international_relations"
+      ],
+      "duration_years": 4,
+      "tuition_year": 26000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0 or HSK for CN tracks",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://www.cupl.edu.cn",
+      "source_url": "https://www.cupl.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "bisu-tourism-hospitality-en",
+      "uni_id": "bisu",
+      "name": {
+        "ru": "Tourism / hospitality EN",
+        "en": "Tourism / hospitality EN",
+        "tg": "Tourism / hospitality EN"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "media",
+      "cluster_ids": [
+        "hospitality",
+        "media",
+        "international_relations",
+        "business"
+      ],
+      "duration_years": 4,
+      "tuition_year": 24000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 5.5+",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [],
+      "apply_url": "https://www.bisu.edu.cn",
+      "source_url": "https://www.bisu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "seu-engineering-en",
+      "uni_id": "seu",
+      "name": {
+        "ru": "Engineering EN",
+        "en": "Engineering EN",
+        "tg": "Engineering EN"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "medicine",
+      "cluster_ids": [
+        "engineering",
+        "it",
+        "medicine"
+      ],
+      "duration_years": 4,
+      "tuition_year": 22000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0+",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://cis.seu.edu.cn",
+      "source_url": "https://cis.seu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "hust_med-mbbs-en-verify-yearly",
+      "uni_id": "hust_med",
+      "name": {
+        "ru": "MBBS EN (verify yearly)",
+        "en": "MBBS EN (verify yearly)",
+        "tg": "MBBS EN (verify yearly)"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "medicine",
+      "cluster_ids": [
+        "medicine"
+      ],
+      "duration_years": 6,
+      "tuition_year": 40000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0+",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "http://iso.hust.edu.cn",
+      "source_url": "https://iso.hust.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "cmu-mbbs-en",
+      "uni_id": "cmu",
+      "name": {
+        "ru": "MBBS EN",
+        "en": "MBBS EN",
+        "tg": "MBBS EN"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "medicine",
+      "cluster_ids": [
+        "medicine"
+      ],
+      "duration_years": 6,
+      "tuition_year": 40000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0+",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [],
+      "apply_url": "https://www.cmu.edu.cn",
+      "source_url": "https://www.cmu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "jlu-selected-en",
+      "uni_id": "jlu",
+      "name": {
+        "ru": "Selected EN",
+        "en": "Selected EN",
+        "tg": "Selected EN"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "medicine",
+      "cluster_ids": [
+        "engineering",
+        "it",
+        "business",
+        "medicine"
+      ],
+      "duration_years": 4,
+      "tuition_year": 20000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 5.5+",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://cie.jlu.edu.cn",
+      "source_url": "https://cie.jlu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "lzu-selected-en-chinese-tracks",
+      "uni_id": "lzu",
+      "name": {
+        "ru": "Selected EN / Chinese tracks",
+        "en": "Selected EN / Chinese tracks",
+        "tg": "Selected EN / Chinese tracks"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "engineering",
+      "cluster_ids": [
+        "engineering",
+        "education",
+        "international_relations"
+      ],
+      "duration_years": 4,
+      "tuition_year": 18000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 5.5+ or HSK",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://sice.lzu.edu.cn",
+      "source_url": "https://sice.lzu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "ynu-selected-en-chinese",
+      "uni_id": "ynu",
+      "name": {
+        "ru": "Selected EN / Chinese",
+        "en": "Selected EN / Chinese",
+        "tg": "Selected EN / Chinese"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "media",
+      "cluster_ids": [
+        "international_relations",
+        "business",
+        "hospitality",
+        "media"
+      ],
+      "duration_years": 4,
+      "tuition_year": 18000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 5.5+ or HSK",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://www.ynu.edu.cn",
+      "source_url": "https://www.ynu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "xmu-selected-en",
+      "uni_id": "xmu",
+      "name": {
+        "ru": "Selected EN",
+        "en": "Selected EN",
+        "tg": "Selected EN"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "finance",
+      "cluster_ids": [
+        "business",
+        "finance",
+        "international_relations",
+        "media"
+      ],
+      "duration_years": 4,
+      "tuition_year": 26000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0+",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://admissions.xmu.edu.cn",
+      "source_url": "https://admissions.xmu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "hnu-engineering-business-en",
+      "uni_id": "hnu",
+      "name": {
+        "ru": "Engineering / business EN",
+        "en": "Engineering / business EN",
+        "tg": "Engineering / business EN"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "engineering",
+        "it",
+        "business"
+      ],
+      "duration_years": 4,
+      "tuition_year": 20000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 5.5+",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://www-en.hnu.edu.cn",
+      "source_url": "https://www-en.hnu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "nankai-selected-en",
+      "uni_id": "nankai",
+      "name": {
+        "ru": "Selected EN",
+        "en": "Selected EN",
+        "tg": "Selected EN"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "finance",
+      "cluster_ids": [
+        "finance",
+        "business",
+        "international_relations"
+      ],
+      "duration_years": 4,
+      "tuition_year": 25000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0+",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://study.nankai.edu.cn",
+      "source_url": "https://study.nankai.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "ouc-selected-en",
+      "uni_id": "ouc",
+      "name": {
+        "ru": "Selected EN",
+        "en": "Selected EN",
+        "tg": "Selected EN"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "engineering",
+      "cluster_ids": [
+        "engineering",
+        "logistics",
+        "international_relations"
+      ],
+      "duration_years": 4,
+      "tuition_year": 20000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 5.5+",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://sie.ouc.edu.cn",
+      "source_url": "https://sie.ouc.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "dufe-business-en",
+      "uni_id": "dufe",
+      "name": {
+        "ru": "Business EN",
+        "en": "Business EN",
+        "tg": "Business EN"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "finance",
+      "cluster_ids": [
+        "finance",
+        "business",
+        "logistics"
+      ],
+      "duration_years": 4,
+      "tuition_year": 22000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 5.5+",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://sie.dufe.edu.cn",
+      "source_url": "https://sie.dufe.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "shisu-selected-en-language-business",
+      "uni_id": "shisu",
+      "name": {
+        "ru": "Selected EN / language+business",
+        "en": "Selected EN / language+business",
+        "tg": "Selected EN / language+business"
+      },
+      "degree": "language",
+      "language": "en",
+      "discipline": "media",
+      "cluster_ids": [
+        "media",
+        "international_relations",
+        "business"
+      ],
+      "duration_years": 1,
+      "tuition_year": 26000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 6.0+",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://www.oisa.shisu.edu.cn",
+      "source_url": "https://www.oisa.shisu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "ccnu-selected-en-chinese-teaching",
+      "uni_id": "ccnu",
+      "name": {
+        "ru": "Selected EN / Chinese teaching",
+        "en": "Selected EN / Chinese teaching",
+        "tg": "Selected EN / Chinese teaching"
+      },
+      "degree": "language",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "education",
+        "media",
+        "it"
+      ],
+      "duration_years": 1,
+      "tuition_year": 18000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 5.5+ or HSK",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://cice.ccnu.edu.cn",
+      "source_url": "https://cice.ccnu.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "hzau-selected-en-life-science",
+      "uni_id": "hzau",
+      "name": {
+        "ru": "Selected EN life-science",
+        "en": "Selected EN life-science",
+        "tg": "Selected EN life-science"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "medicine",
+      "cluster_ids": [
+        "engineering",
+        "medicine",
+        "logistics"
+      ],
+      "duration_years": 4,
+      "tuition_year": 18000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 5.5+",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [
+        "csc-bilateral",
+        "csc-university"
+      ],
+      "apply_url": "https://international.hzau.edu.cn",
+      "source_url": "https://international.hzau.edu.cn",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "dgut-engineering-business-en",
+      "uni_id": "dgut",
+      "name": {
+        "ru": "Engineering / business EN",
+        "en": "Engineering / business EN",
+        "tg": "Engineering / business EN"
+      },
+      "degree": "bachelor",
+      "language": "en",
+      "discipline": "cs",
+      "cluster_ids": [
+        "engineering",
+        "it",
+        "business"
+      ],
+      "duration_years": 4,
+      "tuition_year": 18000,
+      "intake": "september",
+      "deadline_id": null,
+      "requirements": {
+        "english": "IELTS 5.5+",
+        "hsk": null,
+        "exams": [
+          "CSCA"
+        ]
+      },
+      "scholarship_ids": [],
+      "apply_url": "https://www.dgut.edu.cn",
+      "source_url": "https://www.dgut.edu.cn",
+      "checked_at": "2026-10-13"
+    }
+  ]
+}

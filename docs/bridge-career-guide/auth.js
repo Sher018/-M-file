@@ -1,7 +1,7 @@
 /* Email OTP auth gate — prefers Worker /api/otp/* (Resend), falls back to local demo. */
 (function () {
   const USERS_KEY = "bridge-users-v2";
-  const SESSION_KEY = "bridge-session-v2";
+  const SESSION_KEY = "bridge-session-v3";
   const OTP_KEY = "bridge-otp-pending";
 
   function loadJSON(key, fallback) {
@@ -18,7 +18,7 @@
   function genCode() {
     const a = new Uint32Array(1);
     crypto.getRandomValues(a);
-    return String(1000 + (a[0] % 9000));
+    return String(100000 + (a[0] % 900000));
   }
 
   const Auth = {
@@ -33,13 +33,13 @@
     },
     setSession(user) {
       if (!user) localStorage.removeItem(SESSION_KEY);
-      else saveJSON(SESSION_KEY, { email: user.email, name: user.name });
+      else saveJSON(SESSION_KEY, { email: user.email, name: user.name, country: user.country, lang: window.BRIDGE_I18N?.lang || "ru", createdAt: user.createdAt || new Date().toISOString() });
       window.dispatchEvent(new CustomEvent("bridge:auth"));
     },
     currentUser() {
       const s = this.getSession();
       if (!s) return null;
-      return this.getUsers()[s.email] || null;
+      return this.getUsers()[s.email] || s;
     },
     isAuthed() {
       return !!this.currentUser();
@@ -66,8 +66,8 @@
       if (mode === "register") {
         if (users[clean]) throw new Error("exists");
         if (!consents?.pd || !consents?.age || !consents?.terms) throw new Error("consents");
-      } else if (!users[clean]) {
-        throw new Error("not_found");
+      } else if (mode === "login" && !users[clean]) {
+        /* spec: still send code; profile is created after verify */
       }
 
       const payload = {
@@ -161,7 +161,9 @@
         });
         const data = await res.json().catch(() => ({}));
         if (!res.ok || !data.ok) {
-          throw new Error(data.error === "expired" ? "expired" : "bad_code");
+          if (data.token) pending.token = data.token;
+          saveJSON(OTP_KEY, pending);
+          throw new Error(data.error === "locked" ? "locked" : data.error === "expired" ? "expired" : "bad_code");
         }
       } else if (pending.server && pending.token && pending.demo) {
         // Demo with token: still verify via API when possible

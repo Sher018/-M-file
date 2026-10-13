@@ -1,0 +1,18 @@
+{
+  "version": "2026-10-13",
+  "items": [
+    { "id": "business", "name": { "ru": "Бизнес и управление", "en": "Business", "tg": "Бизнес" } },
+    { "id": "finance", "name": { "ru": "Финансы и экономика", "en": "Finance", "tg": "Молия" } },
+    { "id": "cs", "name": { "ru": "Компьютерные науки", "en": "Computer science", "tg": "Информатика" } },
+    { "id": "engineering", "name": { "ru": "Инженерия", "en": "Engineering", "tg": "Муҳандисӣ" } },
+    { "id": "medicine", "name": { "ru": "Медицина", "en": "Medicine", "tg": "Тиб" } },
+    { "id": "law", "name": { "ru": "Право", "en": "Law", "tg": "Ҳуқуқ" } },
+    { "id": "media", "name": { "ru": "Медиа и коммуникации", "en": "Media", "tg": "Медиа" } },
+    { "id": "design", "name": { "ru": "Дизайн и архитектура", "en": "Design", "tg": "Дизайн" } },
+    { "id": "education", "name": { "ru": "Образование", "en": "Education", "tg": "Маориф" } },
+    { "id": "hospitality", "name": { "ru": "Туризм и гостеприимство", "en": "Hospitality", "tg": "Туризм" } },
+    { "id": "logistics", "name": { "ru": "Логистика", "en": "Logistics", "tg": "Логистика" } },
+    { "id": "international", "name": { "ru": "Международные отношения", "en": "International relations", "tg": "Муносибатҳои байналмилалӣ" } },
+    { "id": "other", "name": { "ru": "Другое", "en": "Other", "tg": "Дигар" } }
+  ]
+}

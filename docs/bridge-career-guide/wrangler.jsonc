@@ -16,7 +16,8 @@
     "run_worker_first": ["/api/*"]
   },
   "vars": {
-    "ALLOW_DEMO_OTP": "false"
+    "ALLOW_DEMO_OTP": "false",
+    "FEEDBACK_TO_EMAIL": "sheroz.yunusov2001@gmail.com"
   },
   "observability": {
     "enabled": true,

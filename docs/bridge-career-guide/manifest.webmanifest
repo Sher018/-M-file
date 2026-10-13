@@ -1,0 +1,12 @@
+{
+  "name": "BRIDGE · To China",
+  "short_name": "BRIDGE",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#013220",
+  "lang": "ru",
+  "icons": [
+    { "src": "assets/brand/mark.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

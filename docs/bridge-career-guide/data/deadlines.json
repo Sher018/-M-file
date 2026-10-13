@@ -1,0 +1,87 @@
+{
+  "version": "2026-10-13",
+  "items": [
+    {
+      "id": "csc-bilateral-tj-2026",
+      "label": {
+        "ru": "CSC Type A · Таджикистан · набор 2026/27",
+        "en": "CSC Type A · Tajikistan · 2026/27 intake",
+        "tg": "CSC Type A · Тоҷикистон · 2026/27"
+      },
+      "applies_to": "csc",
+      "uni_id": null,
+      "program_id": null,
+      "scholarship_id": "csc-bilateral",
+      "date_from": "2025-11-22",
+      "date_to": "2026-02-02",
+      "intake_year": 2026,
+      "recurring": false,
+      "note": {
+        "ru": "По объявлению посольства КНР в ТЖ: электронные материалы 22.11–19.12.2025; экзамен 14.01.2026; список к рекомендации и онлайн-заявка — с 02.02.2026 (даты «предварительные» в тексте посольства).",
+        "en": "PRC Embassy in Tajikistan: e-materials 22 Nov–19 Dec 2025; exam 14 Jan 2026; recommended list and online application from 2 Feb 2026 (embassy text marks some dates as tentative).",
+        "tg": "Сафорати ҶХЧ: мавод 22.11–19.12.2025; имтиҳон 14.01.2026; рӯйхат ва дархости онлайн аз 02.02.2026."
+      },
+      "source_url": "https://tj.china-embassy.gov.cn/sgzc/202511/t20251124_11759137.htm",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "csc-bilateral-ru-2026",
+      "label": {
+        "ru": "CSC Type A · квота РФ · набор 2026/27",
+        "en": "CSC Type A · Russia quota · 2026/27 intake",
+        "tg": "CSC Type A · квотаи РФ · 2026/27"
+      },
+      "applies_to": "csc",
+      "uni_id": null,
+      "program_id": null,
+      "scholarship_id": "csc-bilateral",
+      "date_from": "2025-11-24",
+      "date_to": "2026-01-09",
+      "intake_year": 2026,
+      "recurring": false,
+      "note": {
+        "ru": "По информации вузов, цитирующих письмо Минобрнауки РФ: приём документов 24.11.2025–09.01.2026, 15:00 МСК; 120 квотных мест.",
+        "en": "As quoted from the Russian Ministry of Science and Higher Education letter: 24 Nov 2025 – 9 Jan 2026, 15:00 Moscow time; 120 quota places.",
+        "tg": "Аз мактуби Минобрнауки РФ: 24.11.2025–09.01.2026, 15:00 МСК; 120 ҷой."
+      },
+      "source_url": "https://www.sgu.ru/news/2025/otbor-na-programmu-stipendiya-pravitelstva-kitaya-tip-v-20262027-uchebnom-godu",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "csca-2026-dec",
+      "label": {
+        "ru": "CSCA · сессия 21 декабря 2025 (набор сентябрь 2026)",
+        "en": "CSCA · 21 December 2025 session (September 2026 intake)",
+        "tg": "CSCA · 21 декабри 2025 (қабули сентябри 2026)"
+      },
+      "applies_to": "program",
+      "uni_id": null,
+      "program_id": null,
+      "scholarship_id": null,
+      "date_from": "2025-12-21",
+      "date_to": "2025-12-21",
+      "intake_year": 2026,
+      "recurring": false,
+      "source_url": "https://se.china-embassy.gov.cn/eng/sgxw/202510/t20251024_11740323.htm",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "csca-2026-jan",
+      "label": {
+        "ru": "CSCA · сессия 25 января 2026 (набор сентябрь 2026)",
+        "en": "CSCA · 25 January 2026 session (September 2026 intake)",
+        "tg": "CSCA · 25 январи 2026"
+      },
+      "applies_to": "program",
+      "uni_id": null,
+      "program_id": null,
+      "scholarship_id": null,
+      "date_from": "2026-01-25",
+      "date_to": "2026-01-25",
+      "intake_year": 2026,
+      "recurring": false,
+      "source_url": "https://se.china-embassy.gov.cn/eng/sgxw/202510/t20251024_11740323.htm",
+      "checked_at": "2026-10-13"
+    }
+  ]
+}

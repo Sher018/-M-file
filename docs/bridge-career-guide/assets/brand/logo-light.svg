@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 86" fill="none" role="img" aria-label="BRIDGE To China">
+  <g stroke="#FFFFFF" fill="none">
+    <path d="M70 38 C100 38 112 8 140 8 C168 8 180 38 210 38" stroke-width="3.2" stroke-linecap="round"/>
+    <path d="M78 28 C104 28 114 16 140 16 C166 16 176 28 202 28" stroke-width="2" stroke-linecap="round"/>
+    <path d="M112 16 V28 M122 12.2 V28 M131 9.8 V28 M140 9 V28 M149 9.8 V28 M158 12.2 V28 M168 16 V28" stroke-width="1.6" stroke-linecap="round"/>
+  </g>
+  <text x="140" y="62" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, Inter, sans-serif" font-size="18" font-weight="600" letter-spacing="3.2" fill="#FFFFFF">BRIDGE</text>
+  <text x="140" y="78" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, Inter, sans-serif" font-size="9" font-weight="400" letter-spacing="4.4" fill="#FFFFFF">TO CHINA</text>
+</svg>

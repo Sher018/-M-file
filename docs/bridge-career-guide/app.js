@@ -1,50 +1,8 @@
-const CHECKLIST = [
-  {
-    title: { ru: "На этой неделе", en: "This week", tg: "Ин ҳафта" },
-    items: [
-      { id: "w1", label: { ru: "Записаться на IELTS Academic", en: "Book IELTS Academic", tg: "Ба IELTS Academic сабт шавед" } },
-      { id: "w2", label: { ru: "Создать аккаунт CSCA (csca.cn)", en: "Create CSCA account", tg: "Аккаунти CSCA созед" } },
-      { id: "w3", label: { ru: "Проверить срок паспорта", en: "Check passport validity", tg: "Мӯҳлати шиносномаро санҷед" } },
-      { id: "w4", label: { ru: "Выбрать 6 вузов", en: "Shortlist 6 universities", tg: "6 донишгоҳро интихоб кунед" } },
-    ],
-  },
-  {
-    title: { ru: "Документы", en: "Documents", tg: "Ҳуҷҷатҳо" },
-    items: [
-      { id: "d1", label: { ru: "Скан паспорта", en: "Passport scan", tg: "Скани шиноснома" } },
-      { id: "d2", label: { ru: "Аттестат / справка", en: "Diploma / leaving cert", tg: "Аттестат / маълумотнома" } },
-      { id: "d3", label: { ru: "Транскрипт + перевод EN", en: "Transcript + EN translation", tg: "Транскрипт + тарҷумаи EN" } },
-      { id: "d4", label: { ru: "Справка о несудимости", en: "No-criminal record", tg: "Маълумотнома аз судият" } },
-      { id: "d5", label: { ru: "Медсправка", en: "Medical form", tg: "Маълумотномаи тиббӣ" } },
-      { id: "d6", label: { ru: "1–2 рекомендации", en: "1–2 recommendations", tg: "1–2 тавсиянома" } },
-    ],
-  },
-  {
-    title: { ru: "Подача", en: "Applications", tg: "Пешниҳод" },
-    items: [
-      { id: "s1", label: { ru: "Подать в 2–3 вуза мечты", en: "Apply to 2–3 dream unis", tg: "Ба 2–3 донишгоҳи орзу" } },
-      { id: "s2", label: { ru: "Подать в бюджетные / реализм", en: "Apply to realistic / budget", tg: "Ба буҷетӣ / воқеӣ" } },
-      { id: "s3", label: { ru: "CSC Type A (посольство)", en: "CSC Type A (embassy)", tg: "CSC Type A (сафоратхона)" } },
-      { id: "s4", label: { ru: "CSCA transcript во все заявки", en: "CSCA in all apps", tg: "CSCA ба ҳамаи дархостҳо" } },
-      { id: "s5", label: { ru: "Offer → JW202 → виза X1", en: "Offer → JW202 → X1 visa", tg: "Offer → JW202 → визаи X1" } },
-    ],
-  },
-];
-
 const I18N = () => window.BRIDGE_I18N;
 const Auth = () => window.BRIDGE_AUTH;
 const FX = () => window.BRIDGE_FX;
-
-function loadJSON(key, fallback) {
-  try {
-    return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
-  } catch {
-    return fallback;
-  }
-}
-function saveJSON(key, value) {
-  localStorage.setItem(key, JSON.stringify(value));
-}
+const Cat = () => window.BRIDGE_CATALOG;
+const Path = () => window.BRIDGE_PATH;
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -55,813 +13,809 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
-function moneyTriple(cny) {
+function loc(obj) {
+  return I18N().loc(obj);
+}
+
+function money(cny) {
+  if (cny == null) return I18N().t("no_data");
   return FX().format(cny).label;
 }
 
-function yearBudget(u) {
-  return (u.tuitionYear || 0) + (u.dormYear || 0) + (u.insuranceYear || 0) + (u.livingMonth || 0) * 10 + (u.applicationFee || 0);
+function toast(msg) {
+  const el = document.getElementById("toast");
+  el.hidden = false;
+  el.textContent = msg;
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => { el.hidden = true; }, 2800);
 }
 
-function trPhrase(raw) {
-  return window.BRIDGE_PHRASE_UTILS?.tr(raw) ?? String(raw ?? "");
+function parseHash() {
+  const raw = (location.hash || "#/").replace(/^#/, "");
+  const [pathPart, query] = raw.split("?");
+  const parts = pathPart.split("/").filter(Boolean);
+  const q = Object.fromEntries(new URLSearchParams(query || ""));
+  if (parts[0] === "uni" && parts[1]) return { view: "uni", id: parts[1], q };
+  if (parts[0] === "auth") return { view: "auth", q };
+  if (parts[0] === "unis") return { view: "unis", q };
+  if (parts[0] === "test") return { view: "test", q };
+  if (parts[0] === "path" || parts[0] === "checklist" || parts[0] === "plan") return { view: "path", q };
+  if (parts[0] === "support") return { view: "support", q };
+  return { view: "home", q };
 }
 
-function tierLabel(tier) {
-  const t = I18N();
-  if (tier === "dream") return t.t("tier_dream");
-  if (tier === "real") return t.t("tier_real");
-  if (tier === "budget") return t.t("tier_budget");
-  return tier;
-}
-
-function formatCover(v) {
-  const t = I18N();
-  if (v === true) return t.t("yes");
-  if (v === false) return t.t("no");
-  if (v == null) return "—";
-  const s = String(v).toLowerCase();
-  if (s.includes("partial")) return t.t("partial");
-  return trPhrase(v) !== String(v) ? trPhrase(v) : String(v);
-}
-
-/** Merge fees-live.json (from parse-tuition.mjs) onto BRIDGE_UNIS */
-async function loadLiveFees() {
-  try {
-    const res = await fetch("fees-live.json", { cache: "no-store" });
-    if (!res.ok) return;
-    const data = await res.json();
-    const fees = data.fees || {};
-    (window.BRIDGE_UNIS || []).forEach((u) => {
-      const hit = fees[u.id];
-      if (!hit || !hit.tuitionYear) return;
-      const catalog = u.tuitionYear;
-      const ratio = hit.tuitionYear / (catalog || hit.tuitionYear);
-      // Safety: ignore parser outliers vs catalog
-      if (ratio < 0.45 || ratio > 2.2) return;
-      u.tuitionYear = hit.tuitionYear;
-      u.feeLive = hit;
-      if (u.quota && typeof u.quota.saveVsPaidYear === "number") {
-        u.quota.saveVsPaidYear =
-          (hit.tuitionYear || 0) + (u.dormYear || 0) + (u.quota.stipendMonth || 0) * 10;
-      }
-    });
-    window.BRIDGE_FEES_META = data;
-  } catch {
-    /* static host / first run without parser output */
-  }
-}
-
-/* ---------- i18n apply ---------- */
-function applyI18n() {
-  const t = I18N();
-  document.querySelectorAll("[data-i18n]").forEach((el) => {
-    const key = el.getAttribute("data-i18n");
-    const val = t.t(key);
-    if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") el.placeholder = val;
-    else el.textContent = val;
+function setQuery(q) {
+  const sp = new URLSearchParams();
+  Object.entries(q).forEach(([k, v]) => {
+    if (v) sp.set(k, v);
   });
-  document.querySelectorAll(".lang-switch button").forEach((b) => {
+  const s = sp.toString();
+  location.hash = `#/unis${s ? "?" + s : ""}`;
+}
+
+function applyI18n(root = document) {
+  const t = I18N();
+  root.querySelectorAll("[data-i18n]").forEach((el) => {
+    el.textContent = t.t(el.getAttribute("data-i18n"));
+  });
+  document.querySelectorAll("[data-lang]").forEach((b) => {
     b.classList.toggle("active", b.dataset.lang === t.lang);
   });
-  document.title =
-    t.lang === "en"
-      ? "BRIDGE — Orientation & China universities"
-      : t.lang === "tg"
-        ? "BRIDGE — Ориентатсия ва донишгоҳҳои Чин"
-        : "BRIDGE — Ориентация и вузы Китая";
 }
 
 function setupLang() {
-  document.querySelectorAll("[data-lang]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      I18N().setLang(btn.dataset.lang);
+  document.querySelectorAll("[data-lang]").forEach((b) => {
+    b.addEventListener("click", () => {
+      I18N().setLang(b.dataset.lang);
       applyI18n();
       route();
     });
   });
-  window.addEventListener("bridge:lang", () => {
-    applyI18n();
-  });
-  applyI18n();
-}
-
-/* ---------- Auth gate ---------- */
-function showGate(mode) {
-  const gate = document.getElementById("authGate");
-  const shell = document.getElementById("appShell");
-  gate.hidden = false;
-  shell.classList.add("gated");
-  const reg = document.getElementById("gateRegister");
-  const login = document.getElementById("gateLogin");
-  const otp = document.getElementById("gateOtp");
-  if (mode === "otp") {
-    reg.hidden = true;
-    login.hidden = true;
-    otp.hidden = false;
-  } else if (mode === "login") {
-    reg.hidden = true;
-    login.hidden = false;
-    otp.hidden = true;
-  } else {
-    reg.hidden = false;
-    login.hidden = true;
-    otp.hidden = true;
-  }
-}
-
-function hideGate() {
-  document.getElementById("authGate").hidden = true;
-  document.getElementById("appShell").classList.remove("gated");
+  I18N().setLang(I18N().lang);
 }
 
 function refreshUserUI() {
   const user = Auth().currentUser();
   const pill = document.getElementById("userPill");
   const btn = document.getElementById("navAuthBtn");
+  const tab = document.getElementById("tabBar");
   if (user) {
     pill.hidden = false;
-    pill.textContent = user.name;
+    pill.textContent = user.name || user.email;
     btn.textContent = I18N().t("nav_logout");
-    btn.onclick = () => {
-      Auth().logout(false);
-      enforceGate();
-    };
+    tab.hidden = false;
   } else {
     pill.hidden = true;
+    btn.textContent = I18N().t("nav_login");
+    tab.hidden = true;
   }
 }
 
-function enforceGate() {
-  if (Auth().isAuthed()) {
-    hideGate();
-    refreshUserUI();
-    route();
-  } else {
-    const users = Auth().getUsers();
-    const hasUsers = Object.keys(users).length > 0;
-    showGate(hasUsers ? "login" : "register");
-    refreshUserUI();
-  }
+function sourceTip(item) {
+  if (!item?.source_url) return "";
+  const date = item.checked_at || "";
+  return `<a class="src" href="${escapeHtml(item.source_url)}" target="_blank" rel="noopener" title="${escapeHtml(I18N().t("source_checked_at", { date }))}">ⓘ</a>`;
 }
 
-function setupAuthUI() {
-  document.getElementById("toLogin").addEventListener("click", () => showGate("login"));
-  document.getElementById("toRegister").addEventListener("click", () => showGate("register"));
-
-  document.getElementById("registerForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const fd = new FormData(e.target);
-    const msg = document.getElementById("gateMsg");
-    msg.textContent = "";
-    try {
-      const pending = await Auth().requestOtp({
-        mode: "register",
-        name: String(fd.get("name")).trim(),
-        email: String(fd.get("email")),
-        country: fd.get("country"),
-        consents: {
-          pd: !!fd.get("consentPd"),
-          age: !!fd.get("consentAge"),
-          terms: !!fd.get("consentTerms"),
-        },
-      });
-      showOtpStep(pending);
-    } catch (err) {
-      msg.textContent =
-        err.message === "exists"
-          ? "Email already registered — sign in"
-          : err.message === "consents"
-            ? "Accept all consents"
-            : err.message === "rate_limited"
-              ? "Too many codes — try later"
-              : err.message === "send_failed"
-                ? "Не удалось отправить письмо. Проверьте spam или попробуйте снова."
-                : "Check email / form";
-    }
-  });
-
-  document.getElementById("loginForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const fd = new FormData(e.target);
-    const msg = document.getElementById("gateMsg");
-    msg.textContent = "";
-    try {
-      const pending = await Auth().requestOtp({
-        mode: "login",
-        email: String(fd.get("email")),
-      });
-      showOtpStep(pending);
-    } catch (err) {
-      msg.textContent =
-        err.message === "not_found"
-          ? "No account — register first"
-          : err.message === "rate_limited"
-            ? "Too many codes — try later"
-            : err.message === "send_failed"
-              ? "Не удалось отправить письмо. Проверьте spam или попробуйте снова."
-              : "Check email";
-    }
-  });
-
-  document.getElementById("otpForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const fd = new FormData(e.target);
-    const msg = document.getElementById("gateMsg");
-    const submitBtn = e.target.querySelector('button[type="submit"]');
-    if (submitBtn) submitBtn.disabled = true;
-    try {
-      await Auth().verifyOtp(fd.get("code"));
-      msg.textContent = "";
-      hideGate();
-      refreshUserUI();
-      location.hash = "#/test";
-      route();
-    } catch (err) {
-      msg.textContent =
-        err.message === "expired"
-          ? "Code expired — request again"
-          : err.message === "no_pending"
-            ? "Сначала запросите код"
-            : "Wrong code";
-      // stay on OTP step
-      showGate("otp");
-    } finally {
-      if (submitBtn) submitBtn.disabled = false;
-    }
-  });
-
-  window.addEventListener("bridge:auth", () => {
-    // Always re-evaluate gate: hide when session appears, show when cleared
-    enforceGate();
-  });
+function deadlineBadge(d) {
+  if (!d?.date_to) return `<span class="badge badge--gone">${I18N().t("no_data")}</span>`;
+  const days = Math.ceil((Date.parse(d.date_to) - Date.now()) / 86400000);
+  if (days < 0) return `<span class="badge badge--gone">${I18N().t("deadline_passed")}</span>`;
+  if (days < 7) return `<span class="badge badge--err">${escapeHtml(d.date_to)}</span>`;
+  if (days <= 30) return `<span class="badge badge--warn">${escapeHtml(d.date_to)}</span>`;
+  return `<span class="badge badge--ok">${escapeHtml(d.date_to)}</span>`;
 }
 
-function showOtpStep(pending) {
-  showGate("otp");
-  const demo = document.getElementById("otpDemo");
-  const hint = document.getElementById("otpHint");
-  if (pending.demo && pending.code) {
-    demo.hidden = false;
-    demo.textContent = `CODE: ${pending.code}`;
-    if (hint) hint.hidden = false;
-  } else {
-    demo.hidden = true;
-    if (hint) {
-      hint.hidden = false;
-      hint.textContent =
-        I18N().lang === "en"
-          ? "We sent a 4-digit code to your email."
-          : I18N().lang === "tg"
-            ? "Рамзи 4-рақама ба почтаи шумо фиристода шуд."
-            : "Мы отправили 4-значный код на вашу почту.";
-    }
-  }
-}
-
-/* ---------- Router ---------- */
-function parseHash() {
-  const h = (location.hash || "#/").replace(/^#/, "");
-  const parts = h.split("/").filter(Boolean);
-  if (parts[0] === "uni" && parts[1]) return { view: "uni", id: parts[1] };
-  if (parts[0] === "test") return { view: "home", scroll: "test" };
-  if (parts[0] === "unis") return { view: "home", scroll: "unis" };
-  if (parts[0] === "checklist") return { view: "home", scroll: "checklist" };
-  if (parts[0] === "plan") return { view: "home", scroll: "plan" };
-  return { view: "home" };
-}
-
-function route() {
-  if (!Auth().isAuthed()) {
-    enforceGate();
-    return;
-  }
-  const r = parseHash();
-  const home = document.getElementById("homeView");
-  const page = document.getElementById("uniPage");
-  if (r.view === "uni") {
-    home.hidden = true;
-    page.hidden = false;
-    renderUniPage(r.id);
-    window.scrollTo(0, 0);
-  } else {
-    home.hidden = false;
-    page.hidden = true;
-    renderUniversities(currentFilter);
-    setupTestUI();
-    renderChecklist();
-    if (r.scroll) {
-      setTimeout(() => document.getElementById(r.scroll)?.scrollIntoView({ behavior: "smooth" }), 50);
-    }
-  }
-}
-
-/* ---------- Universities ---------- */
-let currentFilter = "all";
-let currentSort = "default";
-let currentQuery = "";
-let currentCluster = "all";
-
-function recommendedIds() {
-  const u = Auth().currentUser();
-  return (u && u.result && u.result.uniIds) || [];
-}
-
-function renderUniversities(filter = currentFilter) {
-  currentFilter = filter;
-  const track = document.getElementById("uniTrack");
-  if (!track) return;
-  const mine = new Set(recommendedIds());
+/* ---------- views ---------- */
+function viewLanding() {
   const t = I18N();
-  const q = currentQuery.trim().toLowerCase();
-  let list = (window.BRIDGE_UNIS || []).filter((u) => {
-    if (filter === "mine") return mine.has(u.id);
-    if (filter !== "all" && u.tier !== filter) return false;
-    if (currentCluster !== "all" && !(u.clusters || []).includes(currentCluster)) return false;
-    if (!q) return true;
-    const blob = [
-      t.loc(u.name),
-      t.loc(u.city),
-      t.loc(u.blurb),
-      ...(u.majors || []),
-      ...(u.englishPrograms || []),
-      ...(u.clusters || []),
-    ]
-      .join(" ")
-      .toLowerCase();
-    return blob.includes(q);
-  });
-  if (currentSort === "price_asc") list = [...list].sort((a, b) => (a.tuitionYear || 0) - (b.tuitionYear || 0));
-  if (currentSort === "price_desc") list = [...list].sort((a, b) => (b.tuitionYear || 0) - (a.tuitionYear || 0));
-  if (currentSort === "name") {
-    list = [...list].sort((a, b) => t.loc(a.name).localeCompare(t.loc(b.name), t.lang));
-  }
-
-  track.innerHTML = "";
-  const countEl = document.getElementById("uniCount");
-  if (countEl) countEl.textContent = String(list.length);
-  if (!list.length) {
-    track.innerHTML = `<p class="empty-unis">—</p>`;
-    return;
-  }
-  list.forEach((u) => {
-    const card = document.createElement("article");
-    card.className = `uni-card ${u.tier}${mine.has(u.id) ? " is-mine" : ""}`;
-    card.tabIndex = 0;
-    card.setAttribute("role", "link");
-    const majors = (u.englishPrograms || u.majors || []).slice(0, 2).map(trPhrase).map(escapeHtml).join(" · ");
-    card.innerHTML = `
-      <div class="uni-rank">${escapeHtml(u.rankCN ?? "—")}</div>
-      <h3>${escapeHtml(t.loc(u.name))}</h3>
-      <p class="major">${majors}</p>
-      <p>${escapeHtml(t.loc(u.blurb))}</p>
-      <div class="uni-meta">
-        <span>${escapeHtml(moneyTriple(u.tuitionYear))}</span>
-        <span>${escapeHtml(t.loc(u.city))}</span>
+  const c = Cat().counts();
+  return `
+    <section class="hero wrap">
+      <p class="muted">${escapeHtml(t.t("for_whom"))}</p>
+      <h1>${escapeHtml(t.t("hero_title"))}</h1>
+      <p class="lead">${escapeHtml(t.t("hero_lead"))}</p>
+      <div class="hero-actions">
+        <a class="btn btn--primary" href="#/auth">${escapeHtml(t.t("hero_cta"))}</a>
+        <a class="btn btn--ghost" href="#how">${escapeHtml(t.t("hero_how"))}</a>
       </div>
-    `;
-    const go = () => {
-      location.hash = `#/uni/${u.id}`;
-    };
-    card.addEventListener("click", go);
-    card.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        go();
-      }
-    });
-    track.appendChild(card);
-  });
+      <div class="stats">
+        <div class="stat"><strong>${c.unis}</strong><span>${escapeHtml(t.t("nav_unis"))}</span></div>
+        <div class="stat"><strong>${c.programs}</strong><span>programs</span></div>
+        <div class="stat"><strong>${c.scholarships}</strong><span>CSC</span></div>
+        <div class="stat"><strong>${c.docs}</strong><span>${escapeHtml(t.t("uni_docs"))}</span></div>
+      </div>
+    </section>
+    <section class="wrap grid-3" id="how">
+      <article class="card"><h3>1. ${escapeHtml(t.t("step_1"))}</h3><p class="muted">${escapeHtml(t.t("step_1s"))}</p></article>
+      <article class="card"><h3>2. ${escapeHtml(t.t("step_2"))}</h3><p class="muted">${escapeHtml(t.t("step_2s"))}</p></article>
+      <article class="card"><h3>3. ${escapeHtml(t.t("step_3"))}</h3><p class="muted">${escapeHtml(t.t("step_3s"))}</p></article>
+    </section>
+    <p class="disclaimer wrap">${escapeHtml(t.t("trust"))}<br/><br/>${escapeHtml(t.t("disclaimer_not_agent"))}</p>
+  `;
 }
 
-function renderUniPage(id) {
-  const u = (window.BRIDGE_UNIS || []).find((x) => x.id === id);
-  const body = document.getElementById("uniPageBody");
+function viewAuth(route) {
   const t = I18N();
-  if (!u) {
-    body.innerHTML = `<p>—</p><a href="#/unis">${t.t("uni_back")}</a>`;
-    return;
+  const pending = Auth().peekPending();
+  const mode = route.q.tab === "login" ? "login" : "register";
+  if (pending && pending.expires > Date.now()) {
+    return `
+      <div class="card auth-card">
+        <h1>${escapeHtml(t.t("gate_code"))}</h1>
+        <p class="muted" id="otpHint">${escapeHtml(t.t("gate_demo_hint"))}</p>
+        <p class="otp-demo" id="otpDemo" ${pending.demo && pending.code ? "" : "hidden"}>${pending.demo && pending.code ? escapeHtml(pending.code) : ""}</p>
+        <form id="otpForm">
+          <div class="otp-row" id="otpRow">
+            ${Array.from({ length: 6 }, (_, i) => `<input inputmode="numeric" maxlength="1" data-i="${i}" autocomplete="${i ? "off" : "one-time-code"}" />`).join("")}
+          </div>
+          <button class="btn btn--primary" type="submit" style="width:100%">${escapeHtml(t.t("gate_verify"))}</button>
+        </form>
+        <button class="btn btn--ghost" type="button" id="changeEmail">${escapeHtml(t.t("auth_change_email"))}</button>
+        <p class="form-note" id="gateMsg"></p>
+      </div>`;
   }
-  const q = u.quota || {};
-  const save = q.saveVsPaidYear || 0;
-  const feeNote = u.feeLive ? t.t("uni_fee_live") : t.t("uni_fee_static");
-  const docs = (u.documents || []).map((raw) => window.BRIDGE_DOC_UTILS.resolve(raw));
-  body.innerHTML = `
-    <a class="btn ghost uni-back" href="#/unis">${t.t("uni_back")}</a>
-    <p class="eyebrow">${escapeHtml(t.loc(u.city))} · ${escapeHtml(tierLabel(u.tier))}</p>
-    <h1>${escapeHtml(t.loc(u.name))}</h1>
-    <p class="modal-blurb">${escapeHtml(t.loc(u.blurb))}</p>
-    <div class="modal-links">
-      <a class="btn primary" href="${u.portal}" target="_blank" rel="noopener">${t.t("uni_portal")}</a>
-      ${u.apply ? `<a class="btn ghost" href="${u.apply}" target="_blank" rel="noopener">${t.t("uni_apply")}</a>` : ""}
+  return `
+    <div class="card auth-card">
+      <div class="tabs">
+        <button type="button" class="${mode === "register" ? "active" : ""}" data-go="#/auth">${escapeHtml(t.t("gate_title_reg"))}</button>
+        <button type="button" class="${mode === "login" ? "active" : ""}" data-go="#/auth?tab=login">${escapeHtml(t.t("gate_title_login"))}</button>
+      </div>
+      <h1>${escapeHtml(mode === "login" ? t.t("gate_title_login") : t.t("gate_title_reg"))}</h1>
+      <form id="${mode === "login" ? "loginForm" : "registerForm"}">
+        ${
+          mode === "register"
+            ? `<label>${escapeHtml(t.t("gate_name"))}<input name="name" required autocomplete="name" /></label>`
+            : ""
+        }
+        <label>${escapeHtml(t.t("gate_email"))}<input name="email" type="email" required autocomplete="email" /></label>
+        ${
+          mode === "register"
+            ? `<label>${escapeHtml(t.t("gate_country"))}
+                <select name="country">
+                  <option value="TJ">${escapeHtml(t.t("gate_country_tj"))}</option>
+                  <option value="RU">${escapeHtml(t.t("gate_country_ru"))}</option>
+                  <option value="OTHER">${escapeHtml(t.t("gate_country_other"))}</option>
+                </select></label>
+                <label class="checkline"><input type="checkbox" name="consentPd" required /><span>${escapeHtml(t.t("consent_pd"))} — <a href="legal/privacy-consent.html" target="_blank">${escapeHtml(t.t("consent_pd_link"))}</a></span></label>
+                <label class="checkline"><input type="checkbox" name="consentAge" required /><span>${escapeHtml(t.t("consent_age"))} — <a href="legal/age-consent.html" target="_blank">${escapeHtml(t.t("consent_age_link"))}</a></span></label>
+                <label class="checkline"><input type="checkbox" name="consentTerms" required /><span>${escapeHtml(t.t("consent_terms"))} — <a href="legal/terms.html" target="_blank">${escapeHtml(t.t("consent_terms_link"))}</a></span></label>`
+            : ""
+        }
+        <button class="btn btn--primary" type="submit" style="width:100%;margin-top:12px">${escapeHtml(t.t("gate_send_code"))}</button>
+      </form>
+      <p class="form-note" id="gateMsg"></p>
+    </div>`;
+}
+
+function viewCatalog(route) {
+  const t = I18N();
+  const q = route.q;
+  const list = Cat().filter(q);
+  const sort = q.sort || "price";
+  list.sort((a, b) => {
+    if (sort === "name") return loc(a.name).localeCompare(loc(b.name), t.lang);
+    if (sort === "qs") return (a.rank_qs || 9999) - (b.rank_qs || 9999);
+    const pa = a._price;
+    const pb = b._price;
+    if (pa == null) return 1;
+    if (pb == null) return -1;
+    return pa - pb;
+  });
+  const cities = (Cat().data().cities || []).slice().sort((a, b) => loc(a.name).localeCompare(loc(b.name), t.lang));
+  const discs = Cat().data().disciplines || [];
+  const chip = (key, val, label) => {
+    const cur = (q[key] || "").split(",").filter(Boolean);
+    const on = cur.includes(val);
+    return `<button type="button" class="chip ${on ? "chip--active" : ""}" data-fk="${key}" data-fv="${val}">${escapeHtml(label)}</button>`;
+  };
+
+  return `
+    <div class="wrap" style="padding-top:28px">
+      <h1>${escapeHtml(t.t("unis_title"))}</h1>
+      <p class="muted">${escapeHtml(t.t("showing"))}: ${list.length}</p>
+      <input class="search" id="uniSearch" value="${escapeHtml(q.q || "")}" placeholder="ZJU, Beijing, business…" />
     </div>
+    <div class="wrap catalog-layout">
+      <aside class="filters">
+        <fieldset><legend>${escapeHtml(t.t("filter_degree"))}</legend>
+          <div class="chips">${chip("degree", "language", t.t("degree_language"))}${chip("degree", "bachelor", t.t("degree_bachelor"))}${chip("degree", "master", t.t("degree_master"))}</div>
+        </fieldset>
+        <fieldset><legend>${escapeHtml(t.t("filter_lang"))}</legend>
+          <div class="chips">${chip("lang", "en", t.t("lang_en"))}${chip("lang", "zh", t.t("lang_zh"))}</div>
+        </fieldset>
+        <fieldset><legend>${escapeHtml(t.t("filter_city"))}</legend>
+          <select class="search" id="citySel" style="height:40px">
+            <option value="">—</option>
+            ${cities.map((c) => `<option value="${c.id}" ${q.city === c.id ? "selected" : ""}>${escapeHtml(loc(c.name))}</option>`).join("")}
+          </select>
+        </fieldset>
+        <fieldset><legend>${escapeHtml(t.t("filter_disc"))}</legend>
+          <div class="chips">${discs.map((d) => chip("disc", d.id, loc(d.name))).join("")}</div>
+        </fieldset>
+        <fieldset><legend>${escapeHtml(t.t("filter_price"))}</legend>
+          <input type="range" id="priceMax" min="0" max="15000" step="500" value="${escapeHtml(q.price_max || "15000")}" />
+          <p class="muted">≤ $${escapeHtml(q.price_max || "15000")}</p>
+        </fieldset>
+        <fieldset>
+          <label class="checkline"><input type="checkbox" id="fltSch" ${q.sch === "1" ? "checked" : ""}/> ${escapeHtml(t.t("filter_sch"))}</label>
+          <label class="checkline"><input type="checkbox" id="fltHsk" ${q.no_hsk === "1" ? "checked" : ""}/> ${escapeHtml(t.t("filter_no_hsk"))}</label>
+          <label class="checkline"><input type="checkbox" id="fltTest" ${q.fits_test === "1" ? "checked" : ""}/> ${escapeHtml(t.t("filter_fits"))}</label>
+        </fieldset>
+        <fieldset><legend>${escapeHtml(t.t("filter_tier"))}</legend>
+          <div class="chips">${["c9", "985", "211", "provincial", "sino_foreign"].map((x) => chip("tier", x, x.toUpperCase())).join("")}</div>
+        </fieldset>
+        <button class="btn btn--tiny btn--ghost" type="button" id="fltReset">${escapeHtml(t.t("filter_reset"))}</button>
+      </aside>
+      <div>
+        <label class="muted">${escapeHtml(t.t("uni_sort"))}
+          <select id="uniSort">
+            <option value="price" ${sort === "price" ? "selected" : ""}>${escapeHtml(t.t("sort_price"))}</option>
+            <option value="qs" ${sort === "qs" ? "selected" : ""}>${escapeHtml(t.t("sort_qs"))}</option>
+            <option value="name" ${sort === "name" ? "selected" : ""}>${escapeHtml(t.t("sort_name"))}</option>
+          </select>
+        </label>
+        <div class="uni-grid" style="margin-top:16px">
+          ${
+            list.length
+              ? list
+                  .map((u) => {
+                    const city = Cat().city(u.city_id);
+                    const inPath = Path().hasUni(u.id);
+                    return `<a class="card uni-card" href="#/uni/${u.id}">
+                      <div class="ph"><img src="assets/brand/mark.svg" alt="" width="72" height="28" /></div>
+                      <div>${(u.scholarship_ids || []).length ? `<span class="tag">CSC</span>` : ""} <span class="tag">${escapeHtml(u.tier)}</span></div>
+                      <h3>${escapeHtml(loc(u.name))}</h3>
+                      <p class="muted">${escapeHtml(loc(city?.name))} · ${escapeHtml(money(u._price))}</p>
+                      <span class="btn btn--tiny ${inPath ? "btn--primary" : "btn--secondary"}" data-add="${u.id}">${escapeHtml(t.t(inPath ? "uni_in_path" : "uni_add_path"))}</span>
+                    </a>`;
+                  })
+                  .join("")
+              : `<div class="empty">${escapeHtml(t.t("empty_filters"))}</div>`
+          }
+        </div>
+      </div>
+    </div>`;
+}
 
-    <div class="uni-detail-grid">
-      <article class="glass detail-block">
-        <h3>${t.t("uni_rank")}</h3>
-        <table class="info-table">
-          <tr><td>CN</td><td>${u.rankCN ?? "—"}</td></tr>
-          <tr><td>World</td><td>${u.rankWorld ?? "—"}</td></tr>
-          <tr><td>English</td><td>${trPhrase(u.englishReq) || "—"}</td></tr>
-          <tr><td>CSCA</td><td>${(u.csca || []).map(trPhrase).join("; ") || "—"}</td></tr>
-        </table>
-      </article>
+function viewUni(id) {
+  const t = I18N();
+  const u = Cat().uni(id);
+  if (!u) return `<div class="wrap empty">404</div>`;
+  const city = Cat().city(u.city_id);
+  const progs = Cat().programsOf(u);
+  const inPath = Path().hasUni(u.id);
+  const path = Path().get();
+  const selectedSch = path.unis.find((x) => x.uni_id === id)?.scholarship_ids || [];
+  const country = Auth().currentUser()?.country || "TJ";
 
-      <article class="glass detail-block">
-        <h3>${t.t("uni_majors")}</h3>
-        <ul class="chip-list">
-          ${(u.majors || []).map((m) => `<li>${escapeHtml(trPhrase(m))}</li>`).join("")}
-        </ul>
-        <p class="muted">${escapeHtml(t.t("uni_en_programs"))}: ${escapeHtml((u.englishPrograms || []).map(trPhrase).join(", ") || "—")}</p>
-      </article>
+  const tiles = [
+    [t.t("uni_from_year"), money(Cat().minTuition(u)), u],
+    [t.t("uni_dorm"), u.dorm ? money(u.dorm.price_min) : t.t("no_data"), u],
+    [t.t("uni_quota_intl"), u.quota_intl ?? t.t("no_data"), u],
+    [t.t("uni_application"), money(u.application_fee), u],
+  ];
 
-      <article class="glass detail-block">
-        <h3>${t.t("uni_tuition")}</h3>
-        <p class="muted">${t.t("uni_fx_note")} · FX ${FX().updated}</p>
-        <p class="muted">${feeNote}${u.feeLive?.sourceUrl ? ` · <a href="${u.feeLive.sourceUrl}" target="_blank" rel="noopener">${t.t("uni_source")}</a>` : ""}</p>
-        <table class="info-table cost-table">
-          <tr><td>${t.t("uni_tuition")}</td><td>${moneyTriple(u.tuitionYear)}</td></tr>
-          <tr><td>${t.t("uni_dorm")}</td><td>${moneyTriple(u.dormYear)}</td></tr>
-          <tr><td>${t.t("uni_insurance")}</td><td>${moneyTriple(u.insuranceYear)}</td></tr>
-          <tr><td>${t.t("uni_living")}</td><td>${moneyTriple(u.livingMonth)}</td></tr>
-          <tr><td>${t.t("uni_application")}</td><td>${moneyTriple(u.applicationFee || 0)}</td></tr>
-          <tr class="total"><td>${t.t("uni_year")}</td><td>${moneyTriple(yearBudget(u))}</td></tr>
-        </table>
-      </article>
-
-      <article class="glass detail-block highlight">
-        <h3>${t.t("uni_quota")}</h3>
-        <p><strong>${q.type || "CSC"}</strong></p>
-        <ul>
-          <li>${t.t("uni_quota_cover")}: ${formatCover(q.coverTuition)}</li>
-          <li>${t.t("uni_quota_stipend")}: ${q.stipendMonth != null ? moneyTriple(q.stipendMonth) : "—"}</li>
-          <li>${t.t("uni_quota_dorm")}: ${formatCover(q.dormCovered)}</li>
-        </ul>
-        <p class="save-line"><span>${t.t("uni_save")}</span><strong>${moneyTriple(save)}</strong></p>
-        ${u.sourceNote ? `<p class="muted">${t.t("uni_source")}: ${u.sourceNote}</p>` : ""}
-      </article>
-
-      <article class="glass detail-block">
-        <h3>${t.t("uni_docs")}</h3>
-        <p class="muted">${t.t("doc_click_hint")}</p>
-        <ol class="doc-list">
-          ${docs
+  return `
+    <div class="wrap uni-hero">
+      <div>
+        <a href="#/unis">${escapeHtml(t.t("uni_back"))}</a>
+        <div>${escapeHtml(u.tier.toUpperCase())} ${u.rank_qs ? "· QS " + u.rank_qs : ""}</div>
+        <h1>${escapeHtml(loc(u.name))}</h1>
+        <p class="muted">${escapeHtml(loc(city?.name))} · ${escapeHtml(loc(city?.province))}</p>
+        <p>${escapeHtml(loc(u.blurb))}</p>
+        <div class="hero-actions" style="justify-content:flex-start;margin-top:16px">
+          <button class="btn ${inPath ? "btn--primary" : "btn--secondary"}" type="button" data-add="${u.id}">${escapeHtml(t.t(inPath ? "uni_in_path" : "uni_add_path"))}</button>
+          ${u.links?.official ? `<a class="btn btn--ghost" href="${escapeHtml(u.links.official)}" target="_blank" rel="noopener">${escapeHtml(t.t("uni_portal"))}</a>` : ""}
+          ${u.links?.apply ? `<a class="btn btn--ghost" href="${escapeHtml(u.links.apply)}" target="_blank" rel="noopener">${escapeHtml(t.t("uni_apply"))}</a>` : ""}
+        </div>
+      </div>
+      ${window.BRIDGE_MAP.inline({ city })}
+    </div>
+    <div class="wrap tiles">
+      ${tiles
+        .map(
+          ([k, v, src]) =>
+            `<div class="tile"><label>${escapeHtml(k)} ${sourceTip(src)}</label><strong>${escapeHtml(String(v))}</strong></div>`
+        )
+        .join("")}
+    </div>
+    <div class="wrap">
+      <h2>${escapeHtml(t.t("uni_en_programs"))}</h2>
+      <table class="prog-table">
+        <thead><tr><th>${escapeHtml(t.t("uni_majors"))}</th><th>${escapeHtml(t.t("filter_degree"))}</th><th>${escapeHtml(t.t("uni_tuition"))}</th><th>${escapeHtml(t.t("filter_intake"))}</th></tr></thead>
+        <tbody>
+          ${progs
             .map(
-              (d, i) =>
-                `<li><button type="button" class="doc-link" data-doc-idx="${i}">${t.loc(d.title)}</button></li>`
+              (p) =>
+                `<tr><td>${escapeHtml(loc(p.name))}</td><td>${escapeHtml(t.t("degree_" + p.degree) || p.degree)}</td><td>${escapeHtml(money(p.tuition_year))} ${sourceTip(p)}</td><td>${escapeHtml(p.intake)}</td></tr>`
             )
             .join("")}
-        </ol>
-      </article>
+        </tbody>
+      </table>
 
-      <article class="glass detail-block">
-        <h3>${t.t("uni_exams")}</h3>
-        <ul>${(u.exams || []).map((d) => `<li>${trPhrase(d)}</li>`).join("")}</ul>
-      </article>
+      <h2 style="margin-top:32px">${escapeHtml(t.t("uni_quota"))}</h2>
+      <div class="grid-3">
+        ${(u.scholarship_ids || [])
+          .map((sid) => {
+            const s = Cat().scholarship(sid);
+            if (!s) return "";
+            const on = selectedSch.includes(sid);
+            return `<article class="card">
+              <h3><button type="button" class="btn btn--ghost" data-sch="${s.id}" style="padding:0;height:auto">${escapeHtml(loc(s.name))}</button></h3>
+              <p class="muted">${escapeHtml(s.coverage?.tuition_pct ?? "—")}% · ${s.coverage?.dorm ? t.t("sch_coverage_dorm") : ""} ${sourceTip(s)}</p>
+              <button class="btn btn--tiny ${on ? "btn--primary" : "btn--secondary"}" type="button" data-togglesch="${u.id}:${s.id}">${escapeHtml(t.t("sch_select"))}</button>
+            </article>`;
+          })
+          .join("") || `<p class="muted">${escapeHtml(t.t("no_data"))}</p>`}
+      </div>
+
+      <h2 style="margin-top:32px">${escapeHtml(t.t("uni_docs"))}</h2>
+      <p class="muted">${escapeHtml(t.t("doc_click_hint"))}</p>
+      <div class="chips" style="margin:12px 0 32px">
+        ${(u.document_ids || [])
+          .map((id) => {
+            const d = Cat().document(id);
+            return `<button type="button" class="chip doc-chip" data-doc="${id}">${escapeHtml(loc(d?.name) || id)}</button>`;
+          })
+          .join("")}
+      </div>
+
+      <h2>${escapeHtml(t.t("check_title"))}</h2>
+      <div class="timeline">
+        ${(u.deadline_ids || [])
+          .map((id) => Cat().deadline(id))
+          .filter(Boolean)
+          .map(
+            (d) =>
+              `<div class="tl-item">${deadlineBadge(d)} <strong>${escapeHtml(loc(d.label))}</strong> ${sourceTip(d)}
+               ${d.note ? `<p class="muted">${escapeHtml(loc(d.note))}</p>` : ""}</div>`
+          )
+          .join("")}
+      </div>
+      <p class="muted">${escapeHtml(t.t("disclaimer_not_agent"))}</p>
+      <p><a href="mailto:?subject=${encodeURIComponent("[BRIDGE] uni:" + u.id)}">${escapeHtml(t.t("report_error"))}</a></p>
     </div>
+    <p class="wrap muted">${escapeHtml(country)}</p>
   `;
+}
 
-  body.querySelectorAll(".doc-link").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const doc = docs[Number(btn.dataset.docIdx)];
-      openDocModal(doc);
+function viewPath() {
+  const t = I18N();
+  const p = Path().get();
+  const pct = Path().progress(p);
+  if (!p.unis.length) {
+    return `<div class="wrap empty"><h1>${escapeHtml(t.t("path_title"))}</h1><p>${escapeHtml(t.t("path_empty"))}</p><a class="btn btn--primary" href="#/unis">${escapeHtml(t.t("nav_unis"))}</a></div>`;
+  }
+  const docs = Path().documents(p);
+  const deadlines = [];
+  p.unis.forEach((row) => {
+    const u = Cat().uni(row.uni_id);
+    (u?.deadline_ids || []).forEach((id) => {
+      const d = Cat().deadline(id);
+      if (d) deadlines.push({ d, u });
+    });
+  });
+  deadlines.sort((a, b) => String(a.d.date_to).localeCompare(String(b.d.date_to)));
+
+  return `
+    <div class="wrap path-head">
+      <div>
+        <h1>${escapeHtml(t.t("path_title"))}</h1>
+        <p class="muted">${escapeHtml(t.t("path_local"))}</p>
+      </div>
+      <div class="ring" style="--p:${pct}"><span>${pct}%</span></div>
+    </div>
+    <div class="wrap">
+      <h2>${escapeHtml(t.t("path_this_week"))}</h2>
+      <div>
+        ${deadlines
+          .slice(0, 5)
+          .map(
+            ({ d, u }) =>
+              `<div class="check-row">${deadlineBadge(d)}<div><strong>${escapeHtml(loc(d.label))}</strong><p class="muted">${escapeHtml(loc(u.name))}</p></div></div>`
+          )
+          .join("") || `<p class="muted">${escapeHtml(t.t("no_data"))}</p>`}
+      </div>
+      <h2>${escapeHtml(t.t("path_unis"))}</h2>
+      ${p.unis
+        .map((row) => {
+          const u = Cat().uni(row.uni_id);
+          if (!u) return `<div class="card">${escapeHtml(row.uni_id)}</div>`;
+          const applied = Path().taskDone(`uni:${u.id}:apply`);
+          return `<article class="card" style="margin-bottom:12px">
+            <h3><a href="#/uni/${u.id}">${escapeHtml(loc(u.name))}</a></h3>
+            <p>${(row.scholarship_ids || []).map((id) => `<span class="tag">${escapeHtml(loc(Cat().scholarship(id)?.name) || id)}</span>`).join(" ")}</p>
+            <button class="btn btn--tiny ${applied ? "btn--primary" : "btn--secondary"}" data-task="uni:${u.id}:apply">${escapeHtml(t.t("path_apply"))}</button>
+            <button class="btn btn--tiny btn--ghost" data-remove="${u.id}">${escapeHtml(t.t("path_remove"))}</button>
+          </article>`;
+        })
+        .join("")}
+      <h2>${escapeHtml(t.t("path_docs"))}</h2>
+      ${docs
+        .map((row) => {
+          const on = Path().taskDone(`doc:${row.id}`);
+          return `<label class="check-row">
+            <input type="checkbox" data-task="doc:${row.id}" ${on ? "checked" : ""} />
+            <div>
+              <strong><button type="button" class="btn btn--ghost" data-doc="${row.id}" style="padding:0;height:auto">${escapeHtml(loc(row.doc.name))}</button></strong>
+              <p class="muted">${escapeHtml(t.t("path_needed_for"))}: ${escapeHtml(row.owners.join(", "))}</p>
+            </div>
+          </label>`;
+        })
+        .join("")}
+      <p class="disclaimer">${escapeHtml(t.t("disclaimer_not_agent"))}</p>
+    </div>`;
+}
+
+function viewSupport() {
+  const t = I18N();
+  const s = Cat().data()?.support || {};
+  const has = s.yoomoney_url || s.usdt_trc20;
+  return `
+    <div class="wrap" style="padding:48px 0">
+      <h1>${escapeHtml(t.t("support_title"))}</h1>
+      <p class="lead muted">${escapeHtml(t.t("support_lead"))}</p>
+      ${
+        has
+          ? `${s.yoomoney_url ? `<p><a class="btn btn--primary" href="${escapeHtml(s.yoomoney_url)}" target="_blank" rel="noopener">ЮMoney</a></p>` : ""}
+             ${s.usdt_trc20 ? `<p>USDT TRC-20: <code>${escapeHtml(s.usdt_trc20)}</code></p>` : ""}`
+          : `<div class="card"><p>${escapeHtml(t.t("support_soon"))}</p></div>`
+      }
+    </div>`;
+}
+
+function viewTest() {
+  const t = I18N();
+  return `
+    <div class="wrap" style="padding:32px 0">
+      <h1>${escapeHtml(t.t("test_title"))}</h1>
+      <p class="muted">${escapeHtml(t.t("test_lead"))}</p>
+      <div class="card" style="margin-top:16px">
+        <div id="testWizard"></div>
+        <div id="testResult" hidden></div>
+      </div>
+    </div>`;
+}
+
+function openSheet(html) {
+  const root = document.getElementById("sheet");
+  document.getElementById("sheetBody").innerHTML = html + `<p><button class="btn btn--tiny btn--ghost" data-close-sheet>${escapeHtml(I18N().t("doc_close"))}</button></p>`;
+  root.hidden = false;
+}
+
+function closeSheet() {
+  document.getElementById("sheet").hidden = true;
+}
+
+function sheetScholarship(id) {
+  const t = I18N();
+  const s = Cat().scholarship(id);
+  if (!s) return;
+  const country = Auth().currentUser()?.country || "TJ";
+  const how = s.how_to_apply?.[country] || s.how_to_apply?.all;
+  openSheet(`
+    <h2>${escapeHtml(loc(s.name))}</h2>
+    <p class="muted">${escapeHtml(loc(s.provider))} ${sourceTip(s)}</p>
+    <p>${escapeHtml(t.t("sch_coverage_tuition"))}: ${s.coverage?.tuition_pct ?? t.t("no_data")}% ·
+       ${escapeHtml(t.t("sch_coverage_stipend"))}: ${s.coverage?.stipend_month != null ? money(s.coverage.stipend_month) : t.t("no_data")}</p>
+    ${s.coverage?.stipend_note ? `<p class="muted">${escapeHtml(loc(s.coverage.stipend_note))}</p>` : ""}
+    <h3>${escapeHtml(t.t("sch_req"))}</h3>
+    <ul>${(s.requirements || []).map((r) => `<li>${escapeHtml(loc(r.text))}${r.document_id ? ` · <button type="button" data-doc="${r.document_id}" class="btn btn--ghost" style="height:auto;padding:0">${escapeHtml(loc(Cat().document(r.document_id)?.name) || "")}</button>` : ""}</li>`).join("")}</ul>
+    <div class="tabs">
+      <button type="button" class="${country === "TJ" ? "active" : ""}" data-how="TJ">TJ</button>
+      <button type="button" class="${country === "RU" ? "active" : ""}" data-how="RU">RU</button>
+    </div>
+    <div id="howBox"><p>${escapeHtml(loc(how))}</p></div>
+    ${s.apply_url ? `<p><a class="btn btn--primary" href="${escapeHtml(s.apply_url)}" target="_blank" rel="noopener">${escapeHtml(t.t("uni_apply"))}</a></p>` : ""}
+  `);
+  document.querySelectorAll("[data-how]").forEach((b) => {
+    b.addEventListener("click", () => {
+      const h = s.how_to_apply?.[b.dataset.how] || s.how_to_apply?.all;
+      document.getElementById("howBox").innerHTML = `<p>${escapeHtml(loc(h))}</p>`;
+      document.querySelectorAll("[data-how]").forEach((x) => x.classList.toggle("active", x === b));
     });
   });
 }
 
-function openDocModal(doc) {
+function sheetDoc(id) {
   const t = I18N();
-  const modal = document.getElementById("docModal");
-  const body = document.getElementById("docModalBody");
-  body.innerHTML = `
-    <h2>${t.loc(doc.title)}</h2>
-    <h3>${t.t("doc_what")}</h3>
-    <p>${t.loc(doc.what)}</p>
-    <h3>${t.t("doc_how")}</h3>
-    <p>${t.loc(doc.how)}</p>
-  `;
-  modal.hidden = false;
-  document.body.style.overflow = "hidden";
-}
-
-function closeDocModal() {
-  const modal = document.getElementById("docModal");
-  if (!modal) return;
-  modal.hidden = true;
-  document.body.style.overflow = "";
-}
-
-/* ---------- Checklist ---------- */
-function checklistKey() {
-  const u = Auth().currentUser();
-  return u ? `bridge-check-${u.email}` : "bridge-check-anon";
-}
-
-function renderChecklist() {
-  const root = document.getElementById("checkGroups");
-  if (!root) return;
-  const state = loadJSON(checklistKey(), {});
-  const t = I18N();
-  root.innerHTML = "";
-  CHECKLIST.forEach((group) => {
-    const wrap = document.createElement("div");
-    wrap.className = "check-group";
-    wrap.innerHTML = `<h4>${t.loc(group.title)}</h4>`;
-    group.items.forEach((item) => {
-      const row = document.createElement("div");
-      row.className = "check-item" + (state[item.id] ? " done" : "");
-      const id = `c_${item.id}`;
-      row.innerHTML = `
-        <input type="checkbox" id="${id}" ${state[item.id] ? "checked" : ""} />
-        <label for="${id}">${t.loc(item.label)}</label>
-      `;
-      row.querySelector("input").addEventListener("change", (e) => {
-        const next = loadJSON(checklistKey(), {});
-        next[item.id] = e.target.checked;
-        saveJSON(checklistKey(), next);
-        row.classList.toggle("done", e.target.checked);
-        updateProgress();
-      });
-      wrap.appendChild(row);
+  const d = Cat().document(id);
+  if (!d) return;
+  const country = Auth().currentUser()?.country || "TJ";
+  const how = d.how_to_get?.[country] || d.how_to_get?.all || d.how_to_get;
+  openSheet(`
+    <h2>${escapeHtml(loc(d.name))}</h2>
+    <p>${sourceTip(d)}</p>
+    <h3>${escapeHtml(t.t("doc_what"))}</h3>
+    <p>${escapeHtml(loc(d.what))}</p>
+    <h3>${escapeHtml(t.t("doc_how"))}</h3>
+    <div class="tabs">
+      <button type="button" class="${country === "TJ" ? "active" : ""}" data-how="TJ">TJ</button>
+      <button type="button" class="${country === "RU" ? "active" : ""}" data-how="RU">RU</button>
+    </div>
+    <div id="howBox"><p>${escapeHtml(typeof how === "object" ? loc(how) : how)}</p></div>
+    <p class="muted">
+      ${d.needs_translation ? t.t("doc_needs_translation") + " · " : ""}
+      ${d.needs_notary ? t.t("doc_needs_notary") + " · " : ""}
+      ${d.needs_apostille ? t.t("doc_needs_apostille") : ""}
+    </p>
+  `);
+  document.querySelectorAll("[data-how]").forEach((b) => {
+    b.addEventListener("click", () => {
+      const h = d.how_to_get?.[b.dataset.how] || d.how_to_get?.all;
+      document.getElementById("howBox").innerHTML = `<p>${escapeHtml(loc(h))}</p>`;
+      document.querySelectorAll("[data-how]").forEach((x) => x.classList.toggle("active", x === b));
     });
-    root.appendChild(wrap);
   });
-  updateProgress();
 }
 
-function updateProgress() {
-  const state = loadJSON(checklistKey(), {});
-  const ids = CHECKLIST.flatMap((g) => g.items.map((i) => i.id));
-  const done = ids.filter((id) => state[id]).length;
-  const pct = ids.length ? Math.round((done / ids.length) * 100) : 0;
-  document.getElementById("checkRing")?.style.setProperty("--p", String(pct));
-  const pctEl = document.getElementById("checkPct");
-  const countEl = document.getElementById("checkCount");
-  if (pctEl) pctEl.textContent = `${pct}%`;
-  if (countEl) countEl.textContent = `${done} / ${ids.length}`;
-}
-
-/* ---------- Test ---------- */
-let designPromise = null;
-
+/* ---------- test (kept) ---------- */
+let designPromise;
 function getDesign() {
   if (!designPromise) designPromise = window.BRIDGE_TEST.loadDesign();
   return designPromise;
 }
 
-async function setupTestUI() {
-  const user = Auth().currentUser();
-  const wizard = document.getElementById("testWizard");
-  const result = document.getElementById("testResult");
-  if (!wizard) return;
-  if (!user) return;
-
-  if (user.result) {
-    wizard.hidden = true;
-    result.hidden = false;
-    renderTestResult(user.result);
-  } else {
-    result.hidden = true;
-    wizard.hidden = false;
-    await startTest();
-  }
-}
-
 async function startTest() {
   const design = await getDesign();
   const wizard = document.getElementById("testWizard");
-  const result = document.getElementById("testResult");
-  result.hidden = true;
+  const resultBox = document.getElementById("testResult");
+  if (!wizard) return;
+  resultBox.hidden = true;
   wizard.hidden = false;
   const questions = design.questions;
   let step = 0;
-  const answers = {};
+  const answers = JSON.parse(sessionStorage.getItem("bridge-test-draft") || "{}");
+  if (Object.keys(answers).length) {
+    step = questions.findIndex((q) => answers[q.id] == null);
+    if (step < 0) step = questions.length;
+  }
   const t = I18N();
-
   function draw() {
+    if (step >= questions.length) return finishTest(design, answers);
     const q = questions[step];
     let optionsHtml = "";
     if (q.format === "likert5") {
-      optionsHtml = [1, 2, 3, 4, 5]
-        .map(
-          (n) =>
-            `<button type="button" class="test-opt" data-v="${n}">${n}. ${t.t("likert_" + n)}</button>`
-        )
-        .join("");
+      optionsHtml = [1, 2, 3, 4, 5].map((n) => `<button type="button" class="test-opt" data-v="${n}">${n}. ${t.t("likert_" + n)}</button>`).join("");
     } else if (q.format === "forced4") {
-      optionsHtml = (q.options || [])
-        .map((o) => {
-          const id = o.id || o.k;
-          return `<button type="button" class="test-opt" data-v="${id}">${o.text || o.t}</button>`;
-        })
-        .join("");
-    } else if (q.format === "pick2of4") {
-      optionsHtml = `
-        <div class="pick-grid">
-          ${(q.options || [])
-            .map((o) => {
-              const id = o.id || o.k;
-              return `<label class="pick-opt"><input type="checkbox" value="${id}" /><span>${o.text || o.t}</span></label>`;
-            })
-            .join("")}
-        </div>
-        <p class="form-note" id="pickMsg" hidden></p>
-        <button type="button" class="btn primary" id="pickNext">${t.t("pick_next")}</button>
-      `;
+      optionsHtml = (q.options || []).map((o) => `<button type="button" class="test-opt" data-v="${o.id || o.k}">${escapeHtml(o.text || o.t)}</button>`).join("");
+    } else {
+      optionsHtml = `<div class="pick-grid">${(q.options || []).map((o) => `<label class="pick-opt"><input type="checkbox" value="${o.id || o.k}" /><span>${escapeHtml(o.text || o.t)}</span></label>`).join("")}</div>
+        <button type="button" class="btn btn--primary" id="pickNext">${t.t("pick_next")}</button>`;
     }
-
-    const text = typeof q.text === "object" ? t.loc(q.text) : q.text;
-    wizard.innerHTML = `
-      <div class="test-progress">${t.t("test_progress", { n: step + 1, total: questions.length })}</div>
-      <h3>${text}</h3>
-      <div class="test-options">${optionsHtml}</div>
-    `;
-
+    const text = typeof q.text === "object" ? loc(q.text) : q.text;
+    wizard.innerHTML = `<div class="test-progress">${t.t("test_progress", { n: step + 1, total: questions.length })}</div><h3>${escapeHtml(text)}</h3><div class="test-options">${optionsHtml}</div>`;
     if (q.format === "pick2of4") {
-      const boxes = [...wizard.querySelectorAll('input[type="checkbox"]')];
-      boxes.forEach((box) => {
-        box.addEventListener("change", () => {
-          const checked = boxes.filter((b) => b.checked);
-          if (checked.length > 2) {
-            box.checked = false;
-          }
-        });
-      });
+      const boxes = [...wizard.querySelectorAll("input[type=checkbox]")];
+      boxes.forEach((box) => box.addEventListener("change", () => {
+        if (boxes.filter((b) => b.checked).length > 2) box.checked = false;
+      }));
       wizard.querySelector("#pickNext").addEventListener("click", () => {
         const picks = boxes.filter((b) => b.checked).map((i) => i.value).slice(0, 2);
-        const msg = wizard.querySelector("#pickMsg");
-        if (!picks.length) {
-          msg.hidden = false;
-          msg.textContent = t.t("pick_need");
-          return;
-        }
-        msg.hidden = true;
+        if (!picks.length) return;
         answers[q.id] = picks;
-        advance();
+        sessionStorage.setItem("bridge-test-draft", JSON.stringify(answers));
+        step += 1;
+        draw();
       });
     } else {
       wizard.querySelectorAll(".test-opt").forEach((btn) => {
         btn.addEventListener("click", () => {
           answers[q.id] = btn.dataset.v;
-          advance();
+          sessionStorage.setItem("bridge-test-draft", JSON.stringify(answers));
+          step += 1;
+          draw();
         });
       });
     }
   }
-
-  function advance() {
-    step += 1;
-    if (step >= questions.length) finishTest(design, answers);
-    else draw();
-  }
-
   draw();
 }
 
 function finishTest(design, answers) {
-  let result;
-  try {
-    result = window.BRIDGE_TEST.buildResult(design, answers);
-  } catch (err) {
-    console.error(err);
-    document.getElementById("testWizard").innerHTML = `<p class="form-note">Error building result</p>`;
-    return;
-  }
+  const result = window.BRIDGE_TEST.buildResult(design, answers);
   Auth().saveUserResult(result);
+  try {
+    localStorage.setItem("bridge-test-result-v1", JSON.stringify({ scores: result.dims, topClusters: (result.rankedClusters || []).slice(0, 3).map((c) => c.id), created_at: result.at }));
+  } catch { /* ignore */ }
+  sessionStorage.removeItem("bridge-test-draft");
   document.getElementById("testWizard").hidden = true;
   document.getElementById("testResult").hidden = false;
   renderTestResult(result);
-  renderUniversities("mine");
-  document.querySelectorAll(".uni-filters button").forEach((b) => b.classList.remove("active"));
-  document.getElementById("filterMine")?.classList.add("active");
-  // Stay on test results (do NOT jump away — that looked like "nothing happened")
-  if (location.hash !== "#/test") location.hash = "#/test";
-  setTimeout(() => document.getElementById("test")?.scrollIntoView({ behavior: "smooth" }), 50);
 }
 
 function renderTestResult(result) {
-  const box = document.getElementById("testResult");
   const t = I18N();
-  const unis = (result.uniIds || [])
-    .map((id) => (window.BRIDGE_UNIS || []).find((u) => u.id === id))
-    .filter(Boolean);
-
-  box.hidden = false;
+  const box = document.getElementById("testResult");
+  const unis = (result.uniIds || []).map((id) => Cat().uni(id)).filter(Boolean);
   box.innerHTML = `
-    <div class="result-banner">
-      <h3>${t.t("result_title")}</h3>
-      <p>${escapeHtml(result.summary)}</p>
-      <p class="muted">${escapeHtml(t.t("result_match_note"))}</p>
-    </div>
-    <div class="cluster-pills">
-      ${(result.rankedClusters || [])
-        .map((c) => `<span class="pill">${escapeHtml(c.label)} <em>${escapeHtml(c.score)}</em></span>`)
-        .join("")}
-    </div>
-    <h4>${escapeHtml(t.t("result_professions"))}</h4>
-    <ul class="prof-list">
-      ${(result.professions || [])
-        .map(
-          (p) =>
-            `<li><strong>${escapeHtml(p.name)}</strong> <span class="muted">${escapeHtml(p.clusterLabel)}</span></li>`
-        )
-        .join("")}
-    </ul>
-    <h4>${t.t("result_unis")}</h4>
-    <div class="result-unis">
-      ${unis.length
-        ? unis
-            .map(
-              (u) => `
-        <a class="result-uni" href="#/uni/${u.id}">
-          <strong>${t.loc(u.name)}</strong>
-          <span>${trPhrase((u.englishPrograms || [])[0] || (u.majors || [])[0] || "")}</span>
-          <em>${moneyTriple(u.tuitionYear)}</em>
-        </a>`
-            )
-            .join("")
-        : `<p class="form-note">—</p>`}
-    </div>
-    <div class="hero-actions" style="margin-top:16px">
-      <a class="btn primary" href="#/unis">${t.t("result_see_unis")}</a>
-      <button class="btn ghost" type="button" id="retakeTest">${t.t("result_retake")}</button>
-    </div>
-    <p class="muted">${t.t("result_disclaimer")}</p>
-  `;
+    <div><h3>${escapeHtml(t.t("result_title"))}</h3><p>${escapeHtml(result.summary)}</p></div>
+    <div class="cluster-pills">${(result.rankedClusters || []).map((c) => `<span class="pill">${escapeHtml(c.label)}</span>`).join("")}</div>
+    <ul>${(result.professions || []).map((p) => `<li>${escapeHtml(p.name)}</li>`).join("")}</ul>
+    <div>${unis.map((u) => `<a class="card" href="#/uni/${u.id}" style="display:block;margin:8px 0">${escapeHtml(loc(u.name))}</a>`).join("")}</div>
+    <a class="btn btn--primary" href="#/unis?fits_test=1">${escapeHtml(t.t("result_see_unis"))}</a>
+    <button class="btn btn--ghost" type="button" id="retakeTest">${escapeHtml(t.t("result_retake"))}</button>
+    <p class="muted">${escapeHtml(t.t("result_disclaimer"))}</p>`;
   document.getElementById("retakeTest")?.addEventListener("click", async () => {
     Auth().saveUserResult(null);
-    box.hidden = true;
     await startTest();
   });
 }
 
-/* ---------- Chrome ---------- */
-function setupNav() {
-  document.querySelectorAll(".uni-filters button").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".uni-filters button").forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-      renderUniversities(btn.dataset.filter);
+/* ---------- events / route ---------- */
+function bindView(route) {
+  document.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => { location.hash = b.dataset.go; }));
+  document.querySelectorAll("[data-add]").forEach((b) => {
+    b.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const r = Path().addUni(b.dataset.add);
+      if (r._limit) return toast(I18N().t("path_limit"));
+      toast(I18N().t("toast_added"));
+      routeNow();
     });
   });
+  document.querySelectorAll("[data-remove]").forEach((b) => {
+    b.addEventListener("click", () => {
+      Path().removeUni(b.dataset.remove);
+      routeNow();
+    });
+  });
+  document.querySelectorAll("[data-togglesch]").forEach((b) => {
+    b.addEventListener("click", () => {
+      const [uni, sch] = b.dataset.togglesch.split(":");
+      const r = Path().toggleSch(uni, sch);
+      if (r._limit) toast(I18N().t("path_limit"));
+      else toast(I18N().t("toast_added"));
+      routeNow();
+    });
+  });
+  document.querySelectorAll("[data-sch]").forEach((b) => b.addEventListener("click", () => sheetScholarship(b.dataset.sch)));
+  document.querySelectorAll("[data-doc]").forEach((b) => b.addEventListener("click", () => sheetDoc(b.dataset.doc)));
+  document.querySelectorAll("[data-task]").forEach((b) => {
+    b.addEventListener("click", (e) => {
+      if (b.type === "checkbox") e.stopPropagation();
+      Path().toggleTask(b.dataset.task);
+      if (b.tagName === "BUTTON") routeNow();
+    });
+  });
+  document.querySelectorAll("[data-close-sheet]").forEach((el) => el.addEventListener("click", closeSheet));
+  document.querySelectorAll("[data-fk]").forEach((b) => {
+    b.addEventListener("click", () => {
+      const q = { ...parseHash().q };
+      const cur = new Set((q[b.dataset.fk] || "").split(",").filter(Boolean));
+      if (cur.has(b.dataset.fv)) cur.delete(b.dataset.fv);
+      else cur.add(b.dataset.fv);
+      q[b.dataset.fk] = [...cur].join(",");
+      setQuery(q);
+    });
+  });
+  document.getElementById("citySel")?.addEventListener("change", (e) => setQuery({ ...parseHash().q, city: e.target.value }));
+  document.getElementById("uniSort")?.addEventListener("change", (e) => setQuery({ ...parseHash().q, sort: e.target.value }));
+  document.getElementById("priceMax")?.addEventListener("change", (e) => setQuery({ ...parseHash().q, price_max: e.target.value }));
+  document.getElementById("fltSch")?.addEventListener("change", (e) => setQuery({ ...parseHash().q, sch: e.target.checked ? "1" : "" }));
+  document.getElementById("fltHsk")?.addEventListener("change", (e) => setQuery({ ...parseHash().q, no_hsk: e.target.checked ? "1" : "" }));
+  document.getElementById("fltTest")?.addEventListener("change", (e) => setQuery({ ...parseHash().q, fits_test: e.target.checked ? "1" : "" }));
+  document.getElementById("fltReset")?.addEventListener("click", () => { location.hash = "#/unis"; });
+  let st;
   document.getElementById("uniSearch")?.addEventListener("input", (e) => {
-    currentQuery = e.target.value || "";
-    renderUniversities(currentFilter);
+    clearTimeout(st);
+    st = setTimeout(() => setQuery({ ...parseHash().q, q: e.target.value }), 200);
   });
-  document.getElementById("uniSort")?.addEventListener("change", (e) => {
-    currentSort = e.target.value || "default";
-    renderUniversities(currentFilter);
+
+  const registerForm = document.getElementById("registerForm");
+  const loginForm = document.getElementById("loginForm");
+  const otpForm = document.getElementById("otpForm");
+  const gateMsg = document.getElementById("gateMsg");
+  async function send(mode, form) {
+    const fd = new FormData(form);
+    try {
+      await Auth().requestOtp({
+        email: fd.get("email"),
+        name: fd.get("name"),
+        country: fd.get("country") || "TJ",
+        mode,
+        consents: mode === "register" ? { pd: fd.get("consentPd"), age: fd.get("consentAge"), terms: fd.get("consentTerms") } : null,
+      });
+      routeNow();
+    } catch (err) {
+      gateMsg.textContent = err.message;
+    }
+  }
+  registerForm?.addEventListener("submit", (e) => { e.preventDefault(); send("register", registerForm); });
+  loginForm?.addEventListener("submit", (e) => { e.preventDefault(); send("login", loginForm); });
+  if (otpForm) {
+    const inputs = [...otpForm.querySelectorAll("input")];
+    inputs.forEach((inp, i) => {
+      inp.addEventListener("input", () => {
+        inp.value = inp.value.replace(/\D/g, "").slice(-1);
+        if (inp.value && inputs[i + 1]) inputs[i + 1].focus();
+      });
+      inp.addEventListener("paste", (e) => {
+        const txt = (e.clipboardData.getData("text") || "").replace(/\D/g, "").slice(0, 6);
+        txt.split("").forEach((ch, j) => { if (inputs[j]) inputs[j].value = ch; });
+        e.preventDefault();
+      });
+    });
+    otpForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const code = inputs.map((i) => i.value).join("");
+      try {
+        await Auth().verifyOtp(code);
+        const next = parseHash().q.next || "/unis";
+        location.hash = `#${next.startsWith("/") ? next : "/" + next}`;
+      } catch (err) {
+        gateMsg.textContent = err.message;
+      }
+    });
+    document.getElementById("changeEmail")?.addEventListener("click", () => {
+      localStorage.removeItem("bridge-otp-pending");
+      routeNow();
+    });
+  }
+}
+
+async function routeNow() {
+  const r = parseHash();
+  const authed = Auth().isAuthed();
+  const protectedViews = new Set(["unis", "uni", "test", "path"]);
+  if (!authed && protectedViews.has(r.view)) {
+    location.hash = `#/auth?next=${encodeURIComponent(location.hash.replace(/^#/, "") || "/unis")}`;
+    return;
+  }
+  if (authed && r.view === "home") {
+    location.hash = "#/unis";
+    return;
+  }
+  const app = document.getElementById("app");
+  if (r.view === "home") app.innerHTML = viewLanding();
+  else if (r.view === "auth") app.innerHTML = viewAuth(r);
+  else if (r.view === "unis") app.innerHTML = viewCatalog(r);
+  else if (r.view === "uni") app.innerHTML = viewUni(r.id);
+  else if (r.view === "path") app.innerHTML = viewPath();
+  else if (r.view === "support") app.innerHTML = viewSupport();
+  else if (r.view === "test") app.innerHTML = viewTest();
+  applyI18n();
+  refreshUserUI();
+  document.querySelectorAll(".nav-links a, .tab-bar a").forEach((a) => {
+    const href = a.getAttribute("href") || "";
+    a.classList.toggle("active", href === `#/${r.view}` || (r.view === "uni" && href === "#/unis"));
   });
-  document.getElementById("uniCluster")?.addEventListener("change", (e) => {
-    currentCluster = e.target.value || "all";
-    renderUniversities(currentFilter);
-  });
-  document.getElementById("resetChecks")?.addEventListener("click", () => {
-    localStorage.removeItem(checklistKey());
-    renderChecklist();
-  });
-  document.querySelectorAll("[data-close-doc]").forEach((el) => {
-    el.addEventListener("click", closeDocModal);
+  bindView(r);
+  if (r.view === "test") {
+    const user = Auth().currentUser();
+    if (user?.result) {
+      document.getElementById("testWizard").hidden = true;
+      document.getElementById("testResult").hidden = false;
+      renderTestResult(user.result);
+    } else await startTest();
+  }
+  window.scrollTo(0, 0);
+}
+
+function setupAuthBtn() {
+  document.getElementById("navAuthBtn").addEventListener("click", () => {
+    if (Auth().isAuthed()) {
+      Auth().logout();
+      location.hash = "#/";
+      routeNow();
+    } else location.hash = "#/auth";
   });
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeDocModal();
+    if (e.key === "Escape") closeSheet();
   });
 }
 
-function setupReveal() {
-  const nodes = document.querySelectorAll(".reveal");
-  const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.intersecting || entry.isIntersecting) {
-          entry.target.classList.add("visible");
-          io.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.12 }
-  );
-  nodes.forEach((n) => io.observe(n));
-}
-
-function setupScrollProgress() {
-  const bar = document.getElementById("scrollProgress");
-  const onScroll = () => {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    bar.style.width = `${max > 0 ? (window.scrollY / max) * 100 : 0}%`;
-  };
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
-}
+window.BRIDGE_APP = { toast, routeNow };
 
 document.addEventListener("DOMContentLoaded", async () => {
   setupLang();
-  setupAuthUI();
-  setupNav();
-  setupReveal();
-  setupScrollProgress();
-  await loadLiveFees();
-  window.addEventListener("hashchange", route);
-  enforceGate();
-  if (Auth().isAuthed()) route();
+  setupAuthBtn();
+  applyI18n();
+  await Cat().load();
+  await FX().refresh();
+  window.addEventListener("hashchange", () => routeNow());
+  window.addEventListener("bridge:auth", () => routeNow());
+  routeNow();
 });

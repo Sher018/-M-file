@@ -1,0 +1,151 @@
+{
+  "version": "2026-10-13",
+  "items": [
+    {
+      "id": "csc-bilateral",
+      "name": {
+        "ru": "Стипендия Правительства Китая — двусторонняя программа (Type A)",
+        "en": "Chinese Government Scholarship — Bilateral Program (Type A)",
+        "tg": "Стипендияи Ҳукумати Чин — барномаи дуҷониба (Type A)"
+      },
+      "type": "csc_bilateral",
+      "provider": {
+        "ru": "Китайский стипендиальный совет (CSC) по поручению Министерства образования КНР",
+        "en": "China Scholarship Council (CSC), entrusted by China’s Ministry of Education",
+        "tg": "Шӯрои стипендияи Чин (CSC)"
+      },
+      "scope": "national",
+      "coverage": {
+        "tuition_pct": 100,
+        "dorm": true,
+        "stipend_month": 2500,
+        "stipend_note": {
+          "ru": "Бакалавр 2500 юань/мес; магистр / ordinary scholar 3000; доктор / senior scholar 3500. Страховка 800 юань/год (400 при программе < 6 месяцев).",
+          "en": "Undergraduates CNY 2,500/month; master’s/general scholars CNY 3,000; doctoral/senior scholars CNY 3,500. Medical insurance CNY 800/year (CNY 400 if program < 6 months).",
+          "tg": "Бакалавр 2500 юан/моҳ; магистр 3000; доктор 3500. Суғурта 800 юан/сол."
+        },
+        "insurance": true
+      },
+      "eligible_degrees": ["language", "bachelor", "master", "phd"],
+      "eligible_countries": "all",
+      "requirements": [
+        {
+          "text": {
+            "ru": "Гражданин страны, не являющейся КНР; здоровье психическое и физическое.",
+            "en": "Citizen of a country other than the PRC; good health mentally and physically.",
+            "tg": "Шаҳрванди кишваре ғайр аз ҶХЧ; саломатии ҷисмонӣ ва равонӣ."
+          }
+        },
+        {
+          "text": {
+            "ru": "Бакалавр: аттестат, возраст не старше 25 лет. Магистр: бакалавр, не старше 35. Докторантура: магистр, не старше 40.",
+            "en": "Bachelor: high-school graduate under 25. Master: bachelor’s holder under 35. Doctoral: master’s holder under 40.",
+            "tg": "Бакалавр: аттестат, синн ≤25. Магистр: бакалавр, ≤35. Доктор: магистр, ≤40."
+          }
+        },
+        {
+          "document_id": "csca",
+          "text": {
+            "ru": "Абитуриенты бакалавриата сдают CSCA и загружают Score Report.",
+            "en": "Bachelor applicants must take CSCA and upload a valid Score Report.",
+            "tg": "Довталабони бакалавр бояд CSCA супоранд ва Score Report бор кунанд."
+          }
+        },
+        {
+          "text": {
+            "ru": "Китайскоязычные программы: HSK 3 (бакалавр / ordinary scholar), HSK 4 (магистр / доктор). Иноязычные — IELTS/TOEFL по требованию вуза.",
+            "en": "Chinese-taught: HSK 3 (undergraduate/general scholar), HSK 4 (master’s/doctoral). Other languages: IELTS/TOEFL per university.",
+            "tg": "Бо забони чинӣ: HSK 3 (бакалавр), HSK 4 (магистр/доктор). Забони дигар: IELTS/TOEFL."
+          }
+        }
+      ],
+      "how_to_apply": {
+        "all": {
+          "ru": "1) Выбрать вуз и программу на www.campuschina.org. 2) Получить документ о предварительном зачислении (pre-admission / invitation). 3) Подать заявку в CGSIS и через принимающее ведомство своей страны (посольство КНР или уполномоченный орган). Тип программы — A.",
+          "en": "1) Identify university/major on www.campuschina.org. 2) Obtain a pre-admission document. 3) Submit via CGSIS and your receiving agency (Chinese embassy or designated authority). Program type A.",
+          "tg": "1) Донишгоҳро дар www.campuschina.org интихоб кунед. 2) Ҳуҷҷати пеш аз қабул гиред. 3) Дар CGSIS ва тавассути сафорат/мақомоти ваколатдор пешниҳод кунед. Навъи барнома — A."
+        },
+        "TJ": {
+          "ru": "Отбор ведёт Посольство КНР в Таджикистане; экзамены — Институты Конфуция при Таджикском национальном университете и Металлургическом институте. Материалы — через объявление посольства (сканы PDF + экзамен). Контакты: tjkkzxyjxj@gmail.com (ИК ТНУ), tjkyjkzxy@mail.ru (ИК металлургического института). Сайт: https://tj.china-embassy.gov.cn",
+          "en": "The Chinese Embassy in Tajikistan runs selection; exams are held by the Confucius Institutes at Tajik National University and the Metallurgy Institute. Follow the embassy notice. Contacts: tjkkzxyjxj@gmail.com, tjkyjkzxy@mail.ru. Site: https://tj.china-embassy.gov.cn",
+          "tg": "Интихобро Сафорати ҶХЧ дар Тоҷикистон мебарад; имтиҳон — Донишкадаҳои Конфутсий назди ДМТ ва Донишкадаи кӯҳию металлургӣ. Тамос: tjkkzxyjxj@gmail.com, tjkyjkzxy@mail.ru. Сомона: https://tj.china-embassy.gov.cn"
+        },
+        "RU": {
+          "ru": "Type A для квоты РФ: два комплекта — российской стороне (Минобрнауки РФ / ФГБУ «Интеробразование», mobility@ined.ru) и китайской стороне через https://studyinchina.csc.edu.cn. Сроки 2026/27 приёма (по письму Минобрнауки): 24.11.2025–09.01.2026, 15:00 МСК. Квота на 2026/27: 120 мест. Номер агентства в CGSIS, который указывает инструкция Inteobrazovanie/вузов: 6431 (Посольство КНР в России).",
+          "en": "Russia Type A quota: two sets of documents — to the Russian side (Ministry of Science and Higher Education / Interobrazovanie, mobility@ined.ru) and to CSC via https://studyinchina.csc.edu.cn. 2026/27 window cited by Minobrnauki: 24 Nov 2025 – 9 Jan 2026, 15:00 Moscow time. Quota: 120 places. Agency No. cited in CGSIS instructions: 6431 (Embassy of P.R. China in Russia).",
+          "tg": "Барои РФ Type A: ду маҷмӯи ҳуҷҷат — ба Минобрнауки РФ (mobility@ined.ru) ва ба CSC тавассути https://studyinchina.csc.edu.cn. Мӯҳлати 2026/27: 24.11.2025–09.01.2026, 15:00 МСК. Квота: 120 ҷой. Рақами агентӣ 6431."
+        }
+      },
+      "deadline_id": "csc-bilateral-tj-2026",
+      "apply_url": "https://www.campuschina.org",
+      "csc_agency_no": null,
+      "source_url": "https://se.china-embassy.gov.cn/eng/sgxw/202510/t20251024_11740323.htm",
+      "source_urls": [
+        "https://se.china-embassy.gov.cn/eng/sgxw/202510/t20251024_11740323.htm",
+        "https://tj.china-embassy.gov.cn/sgzc/202511/t20251124_11759137.htm",
+        "https://www.sgu.ru/news/2025/otbor-na-programmu-stipendiya-pravitelstva-kitaya-tip-v-20262027-uchebnom-godu",
+        "https://beijing.mid.ru/ru/poleznye_ssylki/ros_studentam/rossiyskim_studentam/voprosy_o_podache_dok_na_stipendii/"
+      ],
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "csc-university",
+      "name": {
+        "ru": "Стипендия Правительства Китая — программа вуза (Type B)",
+        "en": "Chinese Government Scholarship — Chinese University Program (Type B)",
+        "tg": "Стипендияи Ҳукумати Чин — барномаи донишгоҳ (Type B)"
+      },
+      "type": "csc_university",
+      "provider": {
+        "ru": "CSC + принимающий китайский вуз",
+        "en": "CSC + host Chinese university",
+        "tg": "CSC + донишгоҳи Чин"
+      },
+      "scope": "national",
+      "coverage": {
+        "tuition_pct": 100,
+        "dorm": true,
+        "stipend_month": 2500,
+        "insurance": true
+      },
+      "eligible_degrees": ["language", "bachelor", "master", "phd"],
+      "eligible_countries": "all",
+      "requirements": [
+        {
+          "text": {
+            "ru": "Те же базовые требования CGS (гражданство не КНР, возраст/диплом, язык, CSCA для бакалавриата), плюс правила конкретного вуза.",
+            "en": "Same CGS eligibility (non-PRC citizen, age/diploma, language, CSCA for bachelor’s) plus the host university’s rules.",
+            "tg": "Ҳамон талаботи CGS ва қоидаҳои донишгоҳи қабулкунанда."
+          }
+        }
+      ],
+      "how_to_apply": {
+        "all": {
+          "ru": "В CGSIS выбрать тип программы B, ввести Agency Number вуза (пятизначный; связан с названием вуза). Подаётся напрямую в китайский вуз, который рекомендует кандидатов в CSC. Инструкция: https://www.campuschina.org (Scholarship Application for Students).",
+          "en": "In CGSIS choose Program Type B and enter the university’s five-digit Agency Number (linked to the university name). Apply to the Chinese university, which recommends candidates to CSC.",
+          "tg": "Дар CGSIS навъи барнома B ва рақами 5-рақамаи агентии донишгоҳро ворид кунед. Ба донишгоҳи Чин пешниҳод мешавад."
+        },
+        "TJ": {
+          "ru": "Type B не идёт через посольский экзамен в Душанбе: подача на портале вуза + CGSIS Type B. Сверяйте дедлайн на сайте выбранного вуза (единой даты нет).",
+          "en": "Type B is not the embassy exam in Dushanbe: apply on the university portal + CGSIS Type B. Deadlines differ by university.",
+          "tg": "Type B имтиҳони сафорат нест: портали донишгоҳ + CGSIS Type B. Мӯҳлат аз донишгоҳ вобаста аст."
+        },
+        "RU": {
+          "ru": "Type B — напрямую в китайский вуз (не квота Минобрнауки на 120 мест). Посольство РФ в Пекине разъясняет, что самостоятельная подача через посольство/вуз КНР возможна и без статуса студента российского вуза.",
+          "en": "Type B goes to the Chinese university (not the 120-place Minobrnauki quota). The Russian Embassy in Beijing notes independent CGS applications via the Chinese embassy/university are possible without being a Russian-university student.",
+          "tg": "Type B бевосита ба донишгоҳи Чин (на квотаи 120-тои Минобрнауки)."
+        }
+      },
+      "deadline_id": null,
+      "apply_url": "https://www.campuschina.org",
+      "csc_agency_no": null,
+      "source_url": "https://www.campuschina.org/Upload/file/20260115/20260115151127_9526.pdf",
+      "source_urls": [
+        "https://www.campuschina.org/Upload/file/20260115/20260115151127_9526.pdf",
+        "https://se.china-embassy.gov.cn/eng/sgxw/202510/t20251024_11740323.htm",
+        "https://beijing.mid.ru/ru/poleznye_ssylki/ros_studentam/rossiyskim_studentam/voprosy_o_podache_dok_na_stipendii/"
+      ],
+      "checked_at": "2026-10-13"
+    }
+  ]
+}

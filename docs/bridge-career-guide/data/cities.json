@@ -1,0 +1,467 @@
+{
+  "version": "2026-10-13",
+  "items": [
+    {
+      "id": "haining",
+      "name": {
+        "ru": "Хайнин",
+        "en": "Haining",
+        "tg": "Ҳайнин"
+      },
+      "province": {
+        "ru": "Чжэцзян",
+        "en": "Zhejiang",
+        "tg": "Чжэцзян"
+      },
+      "lat": 30.5102,
+      "lng": 120.4158,
+      "population": null,
+      "cost_of_living_month": null,
+      "climate": null,
+      "airport": null,
+      "source_url": "https://www.geonames.org/search.html?q=haining&country=CN",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "beijing",
+      "name": {
+        "ru": "Пекин",
+        "en": "Beijing",
+        "tg": "Пекин"
+      },
+      "province": {
+        "ru": "Пекин",
+        "en": "Beijing",
+        "tg": "Пекин"
+      },
+      "lat": 39.9042,
+      "lng": 116.4074,
+      "population": null,
+      "cost_of_living_month": null,
+      "climate": null,
+      "airport": null,
+      "source_url": "https://www.geonames.org/search.html?q=beijing&country=CN",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "shanghai",
+      "name": {
+        "ru": "Шанхай",
+        "en": "Shanghai",
+        "tg": "Шанхай"
+      },
+      "province": {
+        "ru": "Шанхай",
+        "en": "Shanghai",
+        "tg": "Шанхай"
+      },
+      "lat": 31.2304,
+      "lng": 121.4737,
+      "population": null,
+      "cost_of_living_month": null,
+      "climate": null,
+      "airport": null,
+      "source_url": "https://www.geonames.org/search.html?q=shanghai&country=CN",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "xian",
+      "name": {
+        "ru": "Сиань",
+        "en": "Xi'an",
+        "tg": "Сиан"
+      },
+      "province": {
+        "ru": "Шэньси",
+        "en": "Shaanxi",
+        "tg": "Шэнси"
+      },
+      "lat": 34.3416,
+      "lng": 108.9398,
+      "population": null,
+      "cost_of_living_month": null,
+      "climate": null,
+      "airport": null,
+      "source_url": "https://www.geonames.org/search.html?q=xian&country=CN",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "tianjin",
+      "name": {
+        "ru": "Тяньцзинь",
+        "en": "Tianjin",
+        "tg": "Тянсзин"
+      },
+      "province": {
+        "ru": "Тяньцзинь",
+        "en": "Tianjin",
+        "tg": "Тянҷин"
+      },
+      "lat": 39.3434,
+      "lng": 117.3616,
+      "population": null,
+      "cost_of_living_month": null,
+      "climate": null,
+      "airport": null,
+      "source_url": "https://www.geonames.org/search.html?q=tianjin&country=CN",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "harbin",
+      "name": {
+        "ru": "Харбин",
+        "en": "Harbin",
+        "tg": "Харбин"
+      },
+      "province": {
+        "ru": "Хэйлунцзян",
+        "en": "Heilongjiang",
+        "tg": "Ҳэйлунҷзян"
+      },
+      "lat": 45.8038,
+      "lng": 126.534,
+      "population": null,
+      "cost_of_living_month": null,
+      "climate": null,
+      "airport": null,
+      "source_url": "https://www.geonames.org/search.html?q=harbin&country=CN",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "wuhan",
+      "name": {
+        "ru": "Ухань",
+        "en": "Wuhan",
+        "tg": "Уҳан"
+      },
+      "province": {
+        "ru": "Хубэй",
+        "en": "Hubei",
+        "tg": "Ҳубэй"
+      },
+      "lat": 30.5928,
+      "lng": 114.3055,
+      "population": null,
+      "cost_of_living_month": null,
+      "climate": null,
+      "airport": null,
+      "source_url": "https://www.geonames.org/search.html?q=wuhan&country=CN",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "zhenjiang",
+      "name": {
+        "ru": "Чжэньцзян",
+        "en": "Zhenjiang",
+        "tg": "Чженсзян"
+      },
+      "province": {
+        "ru": "Цзянсу",
+        "en": "Jiangsu",
+        "tg": "Ҷзянсу"
+      },
+      "lat": 32.1878,
+      "lng": 119.425,
+      "population": null,
+      "cost_of_living_month": null,
+      "climate": null,
+      "airport": null,
+      "source_url": "https://www.geonames.org/search.html?q=zhenjiang&country=CN",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "hangzhou",
+      "name": {
+        "ru": "Ханчжоу",
+        "en": "Hangzhou",
+        "tg": "Ханчжоу"
+      },
+      "province": {
+        "ru": "Чжэцзян",
+        "en": "Zhejiang",
+        "tg": "Чжэцзян"
+      },
+      "lat": 30.2741,
+      "lng": 120.1551,
+      "population": null,
+      "cost_of_living_month": null,
+      "climate": null,
+      "airport": null,
+      "source_url": "https://www.geonames.org/search.html?q=hangzhou&country=CN",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "ningbo",
+      "name": {
+        "ru": "Нинбо",
+        "en": "Ningbo",
+        "tg": "Нинбо"
+      },
+      "province": {
+        "ru": "Чжэцзян",
+        "en": "Zhejiang",
+        "tg": "Чжэцзян"
+      },
+      "lat": 29.8683,
+      "lng": 121.544,
+      "population": null,
+      "cost_of_living_month": null,
+      "climate": null,
+      "airport": null,
+      "source_url": "https://www.geonames.org/search.html?q=ningbo&country=CN",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "suzhou",
+      "name": {
+        "ru": "Сучжоу",
+        "en": "Suzhou",
+        "tg": "Сучжоу"
+      },
+      "province": {
+        "ru": "Цзянсу",
+        "en": "Jiangsu",
+        "tg": "Ҷзянсу"
+      },
+      "lat": 31.2989,
+      "lng": 120.5853,
+      "population": null,
+      "cost_of_living_month": null,
+      "climate": null,
+      "airport": null,
+      "source_url": "https://www.geonames.org/search.html?q=suzhou&country=CN",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "jinan",
+      "name": {
+        "ru": "Цзинань",
+        "en": "Jinan",
+        "tg": "Сзинан"
+      },
+      "province": {
+        "ru": "Шаньдун",
+        "en": "Shandong",
+        "tg": "Шандун"
+      },
+      "lat": 36.6512,
+      "lng": 117.1201,
+      "population": null,
+      "cost_of_living_month": null,
+      "climate": null,
+      "airport": null,
+      "source_url": "https://www.geonames.org/search.html?q=jinan&country=CN",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "guangzhou",
+      "name": {
+        "ru": "Гуанчжоу",
+        "en": "Guangzhou",
+        "tg": "Гуанҷжоу"
+      },
+      "province": {
+        "ru": "Гуандун",
+        "en": "Guangdong",
+        "tg": "Гуандун"
+      },
+      "lat": 23.1291,
+      "lng": 113.2644,
+      "population": null,
+      "cost_of_living_month": null,
+      "climate": null,
+      "airport": null,
+      "source_url": "https://www.geonames.org/search.html?q=guangzhou&country=CN",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "nanjing",
+      "name": {
+        "ru": "Нанкин",
+        "en": "Nanjing",
+        "tg": "Нанкин"
+      },
+      "province": {
+        "ru": "Цзянсу",
+        "en": "Jiangsu",
+        "tg": "Ҷзянсу"
+      },
+      "lat": 32.0603,
+      "lng": 118.7969,
+      "population": null,
+      "cost_of_living_month": null,
+      "climate": null,
+      "airport": null,
+      "source_url": "https://www.geonames.org/search.html?q=nanjing&country=CN",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "shenyang",
+      "name": {
+        "ru": "Шэньян",
+        "en": "Shenyang",
+        "tg": "Шенян"
+      },
+      "province": {
+        "ru": "Ляонин",
+        "en": "Liaoning",
+        "tg": "Ляонин"
+      },
+      "lat": 41.8057,
+      "lng": 123.4315,
+      "population": null,
+      "cost_of_living_month": null,
+      "climate": null,
+      "airport": null,
+      "source_url": "https://www.geonames.org/search.html?q=shenyang&country=CN",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "changchun",
+      "name": {
+        "ru": "Чанчунь",
+        "en": "Changchun",
+        "tg": "Чанчун"
+      },
+      "province": {
+        "ru": "Гирин",
+        "en": "Jilin",
+        "tg": "Ҷилин"
+      },
+      "lat": 43.8171,
+      "lng": 125.3235,
+      "population": null,
+      "cost_of_living_month": null,
+      "climate": null,
+      "airport": null,
+      "source_url": "https://www.geonames.org/search.html?q=changchun&country=CN",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "lanzhou",
+      "name": {
+        "ru": "Ланьчжоу",
+        "en": "Lanzhou",
+        "tg": "Ланҷжоу"
+      },
+      "province": {
+        "ru": "Ганьсу",
+        "en": "Gansu",
+        "tg": "Гансу"
+      },
+      "lat": 36.0611,
+      "lng": 103.8343,
+      "population": null,
+      "cost_of_living_month": null,
+      "climate": null,
+      "airport": null,
+      "source_url": "https://www.geonames.org/search.html?q=lanzhou&country=CN",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "kunming",
+      "name": {
+        "ru": "Куньмин",
+        "en": "Kunming",
+        "tg": "Кунмин"
+      },
+      "province": {
+        "ru": "Юньнань",
+        "en": "Yunnan",
+        "tg": "Юннан"
+      },
+      "lat": 25.0389,
+      "lng": 102.7183,
+      "population": null,
+      "cost_of_living_month": null,
+      "climate": null,
+      "airport": null,
+      "source_url": "https://www.geonames.org/search.html?q=kunming&country=CN",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "changsha",
+      "name": {
+        "ru": "Чанша",
+        "en": "Changsha",
+        "tg": "Чанша"
+      },
+      "province": {
+        "ru": "Хунань",
+        "en": "Hunan",
+        "tg": "Ҳунан"
+      },
+      "lat": 28.2282,
+      "lng": 112.9388,
+      "population": null,
+      "cost_of_living_month": null,
+      "climate": null,
+      "airport": null,
+      "source_url": "https://www.geonames.org/search.html?q=changsha&country=CN",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "qingdao",
+      "name": {
+        "ru": "Циндао",
+        "en": "Qingdao",
+        "tg": "Тсиндао"
+      },
+      "province": {
+        "ru": "Шаньдун",
+        "en": "Shandong",
+        "tg": "Шандун"
+      },
+      "lat": 36.0671,
+      "lng": 120.3826,
+      "population": null,
+      "cost_of_living_month": null,
+      "climate": null,
+      "airport": null,
+      "source_url": "https://www.geonames.org/search.html?q=qingdao&country=CN",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "dalian",
+      "name": {
+        "ru": "Далянь",
+        "en": "Dalian",
+        "tg": "Далян"
+      },
+      "province": {
+        "ru": "Ляонин",
+        "en": "Liaoning",
+        "tg": "Ляонин"
+      },
+      "lat": 38.914,
+      "lng": 121.6147,
+      "population": null,
+      "cost_of_living_month": null,
+      "climate": null,
+      "airport": null,
+      "source_url": "https://www.geonames.org/search.html?q=dalian&country=CN",
+      "checked_at": "2026-10-13"
+    },
+    {
+      "id": "dongguan",
+      "name": {
+        "ru": "Дунгуань",
+        "en": "Dongguan",
+        "tg": "Дунгуан"
+      },
+      "province": {
+        "ru": "Гуандун",
+        "en": "Guangdong",
+        "tg": "Гуандун"
+      },
+      "lat": 23.0207,
+      "lng": 113.7518,
+      "population": null,
+      "cost_of_living_month": null,
+      "climate": null,
+      "airport": null,
+      "source_url": "https://www.geonames.org/search.html?q=dongguan&country=CN",
+      "checked_at": "2026-10-13"
+    }
+  ]
+}

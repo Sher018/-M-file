@@ -1,0 +1,16 @@
+---
+description: Cloudflare Worker API rules for BRIDGE
+globs: docs/bridge-career-guide/worker.js
+alwaysApply: false
+---
+
+# Worker
+
+- Endpoints live under `/api/*`. Static assets via `env.ASSETS`.
+- JSON errors: `{ ok:false, error, detail? }`.
+- Never log raw emails; hash if needed.
+- Secrets via `wrangler secret`, never in git.
+- OTP: HMAC-signed token, 6 digits, lock after 5 bad attempts, rate-limit when KV is bound.
+- `/api/fx` uses Cache API (24h) and fallback `data/fx-fallback.json` values.
+- Observability stays enabled (`observability.traces.enabled`).
+- CORS: `https://bridge-tj.lol`, `https://www.bridge-tj.lol`, `http://localhost:*`.

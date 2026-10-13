@@ -1,0 +1,20 @@
+---
+description: BRIDGE · To China — product and data rules
+globs: docs/bridge-career-guide/**/*.{js,json,css,html,md}
+alwaysApply: false
+---
+
+# BRIDGE rules
+
+Follow `SPECIFICATION.md`. Do not invent catalog facts.
+
+- Every `data/*.json` item needs `source_url` (https) and `checked_at`.
+- Missing fact → `null` + UI key `no_data`, never a guess.
+- Prices stored as integer CNY; display CNY + USD via `/api/fx`.
+- Brand: "BRIDGE · To China". Colors: `#013220` `#0B6E4F` `#50C878` `#D1F2EB`.
+- Logo is monochrome (dark on light, white on dark).
+- Escape all dynamic HTML. Do not add `'unsafe-inline'` to `script-src`.
+- Do not accept applications, payments for admission, or passport scans.
+- OTP is 6 digits. CORS allowlist only our origins + localhost.
+- Path limit: 10 universities. Storage key `bridge-path-v1`.
+- Keep `validate-data.mjs` green.
