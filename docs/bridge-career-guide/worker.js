@@ -1,9 +1,10 @@
 /**
  * BRIDGE API Worker — email OTP via Resend.
  * OTP proof = signed token (no KV required). Optional OTP_KV for rate limits.
+ * Sign-in and feedback require Turnstile unless ALLOW_DEMO_OTP=true.
  *
- * Secrets: RESEND_API_KEY
- * Optional: OTP_FROM_EMAIL, OTP_SIGNING_SECRET, ALLOW_DEMO_OTP, OTP_KV
+ * Secrets: RESEND_API_KEY, OTP_SIGNING_SECRET, TURNSTILE_SECRET
+ * Optional: OTP_FROM_EMAIL, ALLOW_DEMO_OTP, OTP_KV
  */
 
 function corsHeaders(request) {
@@ -27,9 +28,45 @@ const SECURITY_HEADERS = {
   "Referrer-Policy": "strict-origin-when-cross-origin",
   "X-Frame-Options": "DENY",
   "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+  "Strict-Transport-Security": "max-age=15552000; includeSubDomains",
   "Content-Security-Policy":
-    "default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; connect-src 'self' https://api.resend.com; base-uri 'self'; form-action 'self'",
+    "default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; connect-src 'self' https://challenges.cloudflare.com https://api.resend.com; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
 };
+
+const TURNSTILE_HOSTS = new Set(["bridge-tj.lol", "www.bridge-tj.lol"]);
+
+function demoAllowed(env) {
+  return String(env.ALLOW_DEMO_OTP || "") === "true";
+}
+
+async function verifyTurnstile(request, env, token, expectedAction) {
+  if (demoAllowed(env)) return null;
+  if (!env.TURNSTILE_SECRET) return json({ ok: false, error: "captcha_not_configured" }, 503, request);
+  if (typeof token !== "string" || token.length === 0 || token.length > 2048) {
+    return json({ ok: false, error: "captcha" }, 403, request);
+  }
+  let result;
+  try {
+    const r = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      signal: AbortSignal.timeout(10000),
+      body: new URLSearchParams({
+        secret: env.TURNSTILE_SECRET,
+        response: token,
+        remoteip: request.headers.get("CF-Connecting-IP") || "",
+      }),
+    });
+    if (!r.ok) throw new Error("siteverify");
+    result = await r.json();
+  } catch {
+    return json({ ok: false, error: "captcha" }, 403, request);
+  }
+  if (result?.success !== true || result.action !== expectedAction || !TURNSTILE_HOSTS.has(result.hostname)) {
+    return json({ ok: false, error: "captcha" }, 403, request);
+  }
+  return null;
+}
 
 function json(data, status = 200, request) {
   return new Response(JSON.stringify(data), {
@@ -158,7 +195,14 @@ async function handleOtpRequest(request, env) {
     if (!c.pd || !c.age || !c.terms) return json({ ok: false, error: "consents_required" }, 400, request);
   }
   const lang = ["ru", "en", "tg"].includes(body.lang) ? body.lang : "ru";
-  const allowDemo = String(env.ALLOW_DEMO_OTP || "") === "true";
+  const captcha = await verifyTurnstile(
+    request,
+    env,
+    body["cf-turnstile-response"],
+    body.mode === "register" ? "signup" : "login"
+  );
+  if (captcha) return captcha;
+  const allowDemo = demoAllowed(env);
   if (!signingSecret(env)) {
     if (!allowDemo) return json({ ok: false, error: "signing_not_configured" }, 503, request);
     return json({ ok: true, demo: true, code: genCode(), expiresIn: 600 }, 200, request);
@@ -253,7 +297,7 @@ async function handleFx(request) {
 }
 
 async function takeRate(env, request, email) {
-  const allowDemo = String(env.ALLOW_DEMO_OTP || "") === "true";
+  const allowDemo = demoAllowed(env);
   if (!env.OTP_KV) {
     if (allowDemo) return null;
     return json({ ok: false, error: "rate_limit_unavailable" }, 503, request);
@@ -274,7 +318,9 @@ async function handleFeedback(request, env) {
   if (!body?.message || String(body.message).trim().length < 2 || String(body.message).length > 1000) {
     return json({ ok: false, error: "bad_request" }, 400, request);
   }
-  const allowDemo = String(env.ALLOW_DEMO_OTP || "") === "true";
+  const captcha = await verifyTurnstile(request, env, body["cf-turnstile-response"], "feedback");
+  if (captcha) return captcha;
+  const allowDemo = demoAllowed(env);
   if (!env.OTP_KV && !allowDemo) return json({ ok: false, error: "rate_limit_unavailable" }, 503, request);
   if (env.OTP_KV) {
     const ip = request.headers.get("cf-connecting-ip") || "unknown";

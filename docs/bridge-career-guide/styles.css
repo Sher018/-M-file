@@ -233,6 +233,7 @@ footer.site .wrap { display: flex; justify-content: space-between; gap: 16px; fl
   width: 44px; height: 52px; text-align: center; font-size: 22px; font-weight: 600;
   border-radius: 12px; border: 1px solid var(--n-100); background: var(--n-50);
 }
+#turnstileBox { margin: 8px 0 4px; }
 .form-note { color: var(--err); font-size: 14px; min-height: 1.2em; }
 .empty { text-align: center; padding: 48px 16px; color: var(--n-500); }
 .empty svg { height: 48px; margin: 0 auto 12px; color: var(--n-100); }

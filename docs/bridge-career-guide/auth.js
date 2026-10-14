@@ -62,7 +62,7 @@
       }
       window.dispatchEvent(new CustomEvent("bridge:auth"));
     },
-    async requestOtp({ email, name, country, mode, consents }) {
+    async requestOtp({ email, name, country, mode, consents, turnstileToken }) {
       const clean = String(email).trim().toLowerCase();
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean)) {
         throw new Error("bad_email");
@@ -82,6 +82,7 @@
         mode,
         consents: consents || null,
         lang: window.BRIDGE_I18N?.lang || "ru",
+        "cf-turnstile-response": turnstileToken || "",
       };
 
       // Prefer server OTP (real email)
@@ -133,7 +134,9 @@
           e.message === "bad_email" ||
           e.message === "exists" ||
           e.message === "not_found" ||
-          e.message === "consents"
+          e.message === "consents" ||
+          e.message === "captcha" ||
+          e.message === "captcha_not_configured"
         ) {
           throw e;
         }
