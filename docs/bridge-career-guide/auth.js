@@ -15,6 +15,11 @@
     localStorage.setItem(key, JSON.stringify(value));
   }
 
+  function localDemoAllowed() {
+    const host = location.hostname;
+    return host === "localhost" || host === "127.0.0.1" || host === "[::1]";
+  }
+
   function genCode() {
     const a = new Uint32Array(1);
     crypto.getRandomValues(a);
@@ -90,6 +95,7 @@
         const data = await res.json().catch(() => ({}));
         if (res.status === 429) throw new Error("rate_limited");
         if (res.ok && data.ok) {
+          if (data.demo && !localDemoAllowed()) throw new Error("send_failed");
           const pending = {
             email: clean,
             name: payload.name,
@@ -107,11 +113,14 @@
         }
         // API exists but email not configured → demo; other errors → show to user
         if (
-          res.status === 503 ||
-          res.status === 404 ||
-          res.status === 405 ||
-          res.status === 501 ||
-          data.error === "email_not_configured"
+          localDemoAllowed() &&
+          (res.status === 503 ||
+            res.status === 404 ||
+            res.status === 405 ||
+            res.status === 501 ||
+            data.error === "email_not_configured" ||
+            data.error === "signing_not_configured" ||
+            data.error === "rate_limit_unavailable")
         ) {
           allowDemoFallback = true;
         } else {
@@ -128,11 +137,10 @@
         ) {
           throw e;
         }
-        // network / pure static host → demo
-        allowDemoFallback = true;
+        if (localDemoAllowed()) allowDemoFallback = true;
       }
 
-      if (!allowDemoFallback) throw new Error("send_failed");
+      if (!allowDemoFallback || !localDemoAllowed()) throw new Error("send_failed");
 
       // Local demo fallback (static host / API missing only)
       const code = genCode();
@@ -158,6 +166,8 @@
         throw new Error("expired");
       }
       const typed = String(code).trim();
+
+      if (pending.demo && !localDemoAllowed()) throw new Error("send_failed");
 
       if (pending.server && pending.token && !pending.demo) {
         const res = await fetch("/api/otp/verify", {
