@@ -85,8 +85,14 @@ async function hmacSign(secret, message) {
   return b64url(new Uint8Array(sig));
 }
 
+function signingSecret(env) {
+  const secret = env.OTP_SIGNING_SECRET;
+  if (!secret) return null;
+  return secret;
+}
+
 async function makeToken(env, payload) {
-  const secret = env.OTP_SIGNING_SECRET || env.RESEND_API_KEY;
+  const secret = signingSecret(env);
   if (!secret) throw new Error("no_signing_secret");
   const body = b64urlJson(payload);
   const sig = await hmacSign(secret, body);
@@ -94,7 +100,7 @@ async function makeToken(env, payload) {
 }
 
 async function readToken(env, token) {
-  const secret = env.OTP_SIGNING_SECRET || env.RESEND_API_KEY;
+  const secret = signingSecret(env);
   if (!secret || !token || !token.includes(".")) return null;
   const [body, sig] = token.split(".");
   const expect = await hmacSign(secret, body);
@@ -152,16 +158,13 @@ async function handleOtpRequest(request, env) {
     if (!c.pd || !c.age || !c.terms) return json({ ok: false, error: "consents_required" }, 400, request);
   }
   const lang = ["ru", "en", "tg"].includes(body.lang) ? body.lang : "ru";
-  const ip = request.headers.get("cf-connecting-ip") || "unknown";
-  if (env.OTP_KV) {
-    const emailKey = `rate:email:${await sha256(email)}`;
-    const ipKey = `rate:ip:${ip}`;
-    const emailHits = Number((await env.OTP_KV.get(emailKey)) || "0");
-    const ipHits = Number((await env.OTP_KV.get(ipKey)) || "0");
-    if (emailHits >= 5 || ipHits >= 20) return json({ ok: false, error: "rate_limited" }, 429, request);
-    await env.OTP_KV.put(emailKey, String(emailHits + 1), { expirationTtl: 3600 });
-    await env.OTP_KV.put(ipKey, String(ipHits + 1), { expirationTtl: 3600 });
+  const allowDemo = String(env.ALLOW_DEMO_OTP || "") === "true";
+  if (!signingSecret(env)) {
+    if (!allowDemo) return json({ ok: false, error: "signing_not_configured" }, 503, request);
+    return json({ ok: true, demo: true, code: genCode(), expiresIn: 600 }, 200, request);
   }
+  const limited = await takeRate(env, request, email);
+  if (limited) return limited;
 
   const code = genCode();
   const codeHash = await sha256(`${email}:${code}`);
@@ -178,7 +181,6 @@ async function handleOtpRequest(request, env) {
     exp,
   });
 
-  const allowDemo = String(env.ALLOW_DEMO_OTP || "") === "true";
   const apiKey = env.RESEND_API_KEY;
   const from = env.OTP_FROM_EMAIL || "BRIDGE <onboarding@resend.dev>";
 
@@ -194,7 +196,7 @@ async function handleOtpRequest(request, env) {
     if (allowDemo) {
       return json({ ok: true, demo: true, code, token, expiresIn: ttl, warn: String(e.message || e) }, 200, request);
     }
-    return json({ ok: false, error: "send_failed", detail: String(e.message || e) }, 502, request);
+    return json({ ok: false, error: "send_failed" }, 502, request);
   }
 }
 
@@ -250,9 +252,37 @@ async function handleFx(request) {
   }
 }
 
+async function takeRate(env, request, email) {
+  const allowDemo = String(env.ALLOW_DEMO_OTP || "") === "true";
+  if (!env.OTP_KV) {
+    if (allowDemo) return null;
+    return json({ ok: false, error: "rate_limit_unavailable" }, 503, request);
+  }
+  const ip = request.headers.get("cf-connecting-ip") || "unknown";
+  const emailKey = `rate:email:${await sha256(email)}`;
+  const ipKey = `rate:ip:${await sha256(ip)}`;
+  const emailHits = Number((await env.OTP_KV.get(emailKey)) || "0");
+  const ipHits = Number((await env.OTP_KV.get(ipKey)) || "0");
+  if (emailHits >= 5 || ipHits >= 20) return json({ ok: false, error: "rate_limited" }, 429, request);
+  await env.OTP_KV.put(emailKey, String(emailHits + 1), { expirationTtl: 3600 });
+  await env.OTP_KV.put(ipKey, String(ipHits + 1), { expirationTtl: 3600 });
+  return null;
+}
+
 async function handleFeedback(request, env) {
   const body = await request.json().catch(() => null);
-  if (!body?.message || String(body.message).length > 1000) return json({ ok: false, error: "bad_request" }, 400, request);
+  if (!body?.message || String(body.message).trim().length < 2 || String(body.message).length > 1000) {
+    return json({ ok: false, error: "bad_request" }, 400, request);
+  }
+  const allowDemo = String(env.ALLOW_DEMO_OTP || "") === "true";
+  if (!env.OTP_KV && !allowDemo) return json({ ok: false, error: "rate_limit_unavailable" }, 503, request);
+  if (env.OTP_KV) {
+    const ip = request.headers.get("cf-connecting-ip") || "unknown";
+    const key = `rate:fb:${await sha256(ip)}`;
+    const hits = Number((await env.OTP_KV.get(key)) || "0");
+    if (hits >= 5) return json({ ok: false, error: "rate_limited" }, 429, request);
+    await env.OTP_KV.put(key, String(hits + 1), { expirationTtl: 3600 });
+  }
   const kind = body.kind === "bug" ? "bug" : "data_error";
   const to = env.FEEDBACK_TO_EMAIL;
   if (!env.RESEND_API_KEY || !to) return json({ ok: false, error: "not_configured" }, 503, request);
@@ -283,13 +313,7 @@ export default {
       return handleOtpVerify(request, env);
     }
     if (url.pathname === "/api/health") {
-      return json({
-        ok: true,
-        emailConfigured: Boolean(env.RESEND_API_KEY),
-        kv: Boolean(env.OTP_KV),
-        demo: String(env.ALLOW_DEMO_OTP || "") === "true",
-        mode: "signed-token",
-      }, 200, request);
+      return json({ ok: true }, 200, request);
     }
     if (url.pathname === "/api/fx" && request.method === "GET") {
       return handleFx(request);

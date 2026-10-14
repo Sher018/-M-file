@@ -15,6 +15,12 @@
     "not_found_handling": "single-page-application",
     "run_worker_first": ["/api/*"]
   },
+  "kv_namespaces": [
+    {
+      "binding": "OTP_KV",
+      "id": "31e4cdd7610a4ba18484b3a748e64a20"
+    }
+  ],
   "vars": {
     "ALLOW_DEMO_OTP": "false",
     "FEEDBACK_TO_EMAIL": "sheroz.yunusov2001@gmail.com"

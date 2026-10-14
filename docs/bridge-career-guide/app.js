@@ -4,6 +4,24 @@ const FX = () => window.BRIDGE_FX;
 const Cat = () => window.BRIDGE_CATALOG;
 const Path = () => window.BRIDGE_PATH;
 
+function authErrorText(code) {
+  const map = {
+    rate_limited: "err_rate_limited",
+    send_failed: "err_send_failed",
+    bad_email: "err_bad_email",
+    consents: "err_consents",
+    consents_required: "err_consents",
+    exists: "err_exists",
+    bad_code: "err_bad_code",
+    expired: "err_expired",
+    locked: "err_locked",
+    signing_not_configured: "err_send_failed",
+    rate_limit_unavailable: "err_send_failed",
+  };
+  const key = map[code];
+  return key ? I18N().t(key) : I18N().t("err_send_failed");
+}
+
 function escapeHtml(value) {
   return String(value ?? "")
     .replace(/&/g, "&amp;")
@@ -754,7 +772,7 @@ function bindView(route) {
       });
       routeNow();
     } catch (err) {
-      gateMsg.textContent = err.message;
+      gateMsg.textContent = authErrorText(err.message);
     }
   }
   registerForm?.addEventListener("submit", (e) => { e.preventDefault(); send("register", registerForm); });
@@ -780,7 +798,7 @@ function bindView(route) {
         const next = parseHash().q.next || "/unis";
         location.hash = `#${next.startsWith("/") ? next : "/" + next}`;
       } catch (err) {
-        gateMsg.textContent = err.message;
+        gateMsg.textContent = authErrorText(err.message);
       }
     });
     document.getElementById("changeEmail")?.addEventListener("click", () => {
