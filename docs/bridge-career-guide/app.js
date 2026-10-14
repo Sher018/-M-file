@@ -17,10 +17,42 @@ function authErrorText(code) {
     locked: "err_locked",
     signing_not_configured: "err_send_failed",
     rate_limit_unavailable: "err_send_failed",
+    captcha: "err_captcha",
+    captcha_not_configured: "err_send_failed",
   };
   const key = map[code];
   return key ? I18N().t(key) : I18N().t("err_send_failed");
 }
+
+const TURNSTILE_SITEKEY = "0x4AAAAAAFWvlic9fr3UUtfl";
+let authWidgetId;
+
+function isLocalDemoHost() {
+  const host = location.hostname;
+  return host === "localhost" || host === "127.0.0.1" || host === "[::1]";
+}
+
+function mountAuthTurnstile() {
+  const el = document.getElementById("turnstileBox");
+  if (!el || !window.turnstile || isLocalDemoHost()) return;
+  const action = el.dataset.action === "login" ? "login" : "signup";
+  if (authWidgetId !== undefined) {
+    try {
+      window.turnstile.remove(authWidgetId);
+    } catch {
+      /* previous widget node is already gone */
+    }
+    authWidgetId = undefined;
+  }
+  authWidgetId = window.turnstile.render(el, {
+    sitekey: TURNSTILE_SITEKEY,
+    action,
+  });
+}
+
+window.onBridgeTurnstileLoad = function () {
+  mountAuthTurnstile();
+};
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -200,6 +232,7 @@ function viewAuth(route) {
                 <label class="checkline"><input type="checkbox" name="consentTerms" required /><span>${escapeHtml(t.t("consent_terms"))} — <a href="legal/terms.html" target="_blank">${escapeHtml(t.t("consent_terms_link"))}</a></span></label>`
             : ""
         }
+        <div id="turnstileBox" data-action="${mode === "login" ? "login" : "signup"}"></div>
         <button class="btn btn--primary" type="submit" style="width:100%;margin-top:12px">${escapeHtml(t.t("gate_send_code"))}</button>
       </form>
       <p class="form-note" id="gateMsg"></p>
@@ -760,19 +793,31 @@ function bindView(route) {
   const loginForm = document.getElementById("loginForm");
   const otpForm = document.getElementById("otpForm");
   const gateMsg = document.getElementById("gateMsg");
+  mountAuthTurnstile();
   async function send(mode, form) {
     const fd = new FormData(form);
+    const token = authWidgetId !== undefined && window.turnstile ? window.turnstile.getResponse(authWidgetId) || "" : "";
     try {
+      if (!isLocalDemoHost() && !token) throw new Error("captcha");
       await Auth().requestOtp({
         email: fd.get("email"),
         name: fd.get("name"),
         country: fd.get("country") || "TJ",
         mode,
         consents: mode === "register" ? { pd: fd.get("consentPd"), age: fd.get("consentAge"), terms: fd.get("consentTerms") } : null,
+        turnstileToken: token,
       });
       routeNow();
     } catch (err) {
       gateMsg.textContent = authErrorText(err.message);
+    } finally {
+      if (authWidgetId !== undefined && window.turnstile && document.getElementById("turnstileBox")) {
+        try {
+          window.turnstile.reset(authWidgetId);
+        } catch {
+          /* widget already removed */
+        }
+      }
     }
   }
   registerForm?.addEventListener("submit", (e) => { e.preventDefault(); send("register", registerForm); });
