@@ -5,34 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>BRIDGE — Информационные условия использования</title>
   <meta name="description" content="Условия использования BRIDGE: информационный характер советов, без гарантии поступления." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <nav class="topnav" aria-label="Навигация">
-    <a class="logo" href="../index.html">BRIDGE</a>
+  <nav class="nav" aria-label="Навигация">
+    <a class="nav-brand" href="../index.html">BRIDGE · To China</a>
     <div class="nav-links">
       <a href="privacy-consent.html">Персональные данные</a>
       <a href="age-consent.html">Возраст</a>
       <a href="terms.html">Условия</a>
     </div>
-    <a class="nav-cta" href="../index.html#auth">На главную</a>
+    <a class="btn btn--tiny btn--secondary" href="../index.html#/auth">На главную</a>
   </nav>
 
-  <main>
-    <section>
-      <div class="section-head">
+  <main class="legal-page">
+    <div class="wrap">
         <p class="eyebrow">Правовой документ</p>
         <h1>Информационные условия использования</h1>
         <p class="lead">
           BRIDGE помогает с <strong>карьерной ориентацией</strong> и навигацией по поступлению в университеты Китая (English track).
           Материалы носят <strong>справочно-образовательный</strong> характер и не заменяют официальные источники вузов и государственных органов.
         </p>
-      </div>
 
-      <article class="glass card">
+      <article>
         <h2>1. Характер сервиса</h2>
         <p>
           Сервис предоставляет тест направления, подборку вузов, чек-листы документов, ориентировочные сроки и бюджет.
@@ -57,7 +52,7 @@
 
         <h2>4. Ограничение ответственности</h2>
         <p>
-          Команда BRIDGE не несёт ответственности за решения, принятые только на основе материалов Сервиса, за упущенные дедлайны,
+          Оператор (Юнусов Шероз Алишерович) не несёт ответственности за решения, принятые только на основе материалов Сервиса, за упущенные дедлайны,
           финансовые потери или отказ в admission/visa, если вы не проверили официальные требования.
           Использование Сервиса — на ваш собственный риск в части интерпретации информации.
         </p>
@@ -70,8 +65,10 @@
 
         <h2>6. Аккаунт и данные</h2>
         <p>
-          Регистрация регулируется отдельным согласием на персональные данные и подтверждением возраста.
-          Сейчас прогресс хранится в браузере (localStorage); вы можете удалить его в любой момент.
+          Регистрация регулируется согласием на персональные данные и подтверждением возраста (с 16 лет).
+          Имя, путь и тест хранятся в браузере. Email для кода проходит через Cloudflare и Resend.
+          Выйти можно кнопкой «Выйти»; данные сайта в браузере удаляются очисткой данных сайта.
+          Поддержка проекта через ЮMoney или USDT — добровольный донат, не плата за информацию, грант или подачу документов.
         </p>
 
         <h2>7. Изменения условий</h2>
@@ -90,11 +87,11 @@
         <p><small>Используя BRIDGE после регистрации, вы подтверждаете принятие этих условий наряду с согласиями на данные и возраст.</small></p>
       </article>
 
-      <p style="margin-top: 28px;">
-        <a class="btn ghost" href="../index.html">← Вернуться на главную</a>
-        <a class="btn primary" href="../index.html#unis" style="margin-left: 12px;">Каталог вузов</a>
+      <p class="legal-actions">
+        <a class="btn btn--ghost" href="../index.html">На главную</a>
+        <a class="btn btn--primary" href="../index.html#/auth">Регистрация</a>
       </p>
-    </section>
+    </div>
   </main>
 </body>
 </html>

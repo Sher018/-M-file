@@ -121,6 +121,34 @@ footer.site {
   font-size: 14px;
 }
 footer.site a { color: var(--brand-100); }
+
+.legal-page { padding: 32px 0 72px; }
+.legal-page h1 {
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--brand-900);
+  margin: 8px 0 12px;
+}
+.legal-page .lead { color: var(--n-500); max-width: 720px; }
+.legal-page article {
+  background: var(--n-50);
+  border-radius: var(--r-lg);
+  padding: 8px 28px 28px;
+  margin-top: 28px;
+}
+.legal-page article:hover { transform: none; box-shadow: none; }
+.legal-page h2 { font-size: 22px; color: var(--brand-900); margin: 28px 0 8px; }
+.legal-page li { margin: 6px 0; }
+.legal-box {
+  background: var(--brand-100);
+  color: var(--brand-900);
+  border-radius: var(--r-md);
+  padding: 16px 18px;
+  margin-top: 28px;
+}
+.legal-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
 footer.site .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center; }
 
 .chip, .tag, .badge {
